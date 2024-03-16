@@ -1,6 +1,7 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:concentric_transition/page_view.dart';
-import 'package:crocs_club/presentation/authentication_selecting/auth_selecting_scrn.dart';
+import 'package:crocs_club/presentation/authentication_selecting/llogin_scrn.dart';
+import 'package:crocs_club/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -39,6 +40,7 @@ class OnBoardingScreen extends StatelessWidget {
                 height: 350,
               ),
               Text(text[pageIndex]),
+              kSizedBoxH20,
               if (index == pages.length - 1)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -52,7 +54,7 @@ class OnBoardingScreen extends StatelessWidget {
                       controller.success();
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                          builder: (context) => const AuthSelectingScreen(),
+                          builder: (context) => const LoginScreen(),
                         ),
                         (route) => false,
                       );
