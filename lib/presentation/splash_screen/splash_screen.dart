@@ -12,21 +12,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splash: Column(
-        mainAxisAlignment: MainAxisAlignment.start, // Center content vertically
-        mainAxisSize: MainAxisSize.min, // Avoid taking full screen height
-        children: [
-          Image.asset('assets/images/splash.png'),
-          const SizedBox(height: 20.0), // Add spacing between logo and text
-          const Text(
-            "Your App Name",
-            style: TextStyle(
-              fontSize: 20.0,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
+      splash: Image.asset('assets/images/splash.png'),
       splashIconSize: 300,
       nextScreen: BlocProvider<SplashBloc>(
         create: (context) => SplashBloc()..add(SetSplash()),

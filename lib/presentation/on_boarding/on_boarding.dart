@@ -22,12 +22,14 @@ class OnBoardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ConcentricPageView(
+        itemCount: 3,
+        reverse: false,
         radius: 10,
         verticalPosition: 0.85,
         colors: const [
-          Color.fromARGB(255, 163, 237, 237),
-          Color.fromARGB(255, 230, 245, 174),
-          Color.fromARGB(255, 156, 143, 207)
+          Color.fromARGB(255, 194, 197, 197),
+          Color.fromARGB(255, 116, 116, 116),
+          Color.fromARGB(255, 49, 49, 49)
         ],
         itemBuilder: (index) {
           int pageIndex = index % pages.length;
@@ -45,7 +47,7 @@ class OnBoardingScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: ActionSlider.standard(
-                    toggleColor: Colors.green,
+                    toggleColor: Color.fromARGB(255, 149, 147, 147),
                     backgroundBorderRadius: BorderRadius.circular(35),
                     child: const Text('Slide to confirm'),
                     action: (controller) async {

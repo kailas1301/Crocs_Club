@@ -1,4 +1,7 @@
+import 'package:crocs_club/presentation/authentication_selecting/sign_up_screen.dart';
+import 'package:crocs_club/presentation/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:crocs_club/utils/constants.dart';
+import 'package:crocs_club/utils/widgets/elevatedbutton_widget.dart';
 import 'package:crocs_club/utils/widgets/textformfield_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -27,62 +30,54 @@ class LoginScreen extends StatelessWidget {
                   height: 100,
                   width: 100,
                 ),
-                const SizedBox(height: 20.0), // Spacing
-
+                kSizedBoxH20,
                 // Email text field
                 TextFormFieldWidget(
                   controller: emailController,
-                  labelText: 'E-mail',
+                  hintText: 'E-mail',
                   prefixIcon: Icons.email,
                   errorText: 'Please enter valid E-mail',
                 ),
                 kSizedBoxH20, // Spacing
-
                 // Password text field
                 TextFormFieldWidget(
+                    obscureText: true,
+                    prefixIcon: Icons.security,
                     controller: passwordController,
-                    labelText: 'Password',
+                    hintText: 'Password',
                     errorText: 'Please enter a valid password'),
-                const SizedBox(height: 20.0), // Spacing
-
-                // Login button
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      // // Trigger login event in your Bloc
-                      // BlocProvider.of<LoginBloc>(context)
-                      //     .add(LoginButtonPressed(
-                      //   email: emailController.text,
-                      //   password: passwordController.text,
-                      // ));
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                  ),
-                  child: const Text('Login'),
-                ),
-
-                const SizedBox(height: 15.0), // Spacing
+                kSizedBoxH20, // Spacing
+                ElevatedButtonWidget(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const BottomNavBar(),
+                      ));
+                      // if (formKey.currentState!.validate()) {
+                      //   // BlocProvider.of<LoginBloc>(context)
+                      //   //     .add(LoginButtonPressed(
+                      //   //   email: emailController.text,
+                      //   //   password: passwordController.text,
+                      //   // ));
+                      // }
+                    },
+                    buttonText: 'Log in'),
+                kSizedBoxH20, // Spacing
 
                 // Forgot password link
-                TextButton(
-                  onPressed: () {
-                    // Handle forgot password functionality
-                  },
-                  child: const Text('Forgot Password?'),
-                ),
-
-                const SizedBox(height: 20.0), // Spacing
+                // TextButton(
+                //   onPressed: () {
+                //     // Handle forgot password functionality
+                //   },
+                //   child: const Text('Forgot Password?'),
+                // ),
+                kSizedBoxH20, // Spacing
 
                 // New user registration button
                 TextButton(
                   onPressed: () {
-                    // Handle new user registration navigation
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const SignUpScrn(),
+                    ));
                   },
                   child: const Text('New User? Register Here'),
                 ),
