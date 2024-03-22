@@ -1,4 +1,6 @@
+import 'package:crocs_club/presentation/authentication_selecting/llogin_scrn.dart';
 import 'package:crocs_club/utils/constants.dart';
+import 'package:crocs_club/utils/functions.dart';
 import 'package:flutter/material.dart';
 
 class DrawerScreen extends StatelessWidget {
@@ -39,7 +41,12 @@ class DrawerScreen extends StatelessWidget {
                 const Icon(Icons.logout), // Leading widget for this list tile
             title: const Text('Log Out'),
             onTap: () {
-              // Handle navigation to settings
+              userlogout(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ),
+                  (route) => false);
             },
           ),
           ListTile(

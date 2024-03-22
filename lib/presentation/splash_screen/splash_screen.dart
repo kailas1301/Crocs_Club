@@ -2,7 +2,9 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:crocs_club/business_logic/Splash/bloc/splash_bloc.dart';
 import 'package:crocs_club/business_logic/Splash/bloc/splash_event.dart';
 import 'package:crocs_club/business_logic/Splash/bloc/splash_state.dart';
-import 'package:crocs_club/presentation/on_boarding/on_boarding.dart';
+import 'package:crocs_club/presentation/authentication_selecting/llogin_scrn.dart';
+import 'package:crocs_club/presentation/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:crocs_club/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,12 +19,20 @@ class SplashScreen extends StatelessWidget {
       nextScreen: BlocProvider<SplashBloc>(
         create: (context) => SplashBloc()..add(SetSplash()),
         child: BlocConsumer<SplashBloc, SplashState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is SplashLoadedState) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => OnBoardingScreen()),
-              );
+              final userLoggedInToken = await getToken();
+              if (userLoggedInToken == '') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const BottomNavBar()),
+                );
+              }
             }
           },
           builder: (context, state) {
