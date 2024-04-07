@@ -1,12 +1,12 @@
 import 'package:crocs_club/application/presentation/authentication_selecting/login/llogin_scrn.dart';
+import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Function to log out the user by clearing the access token from SharedPreferences
 Future<void> userlogout(BuildContext context) async {
-  // Show confirmation dialog
-  bool confirmLogout = await showDialog(
+  await showDialog(
     context: context,
     builder: (BuildContext context) {
       return Padding(
@@ -15,20 +15,33 @@ Future<void> userlogout(BuildContext context) async {
           content: const Text('Are you sure you want to log out?'),
           actions: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButtonWidget(
                   buttonText: 'Yes',
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pop(true); // Return true when confirmed
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setString(
+                        'accessToken', ''); // Set token to empty string
+                    print('Logged out successfully!');
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                      (route) => false,
+                    );
+                    showCustomSnackbar(
+                        context,
+                        'Successfully logged out',
+                        kGreenColour,
+                        kblackColour); // Return true when confirmed
                   },
                 ),
                 ElevatedButtonWidget(
                   buttonText: 'No',
                   onPressed: () {
-                    Navigator.of(context)
-                        .pop(false); // Return false when canceled
+                    Navigator.pop(context); // Return false when canceled
                   },
                 ),
               ],
@@ -38,20 +51,6 @@ Future<void> userlogout(BuildContext context) async {
       );
     },
   );
-  // If user confirms logout, proceed with logout process
-  if (confirmLogout == true) {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('accessToken', ''); // Set token to empty string
-    print('Logged out successfully!');
-    Navigator.pushAndRemoveUntil(
-      // ignore: use_build_context_synchronously
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-      (route) => false,
-    );
-  }
 }
 
 // Function to show a custom Snackbar with specified text and colors

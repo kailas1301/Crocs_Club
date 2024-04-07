@@ -1,4 +1,3 @@
-import 'package:crocs_club/application/presentation/authentication_selecting/login/llogin_scrn.dart';
 import 'package:crocs_club/application/presentation/favourites_page/favourite_page.dart';
 import 'package:crocs_club/application/presentation/profile_screen/profile_screen.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
@@ -43,18 +42,12 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading:
-                const Icon(Icons.logout), // Leading widget for this list tile
-            title: const Text('Log Out'),
-            onTap: () {
-              userlogout(context);
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ),
-                  (route) => false);
-            },
-          ),
+              leading:
+                  const Icon(Icons.logout), // Leading widget for this list tile
+              title: const Text('Log Out'),
+              onTap: () {
+                userlogout(context);
+              }),
           ListTile(
             leading:
                 const Icon(Icons.share), // Leading widget for this list tile

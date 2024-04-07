@@ -18,7 +18,7 @@ class BottomNavBar extends StatelessWidget {
         builder: (context, state) {
           Widget currentScreen = const UserHome(); // Default screen
           if (state is HomeSelected) {
-            currentScreen = const UserHome();
+            currentScreen = UserHome();
           } else if (state is ProductScreenSelected) {
             currentScreen = const ProductsScreen();
           } else if (state is CartScreenSelected) {

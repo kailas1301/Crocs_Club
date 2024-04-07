@@ -1,25 +1,32 @@
 import 'package:crocs_club/application/business_logic/profile/bloc/profile_bloc.dart';
-import 'package:crocs_club/application/presentation/authentication_selecting/login/llogin_scrn.dart';
+import 'package:crocs_club/application/presentation/adress_screen/adress_screen.dart';
+import 'package:crocs_club/application/presentation/favourites_page/favourite_page.dart';
+import 'package:crocs_club/application/presentation/orders/orders.dart';
+import 'package:crocs_club/application/presentation/profile_screen/widgets/edit_profile_dialougue.dart';
+import 'package:crocs_club/application/presentation/profile_screen/widgets/profile_screen_listtile_widget.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
+import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<ProfileBloc>(context).add(ProfileFetched());
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Profile'),
-      ),
+          centerTitle: true, title: const AppBarTextWidget(title: 'PROFILE')),
       body: BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is ProfileUpdated) {
+            showCustomSnackbar(context, 'User Details Successfully Updated',
+                kGreenColour, kblackColour);
+          }
+        },
         builder: (context, state) {
           if (state is ProfileInitial) {
             return const Center(child: CircularProgressIndicator());
@@ -27,6 +34,10 @@ class ProfileScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ProfileLoaded) {
             final userDetails = state.profileData;
+            String name = userDetails['name'];
+            String email = userDetails['email'];
+            String phone = userDetails['phone'];
+
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Padding(
@@ -34,73 +45,69 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Name: ${userDetails['name']}',
-                      style: GoogleFonts.openSans(
-                          fontSize: 18.0, fontWeight: FontWeight.w600),
+                    SubHeadingTextWidget(
+                      title: 'Name: $name',
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      'Email: ${userDetails['email']}',
-                      style: GoogleFonts.openSans(
-                          fontSize: 18.0, fontWeight: FontWeight.w600),
+                    kSizedBoxH10,
+                    SubHeadingTextWidget(
+                      title: 'Email: $email',
+                      textColor: kDarkGreyColour,
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      'Phone: ${userDetails['phone']}',
-                      style: GoogleFonts.openSans(
-                          fontSize: 18.0, fontWeight: FontWeight.w600),
+                    kSizedBoxH10,
+                    SubHeadingTextWidget(
+                      title: 'Phone: $phone',
+                      textColor: kDarkGreyColour,
                     ),
-                    const SizedBox(height: 24.0),
-                    ListTile(
-                      leading: const Icon(Icons.favorite),
-                      title: Text(
-                        'Favorites',
-                        style: GoogleFonts.poppins(
-                            fontSize: 18.0, fontWeight: FontWeight.w600),
-                      ),
+                    kSizedBoxH30,
+                    ListTileWidget(
+                      icon: Icons.edit,
                       onTap: () {
-                        // Navigate to favorites screen
+                        showDialog(
+                          context: context,
+                          builder: (context) => EditProfileDialog(
+                            initialEmail: email,
+                            initialName: name,
+                            initialPhone: phone,
+                          ),
+                        );
                       },
+                      title: 'Edit Profile',
                     ),
-                    const Divider(),
-                    ListTile(
-                      leading: const Icon(Icons.shopping_cart),
-                      title: Text(
-                        'Orders',
-                        style: GoogleFonts.poppins(
-                            fontSize: 18.0, fontWeight: FontWeight.w600),
-                      ),
+                    kSizedBoxH10,
+                    ListTileWidget(
+                      icon: Icons.favorite_outlined,
                       onTap: () {
-                        // Navigate to orders screen
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const FavouriteScreen(),
+                        ));
                       },
+                      title: 'Favorites',
                     ),
-                    const Divider(),
-                    ListTile(
-                      leading: const Icon(Icons.location_on),
-                      title: Text(
-                        'Addresses',
-                        style: GoogleFonts.poppins(
-                            fontSize: 18.0, fontWeight: FontWeight.w600),
-                      ),
+                    kSizedBoxH10,
+                    ListTileWidget(
+                      icon: Icons.shopping_cart,
                       onTap: () {
-                        // Navigate to addresses screen
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const OrderScreen(),
+                        ));
                       },
+                      title: 'Orders',
                     ),
-                    const Divider(),
+                    kSizedBoxH10,
+                    ListTileWidget(
+                      icon: Icons.location_on,
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const AdressScreen(),
+                        ));
+                      },
+                      title: 'Addresses',
+                    ),
                     kSizedBoxH30,
                     Center(
                       child: ElevatedButtonWidget(
                         onPressed: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                            (route) => false,
-                          );
                           userlogout(context);
-                          showCustomSnackbar(context, 'Successfully logged out',
-                              Colors.white, Colors.black);
                         },
                         buttonText: 'Log Out',
                       ),

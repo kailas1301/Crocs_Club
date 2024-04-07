@@ -86,29 +86,4 @@ class AuthRepository {
       throw Exception('Login failed: $e');
     }
   }
-
-  // Function to fetch user profile with provided token
-  Future<Map<String, dynamic>> getUserProfile(String token) async {
-    try {
-      final url = Uri.parse('$_baseUrl/user/profile/details');
-      final headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-
-      final response = await http.get(url, headers: headers);
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final body = jsonDecode(response.body);
-        Map<String, dynamic> userProfile = body["data"];
-        return userProfile;
-      } else {
-        print('Error fetching user profile: ${response.statusCode}');
-        final data = jsonDecode(response.body);
-        return data;
-      }
-    } catch (e) {
-      throw Exception('Failed to fetch user profile: $e');
-    }
-  }
 }
