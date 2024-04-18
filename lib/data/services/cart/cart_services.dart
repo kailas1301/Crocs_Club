@@ -43,20 +43,47 @@ class CartServices {
     const apiUrl = 'http://10.0.2.2:8080/user/cart';
     final token = await getToken();
 
-    final response = await http.get(
-      Uri.parse(apiUrl),
-      headers: {
+    try {
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token.toString(),
+        },
+      );
+      if (response.statusCode == 200) {
+        print('fetched cart: ${response.statusCode}');
+        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        return CartFromApiModel.fromJson(jsonResponse['data']);
+      } else {
+        print('fetched cart error: ${response.statusCode}');
+        throw Exception('Failed to load cart');
+      }
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
+
+  Future<int> deleteFromCart(int id, int cartId) async {
+    final url =
+        'http://10.0.2.2:8080/user/cart/remove?inventory_id=$id&cart_id=$cartId';
+    final token = await getToken();
+
+    try {
+      final response = await http.delete(Uri.parse(url), headers: {
         'Content-Type': 'application/json',
         'Authorization': token.toString(),
-      },
-    );
-    if (response.statusCode == 200) {
-      print('fetched cart: ${response.statusCode}');
-      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      return CartFromApiModel.fromJson(jsonResponse['data']);
-    } else {
-      print('fetched cart error: ${response.statusCode}');
-      throw Exception('Failed to load cart');
+      });
+
+      if (response.statusCode == 200) {
+        print("The product was successfully removed from cart");
+        return response.statusCode;
+      } else {
+        print('The product was not removed from cart');
+        return response.statusCode;
+      }
+    } catch (e) {
+      throw (e.toString());
     }
   }
 }

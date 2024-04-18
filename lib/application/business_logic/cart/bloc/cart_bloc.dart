@@ -10,6 +10,7 @@ part 'cart_state.dart';
 class CartBloc extends Bloc<CartEvent, CartState> {
   final CartServices cartServices = CartServices();
   CartBloc() : super(CartInitial()) {
+    // to call the addtocart event
     on<AddToCartEvent>((event, emit) async {
       emit(CartLoading());
 
@@ -26,6 +27,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
     });
 
+    // to fetch the items in the cart
+
     on<FetchCartEvent>((event, emit) async {
       print('fetched cart event called');
       emit(CartLoading()); // Use emit instead of yield
@@ -34,6 +37,24 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(CartLoaded(cartFromApi: cart));
       } catch (e) {
         emit(CartError('Failed to fetch cart'));
+      }
+    });
+
+    // to call the deletecart event
+    on<DeleteFromCartEvent>((event, emit) async {
+      emit(CartLoading()); // Emit loading state
+
+      try {
+        final result =
+            await cartServices.deleteFromCart(event.itemId, event.cartId);
+        if (result == 200) {
+          // If deletion successful
+          emit(CartLoaded(cartFromApi: await cartServices.fetchCart()));
+        } else {
+          emit(CartError('Failed to delete product from cart'));
+        }
+      } catch (e) {
+        emit(CartError('Failed to delete product from cart'));
       }
     });
   }

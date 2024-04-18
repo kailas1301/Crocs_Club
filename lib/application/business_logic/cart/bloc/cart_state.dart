@@ -16,6 +16,8 @@ class CartAdded extends CartState {}
 
 class CartAlreadyExists extends CartState {}
 
+class CartItemDeleted extends CartState {}
+
 class CartError extends CartState {
   final String errorMessage;
   CartError(this.errorMessage);

@@ -10,3 +10,10 @@ class AddToCartEvent extends CartEvent {
 }
 
 class FetchCartEvent extends CartEvent {}
+
+class DeleteFromCartEvent extends CartEvent {
+  final int itemId;
+  final int cartId;
+
+  DeleteFromCartEvent({required this.cartId, required this.itemId});
+}
