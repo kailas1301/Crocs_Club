@@ -3,6 +3,7 @@ import 'package:crocs_club/application/presentation/authentication_selecting/log
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
 import 'package:crocs_club/domain/utils/widgets/textformfield_widget.dart';
+import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,9 +33,10 @@ class SignUpFormWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextFormFieldWidget(
+            labelText: 'Name',
             keyboardType: TextInputType.name,
             controller: nameController,
-            hintText: 'Name',
+            hintText: 'Enter your Name',
             prefixIcon: Icons.person,
             validatorFunction: (value) {
               if (value == null || value.isEmpty) {
@@ -48,9 +50,10 @@ class SignUpFormWidget extends StatelessWidget {
           ),
           kSizedBoxH20, // Spacing
           TextFormFieldWidget(
+            labelText: 'E-mail',
             keyboardType: TextInputType.emailAddress,
             controller: emailController,
-            hintText: 'E-mail',
+            hintText: 'Enter your E-mail',
             prefixIcon: Icons.email,
             validatorFunction: (value) {
               if (value == null || value.isEmpty) {
@@ -69,10 +72,11 @@ class SignUpFormWidget extends StatelessWidget {
           ),
           kSizedBoxH20, // Spacing
           TextFormFieldWidget(
+            labelText: 'Phone No',
             maxLength: 10,
             keyboardType: TextInputType.number,
             controller: phoneController,
-            hintText: 'Phone Number',
+            hintText: 'Enter your Phone Number',
             prefixIcon: Icons.phone,
             validatorFunction: (value) {
               if (value == null || value.isEmpty) {
@@ -86,10 +90,11 @@ class SignUpFormWidget extends StatelessWidget {
           ),
           kSizedBoxH20, // Spacing
           TextFormFieldWidget(
+            labelText: 'Password',
             obscureText: true,
             prefixIcon: Icons.security,
             controller: passwordController,
-            hintText: 'Password',
+            hintText: 'Enter your Password',
             validatorFunction: (value) {
               if (value == null || value.isEmpty) {
                 return 'Password is required';
@@ -102,10 +107,11 @@ class SignUpFormWidget extends StatelessWidget {
           ),
           kSizedBoxH20, // Spacing
           TextFormFieldWidget(
+            labelText: 'Confirm Password',
             obscureText: true,
             prefixIcon: Icons.security,
             controller: confirmPasswordController,
-            hintText: 'Confirm Password',
+            hintText: 'Confirm your Password',
             validatorFunction: (value) {
               if (value == null || value.isEmpty) {
                 return 'Confirm Password is required';
@@ -144,7 +150,10 @@ class SignUpFormWidget extends StatelessWidget {
                 builder: (context) => const LoginScreen(),
               ));
             },
-            child: const Text('Already have an account? Log in'),
+            child: const SubHeadingTextWidget(
+              title: 'Already have an account? Log in',
+              textColor: kDarkGreyColour,
+            ),
           ),
         ],
       ),

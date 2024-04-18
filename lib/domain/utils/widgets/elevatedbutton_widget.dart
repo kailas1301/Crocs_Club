@@ -7,30 +7,36 @@ class ElevatedButtonWidget extends StatelessWidget {
       {super.key,
       required this.onPressed,
       required this.buttonText,
-      this.backgroundColor});
+      this.width,
+      this.textsize});
   final void Function() onPressed;
   final String buttonText;
-  final Color? backgroundColor;
+  final double? width;
+  final double? textsize;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        onPressed();
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+    return SizedBox(
+      width: width,
+      child: ElevatedButton(
+        onPressed: () {
+          onPressed();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: kAppPrimaryColor,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: SubHeadingTextWidget(
-          title: buttonText,
-          textColor: kblackColour,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: SubHeadingTextWidget(
+            textsize: textsize ?? 14,
+            title: buttonText,
+            textColor: kwhiteColour,
+          ),
         ),
       ),
     );

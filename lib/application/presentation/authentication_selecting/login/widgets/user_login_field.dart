@@ -36,8 +36,9 @@ class UserLoginWidget extends StatelessWidget {
             kSizedBoxH20, // Spacing
             // Email text field
             TextFormFieldWidget(
+              labelText: 'E-mail',
               controller: emailController,
-              hintText: 'E-mail',
+              hintText: 'Enter your E-mail',
               prefixIcon: Icons.email,
               validatorFunction: (value) {
                 if (value == null || value.isEmpty) {
@@ -57,10 +58,11 @@ class UserLoginWidget extends StatelessWidget {
             kSizedBoxH20, // Spacing
             // Password text field
             TextFormFieldWidget(
+              labelText: 'Password',
               obscureText: true,
               prefixIcon: Icons.security,
               controller: passwordController,
-              hintText: 'Password',
+              hintText: 'Enter your Password',
               validatorFunction: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Password is required';

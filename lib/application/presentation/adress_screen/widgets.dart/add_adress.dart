@@ -100,55 +100,61 @@ class AddAddressScreen extends StatelessWidget {
             child: ListView(
               children: [
                 TextFormFieldWidget(
+                  labelText: 'House Name',
                   controller: houseNameController,
-                  hintText: 'House Name',
+                  hintText: 'Enter house name',
                   validatorFunction: _validateHouseName,
                 ),
                 kSizedBoxH10,
                 TextFormFieldWidget(
+                  labelText: 'Street Name',
                   controller: streetController,
-                  hintText: 'Street',
+                  hintText: 'Enter name of your street',
                   validatorFunction: _validateStreet,
                 ),
                 kSizedBoxH10,
                 TextFormFieldWidget(
+                  labelText: 'City',
                   keyboardType: TextInputType.streetAddress,
                   controller: cityController,
-                  hintText: 'City',
+                  hintText: 'Enter name of your city',
                   validatorFunction: _validateCity,
                 ),
                 kSizedBoxH10,
                 TextFormFieldWidget(
+                  labelText: 'State',
                   keyboardType: TextInputType.name,
                   controller: stateController,
-                  hintText: 'State',
+                  hintText: 'Enter name of your State',
                   validatorFunction: _validateState,
                 ),
                 kSizedBoxH10,
                 TextFormFieldWidget(
+                  labelText: 'PIN-code',
                   keyboardType: TextInputType.number,
                   controller: pinController,
-                  hintText: 'PIN',
+                  hintText: 'Enter your PIN-code',
                   validatorFunction: _validatePin,
                 ),
                 kSizedBoxH10,
                 TextFormFieldWidget(
+                  labelText: 'Name',
                   keyboardType: TextInputType.name,
                   controller: nameController,
-                  hintText: 'Name',
+                  hintText: 'Enter your Name',
                   validatorFunction: _validateName,
                 ),
                 kSizedBoxH10,
                 TextFormFieldWidget(
+                  labelText: 'Phone No',
                   keyboardType: TextInputType.number,
                   controller: phoneController,
-                  hintText: 'Phone',
+                  hintText: 'Enter your Phone number',
                   validatorFunction: _validatePhone,
                 ),
                 kSizedBoxH20,
                 ElevatedButtonWidget(
                   buttonText: 'Add Address',
-                  backgroundColor: kblackColour,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       final address = AddressModel(

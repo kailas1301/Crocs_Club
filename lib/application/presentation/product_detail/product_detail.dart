@@ -1,9 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
-import 'package:crocs_club/domain/models/product.dart';
+import 'package:crocs_club/domain/utils/functions/functions.dart';
+import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:crocs_club/domain/models/product.dart';
+import 'package:crocs_club/domain/models/add_to_cart_model.dart';
 
 class ProductDetail extends StatelessWidget {
   const ProductDetail({Key? key, required this.product}) : super(key: key);
@@ -15,133 +19,124 @@ class ProductDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: AppBarTextWidget(title: product.productName.toUpperCase()),
+        title: SubHeadingTextWidget(
+          title: product.productName,
+          textColor: kDarkGreyColour,
+          textsize: 20,
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              kSizedBoxH30,
-              AspectRatio(
-                aspectRatio: 16 / 9,
-                child: PageView.builder(
-                  itemCount: product.image.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12)),
-                        child: CachedNetworkImage(
-                          height: screenHeight * .5,
-                          imageUrl: product.image[0],
-                          imageBuilder: (context, imageProvider) => Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+      body: BlocListener<CartBloc, CartState>(
+        listener: (context, state) {
+          if (state is CartAdded) {
+            showCustomSnackbar(
+                context, 'Product added to cart', kGreenColour, kwhiteColour);
+          } else if (state is CartAlreadyExists) {
+            showCustomSnackbar(context, 'Product already exixts in cart',
+                kRedColour, kwhiteColour);
+          } else if (state is CartError) {
+            showCustomSnackbar(
+                context, state.errorMessage, kRedColour, kwhiteColour);
+          }
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                kSizedBoxH30,
+                AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: PageView.builder(
+                    itemCount: product.image.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(12),
                           ),
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              kSizedBoxH30,
-              kSizedBoxH20,
-              Container(
-                decoration: BoxDecoration(
-                  color: kwhiteColour,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: const Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          HeadingTextWidget(
-                            title: product.productName.toUpperCase(),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.favorite_border),
-                          ),
-                        ],
-                      ),
-                      kSizedBoxH10,
-                      SubHeadingTextWidget(
-                        textColor: kDarkGreyColour,
-                        title: 'Size: ${product.size}',
-                      ),
-                      kSizedBoxH10,
-                      SubHeadingTextWidget(
-                        textColor: kGreenColour,
-                        title: 'Price: ₹${product.price.floor().toString()}',
-                      ),
-                      kSizedBoxH30,
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: kblackColour,
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color.fromARGB(255, 203, 202, 202)
-                                    .withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: const Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          height: screenHeight * .085,
-                          width: screenWidth * .65,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                const SubHeadingTextWidget(
-                                  title: 'Add to Cart',
-                                  textColor: kwhiteColour,
-                                ),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.shopping_bag,
-                                      color: kwhiteColour,
-                                    ))
-                              ],
-                            ),
+                          child: Image.network(
+                            product.image[index],
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      ),
-                      kSizedBoxH30
-                    ],
+                      );
+                    },
                   ),
                 ),
-              ),
-            ],
+                kSizedBoxH30,
+                kSizedBoxH30,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: const Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SubHeadingTextWidget(
+                              textColor: kblackColour,
+                              textsize: 18,
+                              title: product.productName,
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.favorite_border),
+                            ),
+                          ],
+                        ),
+                        kSizedBoxH10,
+                        SubHeadingTextWidget(
+                            textColor: kDarkGreyColour,
+                            textsize: 14,
+                            title: 'Size: ${product.size}'),
+                        kSizedBoxH10,
+                        SubHeadingTextWidget(
+                            textColor: kGreenColour,
+                            title:
+                                'Price: ₹${product.price.floor().toString()}'),
+                        kSizedBoxH30,
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: ElevatedButtonWidget(
+                            width: screenWidth * .4,
+                            buttonText: 'Add To Cart',
+                            onPressed: () {
+                              final cartBloc =
+                                  BlocProvider.of<CartBloc>(context);
+                              cartBloc.add(
+                                AddToCartEvent(
+                                  cart: CartAddingModel(
+                                    productsId: product.id,
+                                    quantity: 1, // or any quantity you want
+                                  ),
+                                ),
+                              );
+                              print('Add to cart was pressed');
+                            },
+                          ),
+                        ),
+                        kSizedBoxH30,
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

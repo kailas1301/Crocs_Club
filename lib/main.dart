@@ -1,5 +1,6 @@
 import 'package:crocs_club/application/business_logic/Splash/bloc/splash_bloc.dart';
 import 'package:crocs_club/application/business_logic/address/bloc/adressbloc_bloc.dart';
+import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/login/bloc/login_bloc.dart';
 import 'package:crocs_club/application/business_logic/nav_bar/bloc/navbar_bloc.dart';
 import 'package:crocs_club/application/business_logic/product/bloc/product_bloc.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => LoginBloc()),
         BlocProvider(create: (_) => ProfileBloc()),
         BlocProvider(create: (_) => ProductBloc()),
-        BlocProvider(create: (_) => AdressblocBloc())
+        BlocProvider(create: (_) => AdressblocBloc()),
+        BlocProvider(create: (_) => CartBloc())
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

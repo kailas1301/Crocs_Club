@@ -1,3 +1,4 @@
+import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,37 +25,18 @@ class SubHeadingTextWidget extends StatelessWidget {
     super.key,
     required this.title,
     this.textColor,
+    this.textsize,
   });
   final String title;
   final Color? textColor;
+  final double? textsize;
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
       style: GoogleFonts.poppins(
-        fontSize: 16,
+        fontSize: textsize ?? 16,
         fontWeight: FontWeight.w600,
-        color: textColor,
-      ),
-    );
-  }
-}
-
-class ContentTextWidget extends StatelessWidget {
-  const ContentTextWidget({
-    super.key,
-    required this.title,
-    this.textColor,
-  });
-  final String title;
-  final Color? textColor;
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: GoogleFonts.poppins(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
         color: textColor,
       ),
     );
@@ -71,9 +53,33 @@ class AppBarTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: GoogleFonts.roboto(
+      style: GoogleFonts.openSans(
         fontSize: 20,
+        color: kblackColour,
         fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+}
+
+class CustomTextWidget extends StatelessWidget {
+  const CustomTextWidget({
+    super.key,
+    required this.title,
+    this.textColor,
+    this.fontsize,
+  });
+  final String title;
+  final Color? textColor;
+  final double? fontsize;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: GoogleFonts.poppins(
+        fontSize: fontsize,
+        fontWeight: FontWeight.w600,
+        color: textColor,
       ),
     );
   }

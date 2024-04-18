@@ -1,6 +1,7 @@
 import 'package:crocs_club/application/business_logic/profile/bloc/profile_bloc.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/profile_model.dart';
+import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
 import 'package:crocs_club/domain/utils/widgets/textformfield_widget.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,9 @@ class EditProfileDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormFieldWidget(
+              labelText: 'E-mail',
               controller: emailController,
-              hintText: 'E-mail',
+              hintText: 'Enter your new E-mail',
               prefixIcon: Icons.email,
               validatorFunction: (value) {
                 if (value == null || value.isEmpty) {
@@ -56,9 +58,10 @@ class EditProfileDialog extends StatelessWidget {
             kSizedBoxH20, // Spacing
             // Password text field
             TextFormFieldWidget(
+              labelText: 'Name',
               prefixIcon: Icons.person,
               controller: nameController,
-              hintText: 'Name',
+              hintText: 'Enter your new Name',
               validatorFunction: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Name is required';
@@ -71,10 +74,11 @@ class EditProfileDialog extends StatelessWidget {
             ),
             kSizedBoxH20,
             TextFormFieldWidget(
+              labelText: 'Phone number',
               maxLength: 10,
               prefixIcon: Icons.call,
               controller: phoneController,
-              hintText: 'Phone No',
+              hintText: 'Enter your new Phone No',
               validatorFunction: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Phone No is required';
@@ -95,7 +99,8 @@ class EditProfileDialog extends StatelessWidget {
           },
           child: const Text('Cancel'),
         ),
-        ElevatedButton(
+        ElevatedButtonWidget(
+          buttonText: 'Save',
           onPressed: () {
             BlocProvider.of<ProfileBloc>(context).add(
               ProfileEditRequested(
@@ -108,7 +113,6 @@ class EditProfileDialog extends StatelessWidget {
             );
             Navigator.pop(context);
           },
-          child: const Text('Save'),
         ),
       ],
     );
