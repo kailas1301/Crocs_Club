@@ -1,4 +1,5 @@
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
+import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
@@ -16,6 +17,7 @@ class ProductDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<WishlistBloc>().add(FetchWishlistEvent());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -93,9 +95,40 @@ class ProductDetail extends StatelessWidget {
                               textsize: 18,
                               title: product.productName,
                             ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.favorite_border),
+                            BlocBuilder<WishlistBloc, WishlistState>(
+                              builder: (context, state) {
+                                if (state is WishlistLoading) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else {
+                                  final isInWishlist =
+                                      state is WishlistLoaded &&
+                                          state.wishlist.any((item) =>
+                                              item.inventoryId == product.id);
+                                  return IconButton(
+                                    onPressed: () {
+                                      final wishlistBloc =
+                                          BlocProvider.of<WishlistBloc>(
+                                              context);
+                                      if (isInWishlist) {
+                                        wishlistBloc.add(
+                                          RemoveFromWishlistEvent(product.id),
+                                        );
+                                      } else {
+                                        wishlistBloc.add(
+                                          AddToWishlistEvent(product.id),
+                                        );
+                                      }
+                                    },
+                                    icon: Icon(
+                                      isInWishlist
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: isInWishlist ? Colors.red : null,
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                           ],
                         ),

@@ -18,7 +18,7 @@ class ListTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: kblackColour,
+        color: kAppPrimaryColor,
         borderRadius: BorderRadius.circular(25.0),
       ),
       child: Padding(
@@ -26,11 +26,11 @@ class ListTileWidget extends StatelessWidget {
         child: ListTile(
           leading: Icon(
             icon,
-            color: kwhiteColour,
+            color: kDarkGreyColour,
           ),
           title: SubHeadingTextWidget(
             title: title,
-            textColor: kwhiteColour,
+            textColor: kDarkGreyColour,
           ),
           onTap: onTap,
         ),

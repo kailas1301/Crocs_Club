@@ -1,16 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:crocs_club/application/presentation/product_detail/product_detail.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/product.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductFromApi product;
 
-  const ProductCard({super.key, required this.product});
+  const ProductCard({Key? key, required this.product}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    context.read<WishlistBloc>().add(FetchWishlistEvent());
+
     return InkWell(
       onTap: () => Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ProductDetail(product: product),
@@ -30,10 +35,6 @@ class ProductCard extends StatelessWidget {
               ),
             ],
           ),
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(15),
-          // ),
-          // elevation: 3,
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Column(
@@ -64,9 +65,39 @@ class ProductCard extends StatelessWidget {
                 Row(
                   children: [
                     const Expanded(child: SizedBox()),
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.favorite_outline)),
+                    BlocBuilder<WishlistBloc, WishlistState>(
+                      builder: (context, state) {
+                        if (state is WishlistLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          final isInWishlist = state is WishlistLoaded &&
+                              state.wishlist.any(
+                                  (item) => item.inventoryId == product.id);
+                          return IconButton(
+                            onPressed: () {
+                              final wishlistBloc =
+                                  BlocProvider.of<WishlistBloc>(context);
+                              if (isInWishlist) {
+                                wishlistBloc.add(
+                                  RemoveFromWishlistEvent(product.id),
+                                );
+                              } else {
+                                wishlistBloc.add(
+                                  AddToWishlistEvent(product.id),
+                                );
+                              }
+                            },
+                            icon: Icon(
+                              isInWishlist
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isInWishlist ? Colors.red : null,
+                            ),
+                          );
+                        }
+                      },
+                    ),
                     IconButton(
                         onPressed: () {}, icon: const Icon(Icons.shopping_cart))
                   ],

@@ -17,3 +17,15 @@ class DeleteFromCartEvent extends CartEvent {
 
   DeleteFromCartEvent({required this.cartId, required this.itemId});
 }
+
+class UpdateCartQuantityEvent extends CartEvent {
+  final int inventoryId;
+  final int quantity;
+  final int cartId;
+
+  UpdateCartQuantityEvent({
+    required this.inventoryId,
+    required this.quantity,
+    required this.cartId,
+  });
+}

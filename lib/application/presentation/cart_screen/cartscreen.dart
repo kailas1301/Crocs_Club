@@ -28,12 +28,24 @@ class CartScreen extends StatelessWidget {
             showCustomSnackbar(context, 'Product was removed from the cart',
                 kGreenColour, kwhiteColour);
           }
+          if (state is CartQuantityUpdated) {
+            showCustomSnackbar(
+                context, 'Quantity was updated', kGreenColour, kwhiteColour);
+          }
         },
         builder: (context, state) {
           if (state is CartLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is CartLoaded) {
             final cart = state.cartFromApi;
+            if (cart.items.isEmpty) {
+              return const Center(
+                child: SubHeadingTextWidget(
+                  title: 'No items in the cart',
+                  textColor: kDarkGreyColour,
+                ),
+              );
+            }
             return Column(
               children: [
                 Expanded(
@@ -58,128 +70,147 @@ class CartScreen extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                top: 25, left: 25, bottom: 25),
-                            child: Row(
+                                top: 25, left: 25, bottom: 25, right: 25),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     SubHeadingTextWidget(
                                       title: item.productName.toUpperCase(),
                                       textColor: kDarkGreyColour,
                                       textsize: 18,
                                     ),
-                                    kSizedBoxH10,
-                                    SubHeadingTextWidget(
-                                      title: 'Price: ₹${item.price}',
-                                      textColor: kDarkGreyColour,
-                                    ),
-                                    kSizedBoxH10,
-                                    Row(
-                                      children: [
-                                        const SubHeadingTextWidget(
-                                          title: 'Quantity',
-                                          textColor: kDarkGreyColour,
-                                        ),
-                                        kSizedBoxW20,
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: kAppPrimaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.5),
-                                                spreadRadius: 2,
-                                                blurRadius: 2,
-                                                offset: const Offset(2, 2),
-                                              ),
-                                            ],
-                                          ),
-                                          child: IconButton(
-                                            icon: const Icon(
-                                              Icons.arrow_drop_up,
-                                              size: 30,
-                                              color: kwhiteColour,
-                                            ),
-                                            onPressed: () {},
-                                          ),
-                                        ),
-                                        kSizedBoxW10,
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: kAppPrimaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.5),
-                                                spreadRadius: 2,
-                                                blurRadius: 2,
-                                                offset: const Offset(2, 2),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 13, horizontal: 25),
-                                            child: SubHeadingTextWidget(
-                                                textColor: kwhiteColour,
-                                                textsize: 15,
-                                                title:
-                                                    item.quantity.toString()),
-                                          ),
-                                        ),
-                                        kSizedBoxW10,
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: kAppPrimaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.5),
-                                                spreadRadius: 2,
-                                                blurRadius: 2,
-                                                offset: const Offset(2, 2),
-                                              ),
-                                            ],
-                                          ),
-                                          child: IconButton(
-                                            icon: const Icon(
-                                              Icons.arrow_drop_down,
-                                              size: 30,
-                                              color: kwhiteColour,
-                                            ),
-                                            onPressed: () {},
-                                          ),
-                                        ),
-                                        kSizedBoxW20,
-                                      ],
-                                    ),
-                                    kSizedBoxH20,
-                                    SubHeadingTextWidget(
-                                      title: 'Total: ₹${item.totalPrice}',
-                                      textColor: kGreenColour,
-                                      textsize: 18,
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: kPrimaryDarkColor,
+                                      ),
+                                      onPressed: () {
+                                        BlocProvider.of<CartBloc>(context).add(
+                                            DeleteFromCartEvent(
+                                                cartId: cart.id,
+                                                itemId: item.productId));
+                                      },
                                     ),
                                   ],
                                 ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: kPrimaryDarkColor,
-                                  ),
-                                  onPressed: () {
-                                    BlocProvider.of<CartBloc>(context).add(
-                                        DeleteFromCartEvent(
-                                            cartId: cart.id,
-                                            itemId: item.productId));
-                                  },
+                                kSizedBoxH10,
+                                SubHeadingTextWidget(
+                                  title: 'Price: ₹${item.price}',
+                                  textColor: kDarkGreyColour,
+                                ),
+                                kSizedBoxH10,
+                                Row(
+                                  children: [
+                                    const SubHeadingTextWidget(
+                                      title: 'Quantity',
+                                      textColor: kDarkGreyColour,
+                                    ),
+                                    kSizedBoxW20,
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: kAppPrimaryColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: const Offset(2, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.arrow_drop_up,
+                                          size: 30,
+                                          color: kwhiteColour,
+                                        ),
+                                        onPressed: () {
+                                          BlocProvider.of<CartBloc>(context)
+                                              .add(
+                                            UpdateCartQuantityEvent(
+                                              inventoryId: item.productId,
+                                              quantity: item.quantity + 1,
+                                              cartId: cart.id,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    kSizedBoxW10,
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: kAppPrimaryColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: const Offset(2, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 13, horizontal: 25),
+                                        child: SubHeadingTextWidget(
+                                            textColor: kwhiteColour,
+                                            textsize: 15,
+                                            title: item.quantity.toString()),
+                                      ),
+                                    ),
+                                    kSizedBoxW10,
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: kAppPrimaryColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: const Offset(2, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 30,
+                                          color: kwhiteColour,
+                                        ),
+                                        onPressed: () {
+                                          if (item.quantity == 1) {
+                                            BlocProvider.of<CartBloc>(context)
+                                                .add(DeleteFromCartEvent(
+                                                    cartId: cart.id,
+                                                    itemId: item.productId));
+                                          } else {
+                                            BlocProvider.of<CartBloc>(context)
+                                                .add(
+                                              UpdateCartQuantityEvent(
+                                                inventoryId: item.productId,
+                                                quantity: item.quantity - 1,
+                                                cartId: cart.id,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    kSizedBoxW20,
+                                  ],
+                                ),
+                                kSizedBoxH20,
+                                SubHeadingTextWidget(
+                                  title: 'Total: ₹${item.totalPrice}',
+                                  textColor: kGreenColour,
+                                  textsize: 18,
                                 ),
                               ],
                             ),

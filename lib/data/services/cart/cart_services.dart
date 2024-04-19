@@ -86,4 +86,27 @@ class CartServices {
       throw (e.toString());
     }
   }
+
+  Future<int> updateCartQuantity(
+      int inventoryId, int quantity, int cartId) async {
+    final url =
+        'http://10.0.2.2:8080/user/cart?inventory=$inventoryId&quantity=$quantity&id=$cartId';
+    final token = await getToken();
+
+    try {
+      final response = await http.put(Uri.parse(url), headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token.toString(),
+      });
+      if (response.statusCode == 200) {
+        print("The product quantity was updated from cart");
+        return response.statusCode;
+      } else {
+        print('The product quantity was not updated from cart');
+        return response.statusCode;
+      }
+    } catch (e) {
+      throw (e.toString());
+    }
+  }
 }

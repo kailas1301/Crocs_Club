@@ -57,5 +57,27 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(CartError('Failed to delete product from cart'));
       }
     });
+
+    // to update the stock of product in cart
+    on<UpdateCartQuantityEvent>((event, emit) async {
+      emit(CartLoading());
+      try {
+        final result = await cartServices.updateCartQuantity(
+          event.inventoryId,
+          event.quantity,
+          event.cartId,
+        );
+        if (result == 200) {
+          print("cart quantity update successfull");
+          emit(CartQuantityUpdated());
+          final cart = await cartServices.fetchCart();
+          emit(CartLoaded(cartFromApi: cart));
+        } else {
+          emit(CartError('Failed to update quantity in cart'));
+        }
+      } catch (e) {
+        emit(CartError('Failed to update quantity in cart'));
+      }
+    });
   }
 }

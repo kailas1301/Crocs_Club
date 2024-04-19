@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crocs_club/application/business_logic/product/bloc/product_bloc.dart';
 import 'package:crocs_club/application/business_logic/profile/bloc/profile_bloc.dart';
+import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:crocs_club/application/presentation/product_detail/product_detail.dart';
 import 'package:crocs_club/application/presentation/user_home_screen/widgets/home_app_bar.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
@@ -20,6 +21,7 @@ class UserHome extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<ProductBloc>(context).add(FetchProducts());
     BlocProvider.of<ProfileBloc>(context).add(ProfileFetched());
+    context.read<WishlistBloc>().add(FetchWishlistEvent());
     final currentTime = DateTime.now();
     String greeting = getGreeting(currentTime.hour);
 
@@ -192,7 +194,7 @@ class ProductCardWidget extends StatelessWidget {
                       );
                     },
                     placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                        Center(child: const CircularProgressIndicator()),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                   ),
@@ -217,9 +219,38 @@ class ProductCardWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Expanded(child: SizedBox()),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_border_outlined),
+                    BlocBuilder<WishlistBloc, WishlistState>(
+                      builder: (context, state) {
+                        if (state is WishlistLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          final isInWishlist = state is WishlistLoaded &&
+                              state.wishlist.any(
+                                  (item) => item.inventoryId == product.id);
+                          return IconButton(
+                            onPressed: () {
+                              final wishlistBloc =
+                                  BlocProvider.of<WishlistBloc>(context);
+                              if (isInWishlist) {
+                                wishlistBloc.add(
+                                  RemoveFromWishlistEvent(product.id),
+                                );
+                              } else {
+                                wishlistBloc.add(
+                                  AddToWishlistEvent(product.id),
+                                );
+                              }
+                            },
+                            icon: Icon(
+                              isInWishlist
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isInWishlist ? Colors.red : null,
+                            ),
+                          );
+                        }
+                      },
                     ),
                     IconButton(
                       onPressed: () {},
