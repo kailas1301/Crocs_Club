@@ -52,7 +52,7 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
     });
 
     on<FetchWishlistEvent>((event, emit) async {
-      emit(WishlistLoading());
+      // emit(WishlistLoading());
       try {
         final List<WishlistItem> wishlist =
             await wishListServices.getWishlist();

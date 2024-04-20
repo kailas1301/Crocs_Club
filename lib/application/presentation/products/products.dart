@@ -1,5 +1,6 @@
 import 'package:crocs_club/application/business_logic/product/bloc/product_bloc.dart';
 import 'package:crocs_club/application/presentation/products/widgets/product_card_widget.dart';
+import 'package:crocs_club/application/presentation/search_screen/search_screen.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,15 @@ class ProductsScreen extends StatelessWidget {
     BlocProvider.of<ProductBloc>(context).add(FetchProducts());
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SearchScreen(),
+                ));
+              },
+              icon: const Icon(Icons.search))
+        ],
         centerTitle: true,
         title: const AppBarTextWidget(title: 'Products'),
       ),

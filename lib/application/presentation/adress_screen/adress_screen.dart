@@ -14,57 +14,67 @@ class AdressScreen extends StatelessWidget {
     BlocProvider.of<AdressblocBloc>(context).add(GetAddressEvent());
     return Scaffold(
       appBar: AppBar(
-        title: const AppBarTextWidget(title: 'Addresses'),
+        title: const SubHeadingTextWidget(
+          textColor: kDarkGreyColour,
+          textsize: 18,
+          title: 'Addresses',
+        ),
+        centerTitle: true,
       ),
       body: BlocConsumer<AdressblocBloc, AdressblocState>(
         listener: (context, state) {},
         builder: (context, state) {
           if (state is AdressblocLoaded) {
-            return ListView.separated(
-              separatorBuilder: (context, index) => kSizedBoxH10,
+            return ListView.builder(
               itemCount: state.addressModel.length,
               itemBuilder: (context, index) {
                 final address = state.addressModel[index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: kwhiteColour,
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromARGB(255, 76, 75, 75)
-                              .withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: const Offset(2, 2),
+                return Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: kPrimaryDarkColor,
+                        radius: 30,
+                        child: Icon(
+                          Icons.location_on,
+                          size: 25,
+                          color: kwhiteColour,
                         ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
+                      ),
+                      title: SubHeadingTextWidget(
+                          textsize: 16,
+                          textColor: kDarkGreyColour,
+                          title: 'Address ${index + 1}'),
+                      subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SubHeadingTextWidget(
-                              title: 'Name: ${address.name.toUpperCase()}'),
+                              textsize: 14,
+                              textColor: kDarkGreyColour,
+                              title: 'Name: ${address.name}'),
                           SubHeadingTextWidget(
-                              title: 'House Name: ${address.houseName}'),
-                          SubHeadingTextWidget(title: 'City: ${address.city}'),
+                              textsize: 14,
+                              textColor: kDarkGreyColour,
+                              title:
+                                  '${address.houseName} House, ${address.street}'),
                           SubHeadingTextWidget(
-                              title: 'Street: ${address.street}'),
+                              textsize: 14,
+                              textColor: kDarkGreyColour,
+                              title:
+                                  '${address.city}, ${address.state} - ${address.pin}'),
                           SubHeadingTextWidget(
-                              title: 'State: ${address.state}'),
-                          SubHeadingTextWidget(
-                              title: 'Pin-code: ${address.pin}'),
-                          SubHeadingTextWidget(
-                              title: 'Phone-No: ${address.phone}')
+                              textsize: 14,
+                              textColor: kDarkGreyColour,
+                              title: 'Phone: ${address.phone}'),
                         ],
                       ),
                     ),
-
-                    // You can display other address details here
                   ),
                 );
               },

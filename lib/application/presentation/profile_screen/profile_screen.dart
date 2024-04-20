@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
     BlocProvider.of<ProfileBloc>(context).add(ProfileFetched());
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true, title: const AppBarTextWidget(title: 'PROFILE')),
+          centerTitle: true, title: const AppBarTextWidget(title: 'Profile')),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is ProfileUpdated) {

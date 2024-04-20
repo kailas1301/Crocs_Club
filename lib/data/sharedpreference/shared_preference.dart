@@ -11,6 +11,16 @@ Future<String?> getToken() async {
   }
 }
 
+Future<int?> getUserId() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('UserId') ?? 0;
+  } catch (e) {
+    print('Error fetching token: $e');
+    throw Exception('Failed to get access token: $e');
+  }
+}
+
 // Function to save the access token to SharedPreferences
 Future<void> saveToken(String token) async {
   try {
@@ -20,5 +30,17 @@ Future<void> saveToken(String token) async {
   } catch (e) {
     print('Error saving token: $e');
     throw Exception('Failed to save access token: $e');
+  }
+}
+
+// Function to save the access token to SharedPreferences
+Future<void> saveUserId(int id) async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('UserId', id); // Set token to provided value
+    print('Id saved successfully!');
+  } catch (e) {
+    print('Error saving Id: $e');
+    throw Exception('Failed to save Id: $e');
   }
 }

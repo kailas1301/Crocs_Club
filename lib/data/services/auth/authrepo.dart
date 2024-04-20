@@ -28,7 +28,9 @@ class AuthRepository {
         print('Signup successful!');
         final data = jsonDecode(response.body);
         final token = data['data']['Token'];
+        final id = data['data']['Users']['id'];
         saveToken(token);
+        saveUserId(id);
         return 'success';
       } else {
         final data = jsonDecode(response.body);
@@ -67,7 +69,9 @@ class AuthRepository {
         print('Login successful!');
         final data = jsonDecode(response.body);
         final token = data['data']['Token'];
+        final id = data['data']['Users']['id'];
         saveToken(token);
+        saveUserId(id);
         return 'success';
       } else {
         final data = jsonDecode(response.body);
