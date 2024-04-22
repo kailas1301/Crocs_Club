@@ -9,6 +9,7 @@ class CheckoutLoading extends CheckoutState {}
 
 class CheckoutLoaded extends CheckoutState {
   final CheckoutData checkoutData;
+  final List<CouponModel>? coupons;
   final int? selectedAddressId;
   final int? selectedPaymentMethodId;
   final int? selectedCouponId;
@@ -16,6 +17,7 @@ class CheckoutLoaded extends CheckoutState {
   CheckoutLoaded({
     this.selectedCouponId,
     required this.checkoutData,
+    this.coupons,
     this.selectedAddressId,
     this.selectedPaymentMethodId,
   });

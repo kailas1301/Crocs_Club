@@ -1,4 +1,5 @@
 import 'package:crocs_club/application/business_logic/search/bloc/search_bloc.dart';
+import 'package:crocs_club/application/presentation/user_home_screen/user_home_scrn.dart';
 import 'package:crocs_club/data/debouncer/debouncer.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
@@ -64,6 +65,9 @@ class SearchScreen extends StatelessWidget {
                     BlocProvider.of<SearchBloc>(context)
                         .add(ProductSearchEvent(query: value));
                   });
+                } else {
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(ProductSearchEvent(query: value));
                 }
               },
             ),
@@ -81,9 +85,8 @@ class SearchScreen extends StatelessWidget {
                     itemCount: state.searchProductlist.length,
                     itemBuilder: (context, index) {
                       final product = state.searchProductlist[index];
-                      return ListTile(
-                        title: Text(product.productName),
-                        subtitle: Text('Size: ${product.size}'),
+                      return ProductCardWidget(
+                        product: product,
                       );
                     },
                   );

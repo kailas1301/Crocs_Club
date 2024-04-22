@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  const CartScreen({super.key});
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<CartBloc>(context).add(FetchCartEvent());
