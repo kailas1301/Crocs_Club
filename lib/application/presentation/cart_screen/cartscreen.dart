@@ -76,34 +76,6 @@ class CartScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          SubHeadingTextWidget(
-                                            title:
-                                                item.productName.toUpperCase(),
-                                            textColor: kDarkGreyColour,
-                                            textsize: 18,
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: kPrimaryDarkColor,
-                                            ),
-                                            onPressed: () {
-                                              BlocProvider.of<CartBloc>(
-                                                context,
-                                              ).add(
-                                                DeleteFromCartEvent(
-                                                  cartId: cart.id,
-                                                  itemId: item.productId,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
                                           ClipRRect(
                                             child: CachedNetworkImage(
                                               imageUrl: product.image[0],
@@ -131,19 +103,39 @@ class CartScreen extends StatelessWidget {
                                             ),
                                           ),
                                           SubHeadingTextWidget(
-                                            title: 'Price: ₹${item.price}',
+                                            title:
+                                                item.productName.toUpperCase(),
                                             textColor: kDarkGreyColour,
+                                            textsize: 18,
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: kPrimaryDarkColor,
+                                            ),
+                                            onPressed: () {
+                                              BlocProvider.of<CartBloc>(
+                                                context,
+                                              ).add(
+                                                DeleteFromCartEvent(
+                                                  cartId: cart.id,
+                                                  itemId: item.productId,
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ],
                                       ),
                                       Row(
                                         children: [
-                                          const SubHeadingTextWidget(
-                                            title: 'Quantity',
+                                          SubHeadingTextWidget(
+                                            title: 'Price: ₹${item.price}',
                                             textColor: kDarkGreyColour,
                                           ),
                                           kSizedBoxW20,
                                           Container(
+                                            height: 50,
+                                            width: 45,
                                             decoration: BoxDecoration(
                                               color: kAppPrimaryColor,
                                               borderRadius:
@@ -160,8 +152,8 @@ class CartScreen extends StatelessWidget {
                                             ),
                                             child: IconButton(
                                               icon: const Icon(
-                                                Icons.arrow_drop_up,
-                                                size: 30,
+                                                Icons.add_circle,
+                                                size: 20,
                                                 color: kwhiteColour,
                                               ),
                                               onPressed: () {
@@ -179,6 +171,8 @@ class CartScreen extends StatelessWidget {
                                           ),
                                           kSizedBoxW10,
                                           Container(
+                                            height: 50,
+                                            width: 60,
                                             decoration: BoxDecoration(
                                               color: kAppPrimaryColor,
                                               borderRadius:
@@ -207,6 +201,8 @@ class CartScreen extends StatelessWidget {
                                           ),
                                           kSizedBoxW10,
                                           Container(
+                                            height: 50,
+                                            width: 45,
                                             decoration: BoxDecoration(
                                               color: kAppPrimaryColor,
                                               borderRadius:
@@ -223,8 +219,8 @@ class CartScreen extends StatelessWidget {
                                             ),
                                             child: IconButton(
                                               icon: const Icon(
-                                                Icons.arrow_drop_down,
-                                                size: 30,
+                                                Icons.remove_circle,
+                                                size: 20,
                                                 color: kwhiteColour,
                                               ),
                                               onPressed: () {

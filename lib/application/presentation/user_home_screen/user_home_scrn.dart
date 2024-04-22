@@ -194,7 +194,7 @@ class ProductCardWidget extends StatelessWidget {
                       );
                     },
                     placeholder: (context, url) =>
-                        Center(child: const CircularProgressIndicator()),
+                        const Center(child: CircularProgressIndicator()),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                   ),
@@ -204,20 +204,20 @@ class ProductCardWidget extends StatelessWidget {
                   title: product.productName,
                   textsize: 17,
                 ),
+                kSizedBoxH10,
                 SubHeadingTextWidget(
                   title: 'Size: ${product.size}',
                   textColor: kDarkGreyColour,
                   textsize: 16,
                 ),
-                SubHeadingTextWidget(
-                  title: 'Price: ${product.price.floor()}',
-                  textColor: kGreenColour,
-                  textsize: 16,
-                ),
-                const Expanded(child: SizedBox()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    SubHeadingTextWidget(
+                      title: 'Price: ${product.price.floor()}',
+                      textColor: kGreenColour,
+                      textsize: 16,
+                    ),
                     const Expanded(child: SizedBox()),
                     BlocBuilder<WishlistBloc, WishlistState>(
                       builder: (context, state) {
@@ -252,10 +252,10 @@ class ProductCardWidget extends StatelessWidget {
                         }
                       },
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.shopping_cart),
-                    ),
+                    // IconButton(
+                    //   onPressed: () {},
+                    //   icon: const Icon(Icons.shopping_cart),
+                    // ),
                   ],
                 ),
               ],

@@ -98,8 +98,8 @@ class ProductCard extends StatelessWidget {
                         }
                       },
                     ),
-                    IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.shopping_cart))
+                    // IconButton(
+                    //     onPressed: () {}, icon: const Icon(Icons.shopping_cart))
                   ],
                 ),
                 Padding(

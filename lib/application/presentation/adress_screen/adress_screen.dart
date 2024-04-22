@@ -30,6 +30,7 @@ class AdressScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final address = state.addressModel[index];
                 return Card(
+                  color: kwhiteColour,
                   elevation: 4,
                   margin: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -49,7 +50,7 @@ class AdressScreen extends StatelessWidget {
                       ),
                       title: SubHeadingTextWidget(
                           textsize: 16,
-                          textColor: kDarkGreyColour,
+                          textColor: kblackColour,
                           title: 'Address ${index + 1}'),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
