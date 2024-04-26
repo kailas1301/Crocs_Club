@@ -1,3 +1,4 @@
+import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/coupon/bloc/coupon_bloc.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/coupon_model.dart';
@@ -25,6 +26,7 @@ class CheckoutScreen extends StatelessWidget {
           if (state is CheckoutSuccess) {
             showCustomSnackbar(context, 'Order succesfully placed',
                 kGreenColour, kwhiteColour);
+            BlocProvider.of<CartBloc>(context).add(FetchCartEvent());
             Navigator.of(context).pop();
           }
           if (state is CheckoutOrderError) {
@@ -122,7 +124,7 @@ class CheckoutScreen extends StatelessWidget {
                       textsize: 16,
                     ),
                     SubHeadingTextWidget(
-                      title: '\$$discountedAmount',
+                      title: '₹${discountedAmount.floor()}',
                       textColor: kGreenColour,
                       textsize: 16,
                     ),
@@ -132,7 +134,7 @@ class CheckoutScreen extends StatelessWidget {
                       textsize: 16,
                     ),
                     SubHeadingTextWidget(
-                      title: '\$$payableAmount',
+                      title: '₹$payableAmount',
                       textColor: kDarkGreyColour,
                       textsize: 16,
                     ),
