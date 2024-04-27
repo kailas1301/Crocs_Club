@@ -1,5 +1,6 @@
 import 'package:crocs_club/application/business_logic/address/bloc/adressbloc_bloc.dart';
 import 'package:crocs_club/application/presentation/adress_screen/widgets.dart/add_adress.dart';
+import 'package:crocs_club/application/presentation/adress_screen/widgets.dart/adress_card.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class AdressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<AdressblocBloc>(context).add(GetAddressEvent());
     return Scaffold(
+      // appbar
       appBar: AppBar(
         title: const SubHeadingTextWidget(
           textColor: kDarkGreyColour,
@@ -21,6 +23,7 @@ class AdressScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
+      // Body to show the adress as cards
       body: BlocConsumer<AdressblocBloc, AdressblocState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -29,64 +32,24 @@ class AdressScreen extends StatelessWidget {
               itemCount: state.addressModel.length,
               itemBuilder: (context, index) {
                 final address = state.addressModel[index];
-                return Card(
-                  color: kwhiteColour,
-                  elevation: 4,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ListTile(
-                      leading: const CircleAvatar(
-                        backgroundColor: kPrimaryDarkColor,
-                        radius: 30,
-                        child: Icon(
-                          Icons.location_on,
-                          size: 25,
-                          color: kwhiteColour,
-                        ),
-                      ),
-                      title: SubHeadingTextWidget(
-                          textsize: 16,
-                          textColor: kblackColour,
-                          title: 'Address ${index + 1}'),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SubHeadingTextWidget(
-                              textsize: 14,
-                              textColor: kDarkGreyColour,
-                              title: 'Name: ${address.name}'),
-                          SubHeadingTextWidget(
-                              textsize: 14,
-                              textColor: kDarkGreyColour,
-                              title:
-                                  '${address.houseName} House, ${address.street}'),
-                          SubHeadingTextWidget(
-                              textsize: 14,
-                              textColor: kDarkGreyColour,
-                              title:
-                                  '${address.city}, ${address.state} - ${address.pin}'),
-                          SubHeadingTextWidget(
-                              textsize: 14,
-                              textColor: kDarkGreyColour,
-                              title: 'Phone: ${address.phone}'),
-                        ],
-                      ),
-                    ),
-                  ),
+                return AdressCard(
+                  address: address,
+                  index: index,
                 );
               },
             );
           } else if (state is AdressblocError) {
-            return Center(child: Text(state.message));
+            return const Center(
+                child: SubHeadingTextWidget(
+              title: "No adress found",
+              textColor: kDarkGreyColour,
+            ));
           } else {
             return const Center(child: CircularProgressIndicator());
           }
         },
       ),
+      // floating action bar to add new adress
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(

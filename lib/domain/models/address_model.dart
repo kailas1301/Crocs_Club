@@ -1,4 +1,5 @@
 class AddressModel {
+  final int? id;
   final String city;
   final String houseName;
   final String name;
@@ -8,6 +9,7 @@ class AddressModel {
   final String street;
 
   AddressModel({
+    this.id,
     required this.city,
     required this.houseName,
     required this.name,
@@ -19,6 +21,7 @@ class AddressModel {
 
   factory AddressModel.fromJson(Map<String, dynamic> json) {
     return AddressModel(
+      id: json["id"],
       city: json['city'],
       houseName: json['house_name'],
       name: json['name'],

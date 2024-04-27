@@ -134,6 +134,7 @@ class AddAddressScreen extends StatelessWidget {
     );
   }
 
+// functions to give validation errors to textformfields
   String? _validateHouseName(String? value) {
     if (value == null || value.isEmpty) {
       return 'House name is required';

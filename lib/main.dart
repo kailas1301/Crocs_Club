@@ -5,6 +5,7 @@ import 'package:crocs_club/application/business_logic/checkout/bloc/checkout_blo
 import 'package:crocs_club/application/business_logic/coupon/bloc/coupon_bloc.dart';
 import 'package:crocs_club/application/business_logic/login/bloc/login_bloc.dart';
 import 'package:crocs_club/application/business_logic/nav_bar/bloc/navbar_bloc.dart';
+import 'package:crocs_club/application/business_logic/order/bloc/order_bloc.dart';
 import 'package:crocs_club/application/business_logic/product/bloc/product_bloc.dart';
 import 'package:crocs_club/application/business_logic/profile/bloc/profile_bloc.dart';
 import 'package:crocs_club/application/business_logic/search/bloc/search_bloc.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => WishlistBloc()),
         BlocProvider(create: (_) => SearchBloc()),
         BlocProvider(create: (_) => CheckoutBloc(checkoutRepository)),
-        BlocProvider(create: (_) => CouponBloc())
+        BlocProvider(create: (_) => CouponBloc()),
+        BlocProvider(create: (_) => OrderBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

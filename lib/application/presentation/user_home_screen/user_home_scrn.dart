@@ -154,9 +154,9 @@ class ProductCardWidget extends StatelessWidget {
         builder: (context) => ProductDetail(product: product),
       )),
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(10.0),
         child: Container(
-          width: screenWidth * 0.5, // Set width as per your requirement
+          width: screenWidth * 0.5,
           decoration: BoxDecoration(
             color: kwhiteColour,
             borderRadius: BorderRadius.circular(20),
@@ -170,7 +170,7 @@ class ProductCardWidget extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -182,7 +182,7 @@ class ProductCardWidget extends StatelessWidget {
                     imageUrl: product.image[0],
                     imageBuilder: (context, imageProvider) {
                       return Container(
-                        height: screenWidth * .4,
+                        height: screenWidth * .3,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -252,10 +252,6 @@ class ProductCardWidget extends StatelessWidget {
                         }
                       },
                     ),
-                    // IconButton(
-                    //   onPressed: () {},
-                    //   icon: const Icon(Icons.shopping_cart),
-                    // ),
                   ],
                 ),
               ],

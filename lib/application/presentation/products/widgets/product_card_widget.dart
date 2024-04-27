@@ -4,6 +4,7 @@ import 'package:crocs_club/application/presentation/product_detail/product_detai
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/product.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
+import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,12 +17,12 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<WishlistBloc>().add(FetchWishlistEvent());
 
-    return InkWell(
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ProductDetail(product: product),
-      )),
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ProductDetail(product: product),
+        )),
         child: Container(
           decoration: BoxDecoration(
             color: kwhiteColour,
@@ -40,82 +41,82 @@ class ProductCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: ClipRRect(
-                    child: CachedNetworkImage(
-                      imageUrl: product.image[0],
-                      imageBuilder: (context, imageProvider) => Container(
+                ClipRRect(
+                  child: CachedNetworkImage(
+                    imageUrl: product.image[0],
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
+                        height: screenWidth * .3,
+                        width: double.infinity,
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                             image: imageProvider,
                             fit: BoxFit.fitWidth,
                           ),
                         ),
-                      ),
-                      placeholder: (context, url) => Container(
-                          alignment: Alignment.center,
-                          width: 24,
-                          height: 24,
-                          child: const CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
+                      );
+                    },
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
-                Row(
-                  children: [
-                    const Expanded(child: SizedBox()),
-                    BlocBuilder<WishlistBloc, WishlistState>(
-                      builder: (context, state) {
-                        if (state is WishlistLoading) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else {
-                          final isInWishlist = state is WishlistLoaded &&
-                              state.wishlist.any(
-                                  (item) => item.inventoryId == product.id);
-                          return IconButton(
-                            onPressed: () {
-                              final wishlistBloc =
-                                  BlocProvider.of<WishlistBloc>(context);
-                              if (isInWishlist) {
-                                wishlistBloc.add(
-                                  RemoveFromWishlistEvent(product.id),
-                                );
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SubHeadingTextWidget(title: product.productName),
+                          BlocBuilder<WishlistBloc, WishlistState>(
+                            builder: (context, state) {
+                              if (state is WishlistLoading) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
                               } else {
-                                wishlistBloc.add(
-                                  AddToWishlistEvent(product.id),
+                                final isInWishlist = state is WishlistLoaded &&
+                                    state.wishlist.any((item) =>
+                                        item.inventoryId == product.id);
+                                return IconButton(
+                                  onPressed: () {
+                                    final wishlistBloc =
+                                        BlocProvider.of<WishlistBloc>(context);
+                                    if (isInWishlist) {
+                                      wishlistBloc.add(
+                                        RemoveFromWishlistEvent(product.id),
+                                      );
+                                    } else {
+                                      wishlistBloc.add(
+                                        AddToWishlistEvent(product.id),
+                                      );
+                                    }
+                                  },
+                                  icon: Icon(
+                                    isInWishlist
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: isInWishlist ? Colors.red : null,
+                                  ),
                                 );
                               }
                             },
-                            icon: Icon(
-                              isInWishlist
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: isInWishlist ? Colors.red : null,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    // IconButton(
-                    //     onPressed: () {}, icon: const Icon(Icons.shopping_cart))
-                  ],
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SubHeadingTextWidget(title: product.productName)),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SubHeadingTextWidget(
-                          textColor: kGreenColour,
-                          title: '₹ ${product.price.floor().toString()}'),
-                      SubHeadingTextWidget(
-                        title: 'Size:${product.size}',
-                        textColor: kDarkGreyColour,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SubHeadingTextWidget(
+                              textColor: kGreenColour,
+                              title: '₹ ${product.price.floor().toString()}'),
+                          SubHeadingTextWidget(
+                            title: 'Size:${product.size}',
+                            textColor: kDarkGreyColour,
+                          ),
+                        ],
                       ),
                     ],
                   ),

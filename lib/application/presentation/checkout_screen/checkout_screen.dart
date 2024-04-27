@@ -171,7 +171,6 @@ class CheckoutScreen extends StatelessWidget {
                 child:
                     SubHeadingTextWidget(title: 'Order Placed Successfully!'));
           } else {
-            print(state);
             return const Center(child: CircularProgressIndicator());
           }
         },
