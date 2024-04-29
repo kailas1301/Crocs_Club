@@ -60,57 +60,60 @@ class CheckoutScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SubHeadingTextWidget(
-                      title: 'Selected Address:',
+                    kSizedBoxH10,
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: SubHeadingTextWidget(
+                        title: 'Order Details:',
+                        textColor: kDarkGreyColour,
+                      ),
+                    ),
+                    kSizedBoxH10,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SubHeadingTextWidget(
+                              textColor: kRedColour,
+                              title:
+                                  'No. of Products: ${checkoutData.products.length}'),
+                          SubHeadingTextWidget(
+                              textColor: kGreenColour,
+                              title:
+                                  'Subtotal: ₹${checkoutData.products.fold(0, (sum, product) => sum + product.totalPrice)}'),
+                        ],
+                      ),
                     ),
                     kSizedBoxH10,
                     if (checkoutData.addresses.isEmpty)
-                      const Text(
-                          'No addresses found. Please add an address first.')
+                      const SubHeadingTextWidget(
+                          title:
+                              'No addresses found. Please add an address first.')
                     else
-                      Column(
+                      ExpansionTile(
+                        title: const SubHeadingTextWidget(
+                          title: 'Selected Address:',
+                        ),
                         children: checkoutData.addresses
                             .map((address) =>
                                 _buildAddressTile(context, address))
                             .toList(),
                       ),
-                    kSizedBoxH10,
-                    const SubHeadingTextWidget(
-                      title: 'Order Details:',
-                      textColor: kDarkGreyColour,
-                    ),
-                    kSizedBoxH10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SubHeadingTextWidget(
-                            textColor: kRedColour,
-                            title:
-                                'No. of Products: ${checkoutData.products.length}'),
-                        SubHeadingTextWidget(
-                            textColor: kGreenColour,
-                            title:
-                                'Subtotal: ${checkoutData.products.fold(0, (sum, product) => sum + product.totalPrice)}'),
-                      ],
-                    ),
-                    kSizedBoxH20,
-                    const SubHeadingTextWidget(
-                      title: 'Select Payment Method:',
-                      textsize: 20,
-                    ),
-                    kSizedBoxH10,
-                    Column(
+                    ExpansionTile(
+                      title: const SubHeadingTextWidget(
+                        title: 'Selected Payment Method:',
+                      ),
                       children: checkoutData.paymentMethods
                           .map((method) =>
                               _buildPaymentMethodTile(context, method))
                           .toList(),
                     ),
                     kSizedBoxH10,
-                    const SubHeadingTextWidget(
-                      title: 'Select Coupon',
-                      textsize: 20,
-                    ),
-                    Column(
+                    ExpansionTile(
+                      title: const SubHeadingTextWidget(
+                        title: 'Selected Coupon',
+                      ),
                       children: state.coupons!
                           .map((coupon) => _buildCouponTile(
                               context,
@@ -119,24 +122,36 @@ class CheckoutScreen extends StatelessWidget {
                                   (sum, product) => sum + product.totalPrice)))
                           .toList(),
                     ),
-                    const SubHeadingTextWidget(
-                      title: 'Discounted Amount:',
-                      textsize: 16,
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: SubHeadingTextWidget(
+                        title: 'Discounted Amount:',
+                        textsize: 16,
+                      ),
                     ),
-                    SubHeadingTextWidget(
-                      title: '₹${discountedAmount.floor()}',
-                      textColor: kGreenColour,
-                      textsize: 16,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SubHeadingTextWidget(
+                        title: '₹${discountedAmount.floor()}',
+                        textColor: kGreenColour,
+                        textsize: 16,
+                      ),
                     ),
                     const SizedBox(height: 10),
-                    const SubHeadingTextWidget(
-                      title: 'Payable Amount:',
-                      textsize: 16,
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: SubHeadingTextWidget(
+                        title: 'Payable Amount:',
+                        textsize: 16,
+                      ),
                     ),
-                    SubHeadingTextWidget(
-                      title: '₹$payableAmount',
-                      textColor: kDarkGreyColour,
-                      textsize: 16,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SubHeadingTextWidget(
+                        title: '₹$payableAmount',
+                        textColor: kDarkGreyColour,
+                        textsize: 16,
+                      ),
                     ),
                     Align(
                       alignment: Alignment.center,
@@ -184,7 +199,7 @@ class CheckoutScreen extends StatelessWidget {
       child: ListTile(
         title: SubHeadingTextWidget(
             textColor: kDarkGreyColour,
-            textsize: 14,
+            textsize: 13,
             title:
                 '${address.name}\n${address.houseName}, ${address.street}\n${address.city}, ${address.state} - ${address.pin}'),
         trailing: Radio<int>(
@@ -209,7 +224,9 @@ class CheckoutScreen extends StatelessWidget {
       value: BlocProvider.of<CheckoutBloc>(context),
       child: ListTile(
         title: SubHeadingTextWidget(
-            textColor: kDarkGreyColour, title: method.paymentName),
+            textsize: 13,
+            textColor: kDarkGreyColour,
+            title: method.paymentName),
         trailing: Radio<int>(
           activeColor: kAppPrimaryColor,
           value: method.id, // Use the ID of the payment method as the value
@@ -239,6 +256,7 @@ class CheckoutScreen extends StatelessWidget {
         value: BlocProvider.of<CheckoutBloc>(context),
         child: ListTile(
           title: SubHeadingTextWidget(
+            textsize: 13,
             textColor: kDarkGreyColour,
             title:
                 '${coupon.name}  \nDiscount: ${coupon.discountPercentage}%\nmin price: ${coupon.minimumPrice}',
@@ -263,14 +281,15 @@ class CheckoutScreen extends StatelessWidget {
       // Return ListTile with information about additional amount needed
       return ListTile(
         title: SubHeadingTextWidget(
+          textsize: 13,
           textColor: kDarkGreyColour,
           title:
-              '${coupon.name}  \nDiscount: ${coupon.discountPercentage}%\nmin price: ${coupon.minimumPrice}',
+              '${coupon.name}  \nDiscount: ${coupon.discountPercentage}%\nmin price: ₹${coupon.minimumPrice}',
         ),
         trailing: SubHeadingTextWidget(
-          textsize: 12,
+          textsize: 11,
           title:
-              'Additional\namount needed: \n${additionalAmountNeeded.floor()}',
+              'Purchase for ₹${additionalAmountNeeded.floor()}\nto avail this coupon',
           textColor: kRedColour,
         ),
       );

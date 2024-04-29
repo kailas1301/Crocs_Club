@@ -25,4 +25,35 @@ class OrderApi {
       throw Exception('Failed to fetch orders');
     }
   }
+
+  static Future<int> cancelOrder(int id) async {
+    final String url = 'http://10.0.2.2:8080/user/profile/order?order_id=$id';
+    final token = await getToken();
+    final response = await http.delete(Uri.parse(url), headers: {
+      'accept': 'application/json',
+      'Authorization': token ?? "",
+    });
+
+    if (response.statusCode == 200) {
+      return response.statusCode;
+    } else {
+      return response.statusCode;
+    }
+  }
+
+  static Future<int> returnOrder(int id) async {
+    final String url =
+        'http://10.0.2.2:8080/user/profile/order/return?order_id=$id';
+    final token = await getToken();
+    final response = await http.patch(Uri.parse(url), headers: {
+      'accept': 'application/json',
+      'Authorization': token ?? "",
+    });
+
+    if (response.statusCode == 200) {
+      return response.statusCode;
+    } else {
+      return response.statusCode;
+    }
+  }
 }

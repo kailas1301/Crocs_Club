@@ -18,3 +18,17 @@ class OrderError extends OrderState {
 
   OrderError(this.message);
 }
+
+class OrderReturned extends OrderState {}
+
+class OrderCancelled extends OrderState {}
+
+class OrderCancelledError extends OrderState {
+  final String message;
+  OrderCancelledError(this.message);
+}
+
+class OrderReturnedError extends OrderState {
+  final String message;
+  OrderReturnedError(this.message);
+}
