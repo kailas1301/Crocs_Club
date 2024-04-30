@@ -19,7 +19,17 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     on<SelectAddress>(_onSelectAddress);
     on<SelectPaymentMethod>(_onSelectPaymentMethod);
     on<SelectedCoupon>(_onSelectCoupon);
+    on<SelectWallet>(_onSelectWallet);
     on<PlaceOrder>(_onPlaceOrder);
+    on<PaymentSuccess>((event, emit) {
+      emit(CheckoutLoading());
+      emit(Paymentfinished());
+    });
+
+    on<PaymentError>((event, emit) {
+      emit(CheckoutLoading());
+      emit(Paymenterror());
+    });
   }
 
   void _onLoadCheckoutDetails(
@@ -39,6 +49,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     final currentState = state as CheckoutLoaded;
     final coupons = await couponServices.getCoupons();
     emit(CheckoutLoaded(
+        useWallet: currentState.useWallet,
         coupons: coupons,
         checkoutData: currentState.checkoutData,
         selectedAddressId: selectedAddressId,
@@ -53,6 +64,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     final currentState = state as CheckoutLoaded;
     final coupons = await couponServices.getCoupons();
     emit(CheckoutLoaded(
+        useWallet: currentState.useWallet,
         coupons: coupons,
         checkoutData: currentState.checkoutData,
         selectedAddressId: currentState.selectedAddressId,
@@ -65,11 +77,26 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     final currentstate = state as CheckoutLoaded;
     final coupons = await couponServices.getCoupons();
     emit(CheckoutLoaded(
+        useWallet: currentstate.useWallet,
         coupons: coupons,
         checkoutData: currentstate.checkoutData,
         selectedAddressId: currentstate.selectedAddressId,
         selectedPaymentMethodId: currentstate.selectedPaymentMethodId,
         selectedCouponId: selectcoupoId));
+  }
+
+  void _onSelectWallet(CheckoutEvent event, Emitter<CheckoutState> emit) async {
+    final selectWallet = (event as SelectWallet).useWallet;
+    final currentstate = state as CheckoutLoaded;
+    final coupons = await couponServices.getCoupons();
+    print(selectWallet);
+    emit(CheckoutLoaded(
+        useWallet: selectWallet,
+        coupons: coupons,
+        checkoutData: currentstate.checkoutData,
+        selectedAddressId: currentstate.selectedAddressId,
+        selectedPaymentMethodId: currentstate.selectedPaymentMethodId,
+        selectedCouponId: currentstate.selectedCouponId));
   }
 
   void _onPlaceOrder(CheckoutEvent event, Emitter<CheckoutState> emit) async {
@@ -80,12 +107,20 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       return;
     }
     try {
+      print("the use wallet is${currentState.useWallet}");
       final userId = await getUserId();
+      bool? iswalletUsed;
+      if (currentState.useWallet == null) {
+        iswalletUsed = false;
+      } else {
+        iswalletUsed == currentState.useWallet;
+      }
+      print("the use wallet after is $iswalletUsed");
       final orderDetails = OrderDetails(
         addressId: currentState.selectedAddressId!,
-        couponId: currentState.selectedCouponId!,
+        couponId: currentState.selectedCouponId,
         paymentId: currentState.selectedPaymentMethodId!,
-        useWallet: false,
+        useWallet: iswalletUsed ?? false,
         userId: userId ?? 0,
       );
 

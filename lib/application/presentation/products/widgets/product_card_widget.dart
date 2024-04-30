@@ -3,6 +3,7 @@ import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_blo
 import 'package:crocs_club/application/presentation/product_detail/product_detail.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/product.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class ProductCard extends StatelessWidget {
                       );
                     },
                     placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
+                        const Center(child: ThreeDotLoadingAnimation()),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                   ),
@@ -74,8 +75,7 @@ class ProductCard extends StatelessWidget {
                           BlocBuilder<WishlistBloc, WishlistState>(
                             builder: (context, state) {
                               if (state is WishlistLoading) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
+                                return const LoadingAnimationStaggeredDotsWave();
                               } else {
                                 final isInWishlist = state is WishlistLoaded &&
                                     state.wishlist.any((item) =>

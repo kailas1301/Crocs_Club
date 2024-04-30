@@ -3,7 +3,7 @@ import 'package:crocs_club/data/sharedpreference/shared_preference.dart';
 import 'package:http/http.dart' as http;
 
 class WalletServices {
-  static Future<int> getWallet() async {
+  static Future<dynamic> getWallet() async {
     const url = "http://10.0.2.2:8080/user/wallet";
     final token = await getToken();
 

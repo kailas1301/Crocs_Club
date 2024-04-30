@@ -10,11 +10,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<FetchWallet>((event, emit) async {
       emit(WalletLoading());
       try {
-        int walletAmount = await WalletServices.getWallet();
-        print("wallet amoungt is $walletAmount");
+        final walletAmount = await WalletServices.getWallet();
+        print("wallet amoungt from get wallet is $walletAmount");
         emit(WalletLoaded(walletAmount: walletAmount));
         print("wallet amount in wallet loaded is $walletAmount");
       } catch (e) {
+        print("wallet amount in wallet error is $e");
         emit(WalletError(error: "Wallet is empty please try again"));
       }
     });

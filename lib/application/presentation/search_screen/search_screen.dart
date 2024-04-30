@@ -2,6 +2,7 @@ import 'package:crocs_club/application/business_logic/search/bloc/search_bloc.da
 import 'package:crocs_club/application/presentation/user_home_screen/user_home_scrn.dart';
 import 'package:crocs_club/data/debouncer/debouncer.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<SearchBloc>(context).add(ProductSearchEvent(query: ""));
     final TextEditingController searchController = TextEditingController();
     final Debouncer debouncer =
         Debouncer(delay: const Duration(milliseconds: 300));
@@ -77,9 +79,7 @@ class SearchScreen extends StatelessWidget {
             child: BlocBuilder<SearchBloc, SearchState>(
               builder: (context, state) {
                 if (state is SearchLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const LoadingAnimationStaggeredDotsWave();
                 } else if (state is SearchLoaded) {
                   return ListView.builder(
                     itemCount: state.searchProductlist.length,

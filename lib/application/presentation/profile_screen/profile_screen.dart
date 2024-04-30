@@ -7,6 +7,7 @@ import 'package:crocs_club/application/presentation/profile_screen/widgets/profi
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,9 +30,9 @@ class ProfileScreen extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is ProfileInitial) {
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingAnimationStaggeredDotsWave();
           } else if (state is ProfileLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingAnimationStaggeredDotsWave();
           } else if (state is ProfileLoaded) {
             final userDetails = state.profileData;
             String name = userDetails['name'];
@@ -117,11 +118,12 @@ class ProfileScreen extends StatelessWidget {
               ),
             );
           } else if (state is ProfileError) {
-            return Center(
-              child: Text('Error fetching data: ${state.error}'),
-            );
+            return const LoadingAnimationStaggeredDotsWave();
           } else {
-            return const Text('Unknown state');
+            return const SubHeadingTextWidget(
+              title: 'Try Again',
+              textColor: kDarkGreyColour,
+            );
           }
         },
       ),

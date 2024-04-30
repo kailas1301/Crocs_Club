@@ -5,15 +5,14 @@ import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Form key to handle form validation
     final formKey = GlobalKey<FormState>();
-    // Text editing controllers for email and password fields
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
@@ -22,15 +21,16 @@ class LoginScreen extends StatelessWidget {
         if (state is LoginLoading) {
           // Show a progress indicator while logging in
           showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) =>
-                const Center(child: CircularProgressIndicator()),
-          );
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) => Center(
+                    child: LoadingAnimationWidget.threeArchedCircle(
+                      color: kAppPrimaryColor,
+                      size: 40,
+                    ),
+                  ));
         } else if (state is LoginSuccessful) {
-          // Hide progress indicator when login successful
           Navigator.pop(context);
-          // Show success message
           showCustomSnackbar(
               context, 'Successfully Logged in', kGreenColour, kblackColour);
           // Navigate to home screen after successful login
@@ -40,11 +40,8 @@ class LoginScreen extends StatelessWidget {
               ),
               (route) => false);
         } else if (state is LoginError) {
-          // Hide progress indicator when login fails
           Navigator.pop(context);
-          // Show error message
-          showCustomSnackbar(context, state.error, Colors.red,
-              Colors.black); // Close progress dialog (if shown)
+          showCustomSnackbar(context, state.error, kRedColour, kwhiteColour);
         }
       },
       child: Scaffold(

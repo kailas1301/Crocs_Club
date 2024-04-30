@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
@@ -81,8 +81,8 @@ class ProductDetail extends StatelessWidget {
                                       MediaQuery.of(context).size.height / 3,
                                   imageUrl: product.image[index],
                                   fit: BoxFit.cover,
-                                  placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator()),
+                                  placeholder: (context, url) =>
+                                      const ThreeDotLoadingAnimation(),
                                   errorWidget: (context, url, error) =>
                                       const Icon(Icons.error),
                                 ),
@@ -151,9 +151,7 @@ class ProductDetail extends StatelessWidget {
                                     BlocBuilder<WishlistBloc, WishlistState>(
                                       builder: (context, state) {
                                         if (state is WishlistLoading) {
-                                          return const Center(
-                                              child:
-                                                  CircularProgressIndicator());
+                                          return const LoadingAnimationStaggeredDotsWave();
                                         } else {
                                           final isInWishlist =
                                               state is WishlistLoaded &&

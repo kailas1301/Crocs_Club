@@ -20,4 +20,13 @@ class SelectedCoupon extends CheckoutEvent {
   SelectedCoupon({required this.selectedCouponID});
 }
 
+class SelectWallet extends CheckoutEvent {
+  final bool useWallet;
+  SelectWallet({required this.useWallet});
+}
+
 class PlaceOrder extends CheckoutEvent {}
+
+class PaymentSuccess extends CheckoutEvent {}
+
+class PaymentError extends CheckoutEvent {}

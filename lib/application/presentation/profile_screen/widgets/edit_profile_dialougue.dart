@@ -11,7 +11,6 @@ class EditProfileDialog extends StatelessWidget {
   final String initialEmail;
   final String initialName;
   final String initialPhone;
-
   const EditProfileDialog({
     Key? key,
     required this.initialEmail,
@@ -93,11 +92,11 @@ class EditProfileDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        TextButton(
+        ElevatedButtonWidget(
+          buttonText: 'Cancel',
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('Cancel'),
         ),
         ElevatedButtonWidget(
           buttonText: 'Save',

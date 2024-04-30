@@ -1,192 +1,406 @@
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/coupon/bloc/coupon_bloc.dart';
+import 'package:crocs_club/application/business_logic/wallet/bloc/wallet_bloc.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/coupon_model.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crocs_club/application/business_logic/checkout/bloc/checkout_bloc.dart';
 import 'package:crocs_club/domain/models/checkout_details.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
+
+  @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  late Razorpay _razorpay;
+  @override
+  void initState() {
+    super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // BlocProvider.of<CheckoutBloc>(context).add(PaymentSuccess());
+    BlocProvider.of<CheckoutBloc>(context).add(PlaceOrder());
+    print("success");
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(
+    //       builder: (context) => const CartScreen(),
+    //     ),
+    //     (route) => false);
+    // showCustomSnackbar(
+    //     context, "Payment  Failed Tryagain", kRedColour, kwhiteColour);
+    // BlocProvider.of<CheckoutBloc>(context).add(PaymentError());
+    print("failure");
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print("wallet");
+  }
+
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<CouponBloc>(context).add(LoadCouponsEvent());
     BlocProvider.of<CheckoutBloc>(context).add(LoadCheckoutDetails());
+    BlocProvider.of<WalletBloc>(context).add(FetchWallet());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const AppBarTextWidget(title: 'Checkout'),
       ),
-      body: BlocConsumer<CheckoutBloc, CheckoutState>(
-        listener: (context, state) {
-          if (state is CheckoutSuccess) {
-            showCustomSnackbar(context, 'Order succesfully placed',
-                kGreenColour, kwhiteColour);
-            BlocProvider.of<CartBloc>(context).add(FetchCartEvent());
-            Navigator.of(context).pop();
-          }
-          if (state is CheckoutOrderError) {
-            showCustomSnackbar(
-                context, 'Order was not placed', kRedColour, kwhiteColour);
-          }
-        },
-        builder: (context, state) {
-          if (state is CheckoutLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is CheckoutLoaded) {
-            final checkoutData = state.checkoutData;
-            double discountedAmount = 0.0;
-            if (state.selectedCouponId != null) {
-              final selectedCoupon = state.coupons!
-                  .firstWhere((coupon) => coupon.id == state.selectedCouponId);
-              if (selectedCoupon.id != -1) {
-                discountedAmount = checkoutData.products
-                        .fold(0, (sum, product) => sum + product.totalPrice) *
-                    (selectedCoupon.discountPercentage / 100);
-              }
-            }
-
-            double payableAmount = checkoutData.products
-                    .fold(0, (sum, product) => sum + product.totalPrice) -
-                discountedAmount;
-
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    kSizedBoxH10,
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: SubHeadingTextWidget(
-                        title: 'Order Details:',
-                        textColor: kDarkGreyColour,
-                      ),
+      body: BlocBuilder<WalletBloc, WalletState>(
+        builder: (context, walletstate) {
+          if (walletstate is WalletLoading) {
+            return const LoadingAnimationStaggeredDotsWave();
+          } else if (walletstate is WalletLoaded) {
+            return BlocConsumer<CheckoutBloc, CheckoutState>(
+              listener: (context, checkoutstate) {
+                if (checkoutstate is CheckoutSuccess) {
+                  showCustomSnackbar(context, 'Order succesfully placed',
+                      kGreenColour, kwhiteColour);
+                  BlocProvider.of<CartBloc>(context).add(FetchCartEvent());
+                  Navigator.of(context).pop();
+                }
+                if (checkoutstate is CheckoutOrderError) {
+                  showCustomSnackbar(context, 'Order was not placed',
+                      kRedColour, kwhiteColour);
+                }
+                if (checkoutstate is PaymentSuccess) {
+                  showCustomSnackbar(context, 'Payment was successfull',
+                      kGreenColour, kwhiteColour);
+                }
+                if (checkoutstate is CheckoutOrderError) {
+                  showCustomSnackbar(context, 'Payment was not successfull',
+                      kRedColour, kwhiteColour);
+                }
+              },
+              builder: (context, state) {
+                if (state is CheckoutLoading) {
+                  return Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: kAppPrimaryColor,
+                      size: 40,
                     ),
-                    kSizedBoxH10,
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  );
+                } else if (state is CheckoutLoaded) {
+                  final checkoutData = state.checkoutData;
+                  double discountedAmount = 0.0;
+                  if (state.selectedCouponId != null) {
+                    final selectedCoupon = state.coupons!.firstWhere(
+                        (coupon) => coupon.id == state.selectedCouponId);
+                    if (selectedCoupon.id != -1) {
+                      discountedAmount = checkoutData.products.fold(
+                              0, (sum, product) => sum + product.totalPrice) *
+                          (selectedCoupon.discountPercentage / 100);
+                    }
+                  }
+
+                  double payableAmount = checkoutData.products
+                          .fold(0, (sum, product) => sum + product.totalPrice) -
+                      discountedAmount;
+
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SubHeadingTextWidget(
-                              textColor: kRedColour,
-                              title:
-                                  'No. of Products: ${checkoutData.products.length}'),
-                          SubHeadingTextWidget(
+                          kSizedBoxH10,
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: SubHeadingTextWidget(
+                              title: 'Order Details:',
+                              textColor: kDarkGreyColour,
+                            ),
+                          ),
+                          kSizedBoxH10,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SubHeadingTextWidget(
+                                    textColor: kRedColour,
+                                    title:
+                                        'No. of Products: ${checkoutData.products.length}'),
+                                SubHeadingTextWidget(
+                                    textColor: kGreenColour,
+                                    title:
+                                        'Subtotal: ₹${checkoutData.products.fold(0, (sum, product) => sum + product.totalPrice)}'),
+                              ],
+                            ),
+                          ),
+                          kSizedBoxH10,
+                          if (checkoutData.addresses.isEmpty)
+                            const SubHeadingTextWidget(
+                                title:
+                                    'No addresses found. Please add an address first.')
+                          else
+                            ExpansionTile(
+                              title: const SubHeadingTextWidget(
+                                title: 'Selected Address:',
+                              ),
+                              children: checkoutData.addresses
+                                  .map((address) =>
+                                      _buildAddressTile(context, address))
+                                  .toList(),
+                            ),
+                          ExpansionTile(
+                            title: const SubHeadingTextWidget(
+                              title: 'Selected Payment Method:',
+                            ),
+                            children: checkoutData.paymentMethods
+                                .map((method) =>
+                                    _buildPaymentMethodTile(context, method))
+                                .toList(),
+                          ),
+                          kSizedBoxH10,
+                          ExpansionTile(
+                            title: const SubHeadingTextWidget(
+                              title: 'Selected Coupon',
+                            ),
+                            children: state.coupons!
+                                .map((coupon) => _buildCouponTile(
+                                    context,
+                                    coupon,
+                                    checkoutData.products.fold(
+                                        0,
+                                        (sum, product) =>
+                                            sum + product.totalPrice)))
+                                .toList(),
+                          ),
+                          BlocBuilder<WalletBloc, WalletState>(
+                            builder: (context, walletstate) {
+                              if (walletstate is WalletLoaded) {
+                                return BlocBuilder<CheckoutBloc, CheckoutState>(
+                                  builder: (context, checkoutstate) {
+                                    if (checkoutstate is CheckoutLoaded) {
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ListTile(
+                                            title: const SubHeadingTextWidget(
+                                                title: 'Use Wallet Amount'),
+                                            trailing: Switch(
+                                                activeColor: kAppPrimaryColor,
+                                                value:
+                                                    checkoutstate.useWallet ??
+                                                        false,
+                                                onChanged: (value) {
+                                                  final walletAmount =
+                                                      walletstate.walletAmount;
+                                                  final payableAmount =
+                                                      checkoutData.products
+                                                              .fold(
+                                                            0,
+                                                            (sum, product) =>
+                                                                sum +
+                                                                product
+                                                                    .totalPrice,
+                                                          ) -
+                                                          discountedAmount;
+
+                                                  if (walletAmount >=
+                                                      payableAmount) {
+                                                    BlocProvider.of<
+                                                                CheckoutBloc>(
+                                                            context)
+                                                        .add(SelectWallet(
+                                                            useWallet: true));
+                                                  } else {
+                                                    showCustomSnackbar(
+                                                      context,
+                                                      'Wallet amount is insufficient for this transaction',
+                                                      kRedColour,
+                                                      kwhiteColour,
+                                                    );
+                                                    BlocProvider.of<
+                                                                CheckoutBloc>(
+                                                            context)
+                                                        .add(SelectWallet(
+                                                            useWallet: false));
+                                                  }
+                                                }),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 25),
+                                            child: Text(
+                                              '₹${walletstate.walletAmount}',
+                                              style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                color: kGreenColour,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return Center(
+                                        child: LoadingAnimationWidget
+                                            .staggeredDotsWave(
+                                          color: kAppPrimaryColor,
+                                          size: 40,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                );
+                              } else {
+                                return const Center(
+                                  child: SubHeadingTextWidget(
+                                      title: 'Wallet is empty'),
+                                );
+                              }
+                            },
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: SubHeadingTextWidget(
+                              title: 'Discounted Amount:',
+                              textsize: 16,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SubHeadingTextWidget(
+                              title: '₹${discountedAmount.floor()}',
                               textColor: kGreenColour,
-                              title:
-                                  'Subtotal: ₹${checkoutData.products.fold(0, (sum, product) => sum + product.totalPrice)}'),
+                              textsize: 16,
+                            ),
+                          ),
+                          kSizedBoxH10,
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: SubHeadingTextWidget(
+                              title: 'Payable Amount:',
+                              textsize: 16,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SubHeadingTextWidget(
+                              title: '₹$payableAmount',
+                              textColor: kDarkGreyColour,
+                              textsize: 16,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: ElevatedButtonWidget(
+                              buttonText: 'Place Order',
+                              onPressed: () {
+                                final selectedPaymentMethodId =
+                                    BlocProvider.of<CheckoutBloc>(context).state
+                                            is CheckoutLoaded
+                                        ? (BlocProvider.of<CheckoutBloc>(
+                                                    context)
+                                                .state as CheckoutLoaded)
+                                            .selectedPaymentMethodId
+                                        : null;
+                                if ((state.selectedAddressId == null ||
+                                    state.selectedPaymentMethodId == null)) {
+                                  showCustomSnackbar(
+                                      context,
+                                      'Please select an address and payment method',
+                                      kRedColour,
+                                      kwhiteColour);
+                                  return;
+                                }
+                                final selectedPaymentMethod = checkoutData
+                                    .paymentMethods
+                                    .firstWhere((method) =>
+                                        method.id == selectedPaymentMethodId);
+
+                                if (selectedPaymentMethod.paymentName ==
+                                    "OnlinePayment") {
+                                  var options = {
+                                    'method': {
+                                      'netbanking': true,
+                                      'card': true,
+                                      'upi': true,
+                                      'wallet': true,
+                                    },
+                                    'key': 'rzp_test_jVuUGTAIUk3lSH',
+                                    'amount': 100,
+                                    // payableAmount.round() * 100,
+                                    'name': 'user',
+                                    "entity": "order",
+                                    "status": "created",
+                                    "currency": "INR",
+                                    // 'order_id': 'order_EMBFqjDHEEn80l',
+                                    "notes": [],
+                                    'description': 'razorpay crocsclub',
+                                    'timeout': 160,
+                                    'prefill': {
+                                      'contact': '8943936486',
+                                      'email': 'user@gmail.com'
+                                    }
+                                  };
+                                  _razorpay.open(options);
+                                } else {
+                                  BlocProvider.of<CheckoutBloc>(context)
+                                      .add(PlaceOrder());
+                                }
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    kSizedBoxH10,
-                    if (checkoutData.addresses.isEmpty)
-                      const SubHeadingTextWidget(
-                          title:
-                              'No addresses found. Please add an address first.')
-                    else
-                      ExpansionTile(
-                        title: const SubHeadingTextWidget(
-                          title: 'Selected Address:',
-                        ),
-                        children: checkoutData.addresses
-                            .map((address) =>
-                                _buildAddressTile(context, address))
-                            .toList(),
-                      ),
-                    ExpansionTile(
-                      title: const SubHeadingTextWidget(
-                        title: 'Selected Payment Method:',
-                      ),
-                      children: checkoutData.paymentMethods
-                          .map((method) =>
-                              _buildPaymentMethodTile(context, method))
-                          .toList(),
-                    ),
-                    kSizedBoxH10,
-                    ExpansionTile(
-                      title: const SubHeadingTextWidget(
-                        title: 'Selected Coupon',
-                      ),
-                      children: state.coupons!
-                          .map((coupon) => _buildCouponTile(
-                              context,
-                              coupon,
-                              checkoutData.products.fold(0,
-                                  (sum, product) => sum + product.totalPrice)))
-                          .toList(),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
+                  );
+                } else if (state is CheckoutOrderError) {
+                  return const Center(
                       child: SubHeadingTextWidget(
-                        title: 'Discounted Amount:',
-                        textsize: 16,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    title: 'Order was not placed',
+                  ));
+                } else if (state is CheckoutSuccess) {
+                  return const Center(
                       child: SubHeadingTextWidget(
-                        title: '₹${discountedAmount.floor()}',
-                        textColor: kGreenColour,
-                        textsize: 16,
-                      ),
+                          title: 'Order Placed Successfully!'));
+                } else {
+                  return Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: kAppPrimaryColor,
+                      size: 40,
                     ),
-                    const SizedBox(height: 10),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: SubHeadingTextWidget(
-                        title: 'Payable Amount:',
-                        textsize: 16,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SubHeadingTextWidget(
-                        title: '₹$payableAmount',
-                        textColor: kDarkGreyColour,
-                        textsize: 16,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: ElevatedButtonWidget(
-                        buttonText: 'Place Order',
-                        onPressed: () {
-                          if ((state.selectedAddressId == null ||
-                              state.selectedPaymentMethodId == null)) {
-                            showCustomSnackbar(
-                                context,
-                                'Please select an address and payment method',
-                                kRedColour,
-                                kwhiteColour);
-                            return;
-                          }
-                          BlocProvider.of<CheckoutBloc>(context)
-                              .add(PlaceOrder());
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                }
+              },
+            );
+          } else {
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: kAppPrimaryColor,
+                size: 40,
               ),
             );
-          } else if (state is CheckoutOrderError) {
-            return const Center(
-                child: SubHeadingTextWidget(
-              title: 'Order was not placed',
-            ));
-          } else if (state is CheckoutSuccess) {
-            return const Center(
-                child:
-                    SubHeadingTextWidget(title: 'Order Placed Successfully!'));
-          } else {
-            return const Center(child: CircularProgressIndicator());
           }
         },
       ),

@@ -8,6 +8,7 @@ import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -30,7 +31,12 @@ class CartScreen extends StatelessWidget {
               listener: (context, state) {},
               builder: (context, state) {
                 if (state is CartLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: kAppPrimaryColor,
+                      size: 40,
+                    ),
+                  );
                 } else if (state is CartLoaded) {
                   final cart = state.cartFromApi;
                   if (cart.items.isEmpty) {
@@ -93,23 +99,40 @@ class CartScreen extends StatelessWidget {
                     ),
                   );
                 } else if (state is CartError) {
-                  return const Center(
-                    child: SubHeadingTextWidget(title: 'Try again'),
+                  return Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: kAppPrimaryColor,
+                      size: 40,
+                    ),
                   );
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: kAppPrimaryColor,
+                      size: 40,
+                    ),
+                  );
                 }
               },
             );
           } else if (productState is ProductLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: kAppPrimaryColor,
+                size: 40,
+              ),
+            );
           } else if (productState is ProductError) {
             return const Center(
               child: SubHeadingTextWidget(title: 'could not fetch product'),
             );
           } else {
-            return const Center(
-                child: SubHeadingTextWidget(title: 'Unknown product state'));
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: kAppPrimaryColor,
+                size: 40,
+              ),
+            );
           }
         },
       ),

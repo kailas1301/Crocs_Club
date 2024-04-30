@@ -4,6 +4,7 @@ import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/address_model.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class OrderScreen extends StatelessWidget {
       body: BlocBuilder<AdressblocBloc, AdressblocState>(
         builder: (context, adressstate) {
           if (adressstate is AdressblocLoading) {
-            return const CircularProgressIndicator();
+            return const LoadingAnimationStaggeredDotsWave();
           }
           if (adressstate is AdressblocLoaded) {
             return BlocConsumer<OrderBloc, OrderState>(
@@ -47,7 +48,7 @@ class OrderScreen extends StatelessWidget {
               },
               builder: (context, orderstate) {
                 if (orderstate is OrderLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const LoadingAnimationStaggeredDotsWave();
                 } else if (orderstate is OrderLoaded) {
                   return ListView.builder(
                     itemCount: orderstate.orders.length,
@@ -130,7 +131,8 @@ class OrderScreen extends StatelessWidget {
                                   ),
                                 ),
                                 kSizedBoxW10, // Add some space between details and buttons
-                                if (order.orderStatus == 'PENDING')
+                                if (order.orderStatus == 'PENDING' ||
+                                    order.orderStatus == 'SHIPPED')
                                   SizedBox(
                                     width: screenWidth * .3,
                                     child: ElevatedButtonWidget(
@@ -169,7 +171,7 @@ class OrderScreen extends StatelessWidget {
               },
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingAnimationStaggeredDotsWave();
           }
         },
       ),

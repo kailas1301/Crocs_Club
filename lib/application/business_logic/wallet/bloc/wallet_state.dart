@@ -8,7 +8,7 @@ final class WalletInitial extends WalletState {}
 final class WalletLoading extends WalletState {}
 
 final class WalletLoaded extends WalletState {
-  final int walletAmount;
+  final dynamic walletAmount;
   WalletLoaded({required this.walletAmount});
 }
 

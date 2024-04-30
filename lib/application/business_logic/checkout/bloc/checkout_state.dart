@@ -13,8 +13,10 @@ class CheckoutLoaded extends CheckoutState {
   final int? selectedAddressId;
   final int? selectedPaymentMethodId;
   final int? selectedCouponId;
+  final bool? useWallet;
 
   CheckoutLoaded({
+    this.useWallet,
     this.selectedCouponId,
     required this.checkoutData,
     this.coupons,
@@ -36,3 +38,7 @@ class CheckoutOrderError extends CheckoutState {
 
   CheckoutOrderError(this.errorMessage);
 }
+
+class Paymentfinished extends CheckoutState {}
+
+class Paymenterror extends CheckoutState {}

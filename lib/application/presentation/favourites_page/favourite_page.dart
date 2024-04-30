@@ -1,6 +1,7 @@
 import 'package:crocs_club/application/business_logic/product/bloc/product_bloc.dart';
 import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:crocs_club/application/presentation/products/widgets/product_card_widget.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,14 +51,13 @@ class FavouriteScreen extends StatelessWidget {
                               },
                             );
                     } else {
-                      print(productState);
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: LoadingAnimationStaggeredDotsWave());
                     }
                   },
                 );
               } else {
-                print(wishlistState);
-                return const SizedBox.shrink();
+                return const Center(child: LoadingAnimationStaggeredDotsWave());
               }
             },
           ),

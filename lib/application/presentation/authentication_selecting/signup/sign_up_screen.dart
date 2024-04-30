@@ -5,6 +5,7 @@ import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SignUpScrn extends StatelessWidget {
   const SignUpScrn({super.key});
@@ -23,13 +24,15 @@ class SignUpScrn extends StatelessWidget {
         if (state is SignUpLoading) {
           // Show loading dialog when sign up is in progress
           showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) =>
-                const Center(child: CircularProgressIndicator()),
-          );
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) => Center(
+                    child: LoadingAnimationWidget.threeArchedCircle(
+                      color: kAppPrimaryColor,
+                      size: 40,
+                    ),
+                  ));
         } else if (state is SignUpSuccessful) {
-          // Hide loading dialog when sign up is successful
           Navigator.pop(context);
           // Show success message if sign up is successfull
           showCustomSnackbar(

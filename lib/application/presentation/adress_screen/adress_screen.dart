@@ -5,6 +5,7 @@ import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 // Import your address model
 
 class AdressScreen extends StatelessWidget {
@@ -45,7 +46,12 @@ class AdressScreen extends StatelessWidget {
               textColor: kDarkGreyColour,
             ));
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: kAppPrimaryColor,
+                size: 40,
+              ),
+            );
           }
         },
       ),

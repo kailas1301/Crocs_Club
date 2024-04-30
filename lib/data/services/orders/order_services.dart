@@ -5,7 +5,8 @@ import 'package:crocs_club/domain/models/orders_model.dart';
 import 'package:http/http.dart' as http;
 
 class OrderApi {
-  static const String baseUrl = 'http://10.0.2.2:8080/user/profile/order/all';
+  static const String baseUrl =
+      'http://10.0.2.2:8080/user/profile/order/all?page=1&count=50';
   static Future<List<Order>> fetchOrders() async {
     final token = await getToken();
     final response = await http.get(Uri.parse(baseUrl), headers: {

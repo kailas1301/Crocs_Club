@@ -8,6 +8,7 @@ import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/product.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/drawer_screen.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +43,8 @@ class UserHome extends StatelessWidget {
                 builder: (context, state) {
                   if (state is ProfileLoaded) {
                     return SubHeadingTextWidget(
-                        textColor: kDarkGreyColour,
-                        title: '$greeting, ${state.profileData['name']}');
+                        textColor: kblackColour,
+                        title: '$greeting ${state.profileData['name']}');
                   } else {
                     return SubHeadingTextWidget(
                       title: greeting,
@@ -59,7 +60,7 @@ class UserHome extends StatelessWidget {
               padding: EdgeInsets.only(left: 20),
               child: SubHeadingTextWidget(
                 title: 'Latest Products',
-                textColor: kDarkGreyColour,
+                textColor: kblackColour,
               ),
             ),
             Expanded(
@@ -70,7 +71,7 @@ class UserHome extends StatelessWidget {
                   } else if (state is ProductError) {
                     return const Center(child: Text('Failed to load products'));
                   } else {
-                    return const Center(child: CircularProgressIndicator());
+                    return const LoadingAnimationStaggeredDotsWave();
                   }
                 },
               ),
@@ -99,14 +100,16 @@ class UserHome extends StatelessWidget {
         scrollDirection: Axis.horizontal,
       ),
       items: [
-        buildOfferItem('', '', Colors.red),
-        buildOfferItem('', '', const Color.fromARGB(255, 61, 99, 205)),
-        buildOfferItem('', '', const Color.fromARGB(255, 122, 155, 37)),
+        buildCarouselItem('assets/images/1.jpg', Colors.red),
+        buildCarouselItem(
+            'assets/images/2.jpg', const Color.fromARGB(255, 61, 99, 205)),
+        buildCarouselItem(
+            'assets/images/3.jpg', const Color.fromARGB(255, 122, 155, 37)),
       ],
     );
   }
 
-  Widget buildOfferItem(String imageUrl, String offerText, Color color) {
+  Widget buildCarouselItem(String imageUrl, Color color) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -121,8 +124,14 @@ class UserHome extends StatelessWidget {
           ),
         ],
       ),
-      child: const Column(
-        children: [],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: imageUrl.isNotEmpty
+            ? Image.asset(
+                imageUrl,
+                fit: BoxFit.cover,
+              )
+            : const Center(child: CircularProgressIndicator()), // Placeholder
       ),
     );
   }
@@ -193,8 +202,8 @@ class ProductCardWidget extends StatelessWidget {
                         ),
                       );
                     },
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
+                    placeholder: (context, url) => const Center(
+                        child: LoadingAnimationStaggeredDotsWave()),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                   ),
@@ -222,8 +231,7 @@ class ProductCardWidget extends StatelessWidget {
                     BlocBuilder<WishlistBloc, WishlistState>(
                       builder: (context, state) {
                         if (state is WishlistLoading) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return const LoadingAnimationStaggeredDotsWave();
                         } else {
                           final isInWishlist = state is WishlistLoaded &&
                               state.wishlist.any(

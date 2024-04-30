@@ -1,13 +1,13 @@
 class OrderDetails {
   final int addressId;
-  final int couponId;
+  final int? couponId;
   final int paymentId;
   final bool useWallet;
   final int userId;
 
   OrderDetails({
     required this.addressId,
-    required this.couponId,
+    this.couponId,
     required this.paymentId,
     required this.useWallet,
     required this.userId,

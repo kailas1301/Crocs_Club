@@ -1,5 +1,6 @@
 import 'package:crocs_club/application/business_logic/wallet/bloc/wallet_bloc.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
+import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,39 +22,11 @@ class WalletScreen extends StatelessWidget {
           child: BlocBuilder<WalletBloc, WalletState>(
             builder: (context, state) {
               if (state is WalletLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const LoadingAnimationStaggeredDotsWave();
               } else if (state is WalletLoaded) {
-                return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Card(
-                        elevation: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SubHeadingTextWidget(
-                                title: 'Current Balance',
-                                textColor: kDarkGreyColour,
-                                textsize: 18,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                '₹${state.walletAmount.floor()}', // Dynamic wallet amount
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: kGreenColour,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ]);
+                return WalletAmountWidget(
+                  walletAmount: '₹${state.walletAmount}',
+                );
               } else {
                 return const Center(
                   child: SubHeadingTextWidget(
@@ -66,5 +39,43 @@ class WalletScreen extends StatelessWidget {
             },
           ),
         )));
+  }
+}
+
+class WalletAmountWidget extends StatelessWidget {
+  const WalletAmountWidget({
+    super.key,
+    required this.walletAmount,
+  });
+  final String walletAmount;
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SubHeadingTextWidget(
+                title: 'Current Balance',
+                textColor: kDarkGreyColour,
+                textsize: 18,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                walletAmount, // Dynamic wallet amount
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: kGreenColour,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ]);
   }
 }

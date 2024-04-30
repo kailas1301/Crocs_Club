@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => CheckoutBloc(checkoutRepository)),
         BlocProvider(create: (_) => CouponBloc()),
         BlocProvider(create: (_) => OrderBloc()),
+        BlocProvider(create: (_) => WalletBloc()),
         BlocProvider(
           create: (_) => WalletBloc(),
         )
