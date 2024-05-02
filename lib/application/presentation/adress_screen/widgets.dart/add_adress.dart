@@ -10,7 +10,6 @@ import 'package:crocs_club/domain/models/address_model.dart'; // Import your add
 
 class AddAddressScreen extends StatelessWidget {
   const AddAddressScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     final TextEditingController cityController = TextEditingController();
@@ -31,6 +30,8 @@ class AddAddressScreen extends StatelessWidget {
           if (state is AddressAddedState) {
             showCustomSnackbar(context, 'Adress successfully added',
                 kGreenColour, kblackColour);
+            Navigator.pop(context);
+            BlocProvider.of<AdressblocBloc>(context).add(GetAddressEvent());
           }
           if (state is AdressblocError) {
             showCustomSnackbar(context, 'Adress was not successfully added',
@@ -42,6 +43,7 @@ class AddAddressScreen extends StatelessWidget {
           child: Form(
             key: formKey,
             child: ListView(
+              // textformfields to add address
               children: [
                 TextFormFieldWidget(
                   keyboardType: TextInputType.name,
@@ -98,6 +100,7 @@ class AddAddressScreen extends StatelessWidget {
                   validatorFunction: _validatePhone,
                 ),
                 kSizedBoxH20,
+                // button to add new adress
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButtonWidget(
@@ -115,13 +118,13 @@ class AddAddressScreen extends StatelessWidget {
                         );
                         BlocProvider.of<AdressblocBloc>(context)
                             .add(AddAddressEvent(addressDetails: address));
-                        houseNameController.clear;
-                        streetController.clear;
-                        cityController.clear;
-                        stateController.clear;
-                        pinController.clear;
-                        nameController.clear;
-                        phoneController.clear;
+                        houseNameController.clear();
+                        streetController.clear();
+                        cityController.clear();
+                        stateController.clear();
+                        pinController.clear();
+                        nameController.clear();
+                        phoneController.clear();
                       }
                     },
                   ),

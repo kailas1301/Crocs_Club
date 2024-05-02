@@ -53,13 +53,14 @@ class UserHome extends StatelessWidget {
                 },
               ),
             ),
-            kSizedBoxH20,
+            kSizedBoxH30,
             buildCarouselSlider(),
-            kSizedBoxH10,
+            kSizedBoxH20,
             const Padding(
               padding: EdgeInsets.only(left: 20),
               child: SubHeadingTextWidget(
                 title: 'Latest Products',
+                textsize: 17,
                 textColor: kblackColour,
               ),
             ),

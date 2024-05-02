@@ -18,7 +18,7 @@ class BottomNavBar extends StatelessWidget {
         builder: (context, state) {
           Widget currentScreen = const UserHome(); // Default screen
           if (state is HomeSelected) {
-            currentScreen = UserHome();
+            currentScreen = const UserHome();
           } else if (state is ProductScreenSelected) {
             currentScreen = const ProductsScreen();
           } else if (state is CartScreenSelected) {
@@ -26,7 +26,6 @@ class BottomNavBar extends StatelessWidget {
           } else if (state is ProfileScreenSelected) {
             currentScreen = const ProfileScreen();
           }
-
           return Scaffold(
             body: currentScreen,
             bottomNavigationBar: const GnavWidget(),

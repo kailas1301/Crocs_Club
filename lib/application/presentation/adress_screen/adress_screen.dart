@@ -6,7 +6,6 @@ import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-// Import your address model
 
 class AdressScreen extends StatelessWidget {
   const AdressScreen({super.key});
@@ -28,6 +27,14 @@ class AdressScreen extends StatelessWidget {
       body: BlocConsumer<AdressblocBloc, AdressblocState>(
         listener: (context, state) {},
         builder: (context, state) {
+          if (state is AdressblocLoading) {
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: kAppPrimaryColor,
+                size: 40,
+              ),
+            );
+          }
           if (state is AdressblocLoaded) {
             return ListView.builder(
               itemCount: state.addressModel.length,
@@ -46,12 +53,12 @@ class AdressScreen extends StatelessWidget {
               textColor: kDarkGreyColour,
             ));
           } else {
-            return Center(
-              child: LoadingAnimationWidget.staggeredDotsWave(
-                color: kAppPrimaryColor,
-                size: 40,
-              ),
-            );
+            print("the state is $state");
+            return const Center(
+                child: SubHeadingTextWidget(
+              title: "No adress found",
+              textColor: kDarkGreyColour,
+            ));
           }
         },
       ),

@@ -32,7 +32,7 @@ class LoginScreen extends StatelessWidget {
         } else if (state is LoginSuccessful) {
           Navigator.pop(context);
           showCustomSnackbar(
-              context, 'Successfully Logged in', kGreenColour, kblackColour);
+              context, 'Successfully Logged in', kGreenColour, kwhiteColour);
           // Navigate to home screen after successful login
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -41,7 +41,8 @@ class LoginScreen extends StatelessWidget {
               (route) => false);
         } else if (state is LoginError) {
           Navigator.pop(context);
-          showCustomSnackbar(context, state.error, kRedColour, kwhiteColour);
+          showCustomSnackbar(
+              context, 'Check username and password', kRedColour, kwhiteColour);
         }
       },
       child: Scaffold(

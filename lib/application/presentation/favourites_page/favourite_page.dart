@@ -1,8 +1,10 @@
 import 'package:crocs_club/application/business_logic/product/bloc/product_bloc.dart';
 import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:crocs_club/application/presentation/products/widgets/product_card_widget.dart';
+import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
+import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +42,7 @@ class FavouriteScreen extends StatelessWidget {
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                childAspectRatio: 1 / 1.28,
+                                childAspectRatio: 1 / 1.35,
                                 mainAxisSpacing: 10,
                                 crossAxisSpacing: 10,
                               ),
@@ -57,7 +59,14 @@ class FavouriteScreen extends StatelessWidget {
                   },
                 );
               } else {
-                return const Center(child: LoadingAnimationStaggeredDotsWave());
+                return SizedBox(
+                  height: screenHeight,
+                  child: const Center(
+                      child: SubHeadingTextWidget(
+                    title: "No product is found",
+                    textColor: kDarkGreyColour,
+                  )),
+                );
               }
             },
           ),

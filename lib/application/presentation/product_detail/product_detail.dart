@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
+import 'package:crocs_club/application/presentation/cart_screen/cartscreen.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
@@ -27,7 +28,6 @@ class CarouselIndicatorState extends ChangeNotifier {
 
 class ProductDetail extends StatelessWidget {
   const ProductDetail({Key? key, required this.product}) : super(key: key);
-
   final ProductFromApi product;
 
   @override
@@ -35,11 +35,18 @@ class ProductDetail extends StatelessWidget {
     context.read<WishlistBloc>().add(FetchWishlistEvent());
     return Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const CartScreen(),
+                  ));
+                },
+                icon: const Icon(Icons.shopping_cart))
+          ],
           centerTitle: true,
-          title: SubHeadingTextWidget(
+          title: AppBarTextWidget(
             title: product.productName,
-            textColor: kDarkGreyColour,
-            textsize: 20,
           ),
         ),
         body: BlocListener<CartBloc, CartState>(
@@ -67,6 +74,7 @@ class ProductDetail extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        kSizedBoxH20,
                         SizedBox(
                           height: MediaQuery.of(context).size.height / 3,
                           width: double.infinity,
@@ -121,109 +129,94 @@ class ProductDetail extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: const Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SubHeadingTextWidget(
-                                      textColor: kblackColour,
-                                      textsize: 18,
-                                      title: product.productName,
-                                    ),
-                                    BlocBuilder<WishlistBloc, WishlistState>(
-                                      builder: (context, state) {
-                                        if (state is WishlistLoading) {
-                                          return const LoadingAnimationStaggeredDotsWave();
-                                        } else {
-                                          final isInWishlist =
-                                              state is WishlistLoaded &&
-                                                  state.wishlist.any((item) =>
-                                                      item.inventoryId ==
-                                                      product.id);
-                                          return IconButton(
-                                            onPressed: () {
-                                              final wishlistBloc =
-                                                  BlocProvider.of<WishlistBloc>(
-                                                      context);
-                                              if (isInWishlist) {
-                                                wishlistBloc.add(
-                                                  RemoveFromWishlistEvent(
-                                                      product.id),
-                                                );
-                                              } else {
-                                                wishlistBloc.add(
-                                                  AddToWishlistEvent(
-                                                      product.id),
-                                                );
-                                              }
-                                            },
-                                            icon: Icon(
-                                              isInWishlist
-                                                  ? Icons.favorite
-                                                  : Icons.favorite_border,
-                                              color: isInWishlist
-                                                  ? Colors.red
-                                                  : null,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                kSizedBoxH10,
-                                SubHeadingTextWidget(
-                                    textColor: kDarkGreyColour,
-                                    textsize: 14,
-                                    title: 'Size: ${product.size}'),
-                                kSizedBoxH10,
-                                SubHeadingTextWidget(
-                                    textColor: kGreenColour,
-                                    title:
-                                        'Price: ₹${product.price.floor().toString()}'),
-                                kSizedBoxH30,
-                                Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: ElevatedButtonWidget(
-                                    width: screenWidth * .4,
-                                    buttonText: 'Add To Cart',
-                                    onPressed: () {
-                                      final cartBloc =
-                                          BlocProvider.of<CartBloc>(context);
-                                      cartBloc.add(
-                                        AddToCartEvent(
-                                          cart: CartAddingModel(
-                                            productsId: product.id,
-                                            quantity:
-                                                1, // or any quantity you want
+                        kSizedBoxH20,
+                        Padding(
+                          padding: const EdgeInsets.all(25.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SubHeadingTextWidget(
+                                    textColor: kblackColour,
+                                    textsize: 18,
+                                    title: product.productName,
+                                  ),
+                                  BlocBuilder<WishlistBloc, WishlistState>(
+                                    builder: (context, state) {
+                                      if (state is WishlistLoading) {
+                                        return const LoadingAnimationStaggeredDotsWave();
+                                      } else {
+                                        final isInWishlist = state
+                                                is WishlistLoaded &&
+                                            state.wishlist.any((item) =>
+                                                item.inventoryId == product.id);
+                                        return IconButton(
+                                          onPressed: () {
+                                            final wishlistBloc =
+                                                BlocProvider.of<WishlistBloc>(
+                                                    context);
+                                            if (isInWishlist) {
+                                              wishlistBloc.add(
+                                                RemoveFromWishlistEvent(
+                                                    product.id),
+                                              );
+                                            } else {
+                                              wishlistBloc.add(
+                                                AddToWishlistEvent(product.id),
+                                              );
+                                            }
+                                          },
+                                          icon: Icon(
+                                            isInWishlist
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            color: isInWishlist
+                                                ? Colors.red
+                                                : null,
                                           ),
-                                        ),
-                                      );
-                                      print('Add to cart was pressed');
+                                        );
+                                      }
                                     },
                                   ),
+                                ],
+                              ),
+                              kSizedBoxH10,
+                              SubHeadingTextWidget(
+                                  textColor: kDarkGreyColour,
+                                  textsize: 14,
+                                  title: 'Size: ${product.size}'),
+                              kSizedBoxH10,
+                              SubHeadingTextWidget(
+                                  textColor: kGreenColour,
+                                  title:
+                                      'Price: ₹${product.price.floor().toString()}'),
+                              kSizedBoxH30,
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: ElevatedButtonWidget(
+                                  width: screenWidth * .4,
+                                  buttonText: 'Add To Cart',
+                                  onPressed: () {
+                                    final cartBloc =
+                                        BlocProvider.of<CartBloc>(context);
+                                    cartBloc.add(
+                                      AddToCartEvent(
+                                        cart: CartAddingModel(
+                                          productsId: product.id,
+                                          quantity:
+                                              1, // or any quantity you want
+                                        ),
+                                      ),
+                                    );
+                                    print('Add to cart was pressed');
+                                  },
                                 ),
-                                kSizedBoxH30,
-                              ],
-                            ),
+                              ),
+                              kSizedBoxH30,
+                            ],
                           ),
                         ),
                       ],

@@ -36,7 +36,7 @@ class SignUpScrn extends StatelessWidget {
           Navigator.pop(context);
           // Show success message if sign up is successfull
           showCustomSnackbar(
-              context, 'Signed up Successfully', kGreenColour, kblackColour);
+              context, 'Signed up Successfully', kGreenColour, kwhiteColour);
           // Navigate to the home screen after successful sign up
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -47,7 +47,7 @@ class SignUpScrn extends StatelessWidget {
           // Hide loading dialog when sign up fails
           Navigator.pop(context);
           // Show error message
-          showCustomSnackbar(context, state.error, kRedColour,
+          showCustomSnackbar(context, state.error, kwhiteColour,
               kblackColour); // Close progress dialog (if shown)
         }
       },

@@ -69,9 +69,20 @@ class ProductCard extends StatelessWidget {
                   child: Column(
                     children: [
                       Row(
+                        children: [
+                          SubHeadingTextWidget(
+                            title: product.productName,
+                            textsize: 14,
+                          ),
+                        ],
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SubHeadingTextWidget(title: product.productName),
+                          SubHeadingTextWidget(
+                            title: 'Size:${product.size}',
+                            textColor: kDarkGreyColour,
+                          ),
                           BlocBuilder<WishlistBloc, WishlistState>(
                             builder: (context, state) {
                               if (state is WishlistLoading) {
@@ -112,10 +123,6 @@ class ProductCard extends StatelessWidget {
                           SubHeadingTextWidget(
                               textColor: kGreenColour,
                               title: '₹ ${product.price.floor().toString()}'),
-                          SubHeadingTextWidget(
-                            title: 'Size:${product.size}',
-                            textColor: kDarkGreyColour,
-                          ),
                         ],
                       ),
                     ],

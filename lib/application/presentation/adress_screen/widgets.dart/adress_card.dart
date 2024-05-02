@@ -9,12 +9,11 @@ class AdressCard extends StatelessWidget {
     required this.address,
     required this.index,
   });
-
   final AddressModel address;
   final int index;
-
   @override
   Widget build(BuildContext context) {
+    // to show the adress which are already added
     return Card(
       color: kwhiteColour,
       elevation: 4,

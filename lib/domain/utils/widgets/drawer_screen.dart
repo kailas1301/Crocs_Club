@@ -1,4 +1,6 @@
+import 'package:crocs_club/application/presentation/about/about_app.dart';
 import 'package:crocs_club/application/presentation/favourites_page/favourite_page.dart';
+import 'package:crocs_club/application/presentation/privacy/privacy_insights.dart';
 import 'package:crocs_club/application/presentation/profile_screen/profile_screen.dart';
 import 'package:crocs_club/application/presentation/wallet/wallet_screen.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
@@ -19,8 +21,7 @@ class DrawerScreen extends StatelessWidget {
           kSizedBoxH30,
           kSizedBoxH30,
           ListTile(
-            leading:
-                const Icon(Icons.person), // Leading widget for this list tile
+            leading: const Icon(Icons.person),
             title: const SubHeadingTextWidget(
                 textColor: kDarkGreyColour, title: 'Profile', textsize: 15),
             onTap: () {
@@ -30,8 +31,7 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading:
-                const Icon(Icons.favorite), // Leading widget for this list tile
+            leading: const Icon(Icons.favorite),
             title: const SubHeadingTextWidget(
               textColor: kDarkGreyColour,
               title: 'Favourites',
@@ -44,8 +44,7 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons
-                .currency_rupee_rounded), // Leading widget for this list tile
+            leading: const Icon(Icons.currency_rupee_rounded),
             title: const SubHeadingTextWidget(
               textColor: kDarkGreyColour,
               title: 'Wallet',
@@ -58,29 +57,32 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-              leading:
-                  const Icon(Icons.logout), // Leading widget for this list tile
+              leading: const Icon(Icons.logout),
               title: const SubHeadingTextWidget(
                   textColor: kDarkGreyColour, title: 'Log Out', textsize: 15),
               onTap: () {
                 userlogout(context);
               }),
           ListTile(
-            leading:
-                const Icon(Icons.share), // Leading widget for this list tile
+            leading: const Icon(Icons.privacy_tip),
             title: const SubHeadingTextWidget(
-                textColor: kDarkGreyColour, title: 'Share', textsize: 15),
+                textColor: kDarkGreyColour,
+                title: 'Privacy Insights',
+                textsize: 15),
             onTap: () {
-              // Handle navigation to settings
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const PrivacyPolicyPage(),
+              ));
             },
           ),
           ListTile(
-            leading:
-                const Icon(Icons.info), // Leading widget for this list tile
+            leading: const Icon(Icons.info),
             title: const SubHeadingTextWidget(
                 textColor: kDarkGreyColour, title: 'About Us', textsize: 15),
             onTap: () {
-              // Handle navigation to settings
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const AboutPage(),
+              ));
             },
           ),
         ],

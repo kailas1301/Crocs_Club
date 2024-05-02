@@ -3,6 +3,7 @@ import 'package:crocs_club/application/presentation/on_boarding/widgets/action_s
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/application/presentation/on_boarding/widgets/container_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   OnBoardingScreen({super.key});
@@ -39,7 +40,7 @@ class OnBoardingScreen extends StatelessWidget {
               ContainerWithImage(imagePath: pages[pageIndex]),
               kSizedBoxH10,
               Text(text[pageIndex],
-                  style: const TextStyle(
+                  style: GoogleFonts.openSans(
                       fontWeight: FontWeight.w700, fontSize: 16)),
               kSizedBoxH10,
               if (index == pages.length - 1)
