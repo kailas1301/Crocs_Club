@@ -24,7 +24,7 @@ class ContainerWithImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         child: FadeInImage(
           placeholder:
-              AssetImage('assets/placeholder_image.png'), // Placeholder image
+              const AssetImage('assets/placeholder_image.png'), // Placeholder image
           image: AssetImage(imagePath), // Actual image
           fit: BoxFit.cover,
         ),

@@ -53,8 +53,11 @@ class FavouriteScreen extends StatelessWidget {
                               },
                             );
                     } else {
-                      return const Center(
-                          child: LoadingAnimationStaggeredDotsWave());
+                      return SizedBox(
+                        height: screenHeight,
+                        child: const Center(
+                            child: LoadingAnimationStaggeredDotsWave()),
+                      );
                     }
                   },
                 );

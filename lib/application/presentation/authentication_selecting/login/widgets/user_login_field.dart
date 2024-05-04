@@ -3,6 +3,7 @@ import 'package:crocs_club/application/presentation/authentication_selecting/sig
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
 import 'package:crocs_club/domain/utils/widgets/textformfield_widget.dart';
+import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -99,7 +100,11 @@ class UserLoginWidget extends StatelessWidget {
                   builder: (context) => const SignUpScrn(),
                 ));
               },
-              child: const Text('New User? Register Here'),
+              child: const SubHeadingTextWidget(
+                title: 'New User? Register Here',
+                textColor: kAppPrimaryColor,
+                textsize: 15,
+              ),
             ),
           ],
         ),

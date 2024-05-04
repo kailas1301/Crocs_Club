@@ -3,6 +3,7 @@ import 'package:crocs_club/application/business_logic/product/bloc/product_bloc.
 import 'package:crocs_club/application/presentation/cart_screen/widgets/cart_productitem.dart';
 import 'package:crocs_club/application/presentation/checkout_screen/checkout_screen.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
+import 'package:crocs_club/domain/models/checkout_product.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:crocs_club/main.dart';
@@ -86,9 +87,30 @@ class CartScreen extends StatelessWidget {
                                 buttonText: 'Checkout',
                                 textsize: 16,
                                 onPressed: () {
+                                  // Convert CartItem objects to CheckOutProductModel objects
+                                  List<CheckOutProductModel> checkOutProducts =
+                                      cart.items.map((item) {
+                                    final product =
+                                        productState.products.firstWhere(
+                                      (product) => product.id == item.productId,
+                                    );
+
+                                    return CheckOutProductModel(
+                                      imageUrl: product.image[
+                                          0], // Assuming imageUrl is a property of ProductFromApi
+                                      name: product.productName,
+                                      quantity: item.quantity,
+                                      price: product.price,
+                                      finalPrice: item.totalPrice,
+                                      size: product
+                                          .size, // Assuming size is a property of ProductFromApi
+                                    );
+                                  }).toList();
+
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const CheckoutScreen(),
+                                    builder: (context) => CheckoutScreen(
+                                      checkoutProducts: checkOutProducts,
+                                    ),
                                   ));
                                 },
                               ),

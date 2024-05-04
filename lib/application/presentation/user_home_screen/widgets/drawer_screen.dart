@@ -2,7 +2,7 @@ import 'package:crocs_club/application/presentation/about/about_app.dart';
 import 'package:crocs_club/application/presentation/favourites_page/favourite_page.dart';
 import 'package:crocs_club/application/presentation/privacy/privacy_insights.dart';
 import 'package:crocs_club/application/presentation/profile_screen/profile_screen.dart';
-import 'package:crocs_club/application/presentation/wallet/wallet_screen.dart';
+// import 'package:crocs_club/application/presentation/wallet/wallet_screen.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
@@ -43,19 +43,19 @@ class DrawerScreen extends StatelessWidget {
               ));
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.currency_rupee_rounded),
-            title: const SubHeadingTextWidget(
-              textColor: kDarkGreyColour,
-              title: 'Wallet',
-              textsize: 15,
-            ),
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const WalletScreen(),
-              ));
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.currency_rupee_rounded),
+          //   title: const SubHeadingTextWidget(
+          //     textColor: kDarkGreyColour,
+          //     title: 'Wallet',
+          //     textsize: 15,
+          //   ),
+          //   onTap: () {
+          //     Navigator.of(context).push(MaterialPageRoute(
+          //       builder: (context) => const WalletScreen(),
+          //     ));
+          //   },
+          // ),
           ListTile(
               leading: const Icon(Icons.logout),
               title: const SubHeadingTextWidget(

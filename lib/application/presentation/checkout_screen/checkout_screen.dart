@@ -1,12 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/coupon/bloc/coupon_bloc.dart';
 import 'package:crocs_club/application/business_logic/wallet/bloc/wallet_bloc.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
+import 'package:crocs_club/domain/models/checkout_product.dart';
 import 'package:crocs_club/domain/models/coupon_model.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
 import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
+import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crocs_club/application/business_logic/checkout/bloc/checkout_bloc.dart';
@@ -15,7 +18,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
+  final List<CheckOutProductModel> checkoutProducts;
+  const CheckoutScreen({super.key, required this.checkoutProducts});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -39,20 +43,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    // BlocProvider.of<CheckoutBloc>(context).add(PaymentSuccess());
     BlocProvider.of<CheckoutBloc>(context).add(PlaceOrder());
     print("success");
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    // Navigator.of(context).pushAndRemoveUntil(
-    //     MaterialPageRoute(
-    //       builder: (context) => const CartScreen(),
-    //     ),
-    //     (route) => false);
-    // showCustomSnackbar(
-    //     context, "Payment  Failed Tryagain", kRedColour, kwhiteColour);
-    // BlocProvider.of<CheckoutBloc>(context).add(PaymentError());
     print("failure");
   }
 
@@ -153,6 +148,41 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ),
                           ),
                           kSizedBoxH10,
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: checkoutData.products.length,
+                            itemBuilder: (context, index) {
+                              final product = widget.checkoutProducts[index];
+                              return ListTile(
+                                leading: CachedNetworkImage(
+                                  imageUrl: product
+                                      .imageUrl, // Assuming imageUrl is a property of CheckoutProductModel
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: screenWidth * .2,
+                                    height: screenWidth * .3,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => Container(
+                                      alignment: Alignment.center,
+                                      child: const CircularProgressIndicator()),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons
+                                          .error), // Widget to display if image fails to load
+                                ),
+                                title: Text(product.name),
+                                subtitle: Text('Quantity: ${product.quantity}'),
+                                trailing: Text('₹${product.finalPrice}'),
+                              );
+                            },
+                          ),
+                          kSizedBoxH10,
                           if (checkoutData.addresses.isEmpty)
                             const SubHeadingTextWidget(
                                 title:
@@ -191,95 +221,95 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                             sum + product.totalPrice)))
                                 .toList(),
                           ),
-                          BlocBuilder<WalletBloc, WalletState>(
-                            builder: (context, walletstate) {
-                              if (walletstate is WalletLoaded) {
-                                return BlocBuilder<CheckoutBloc, CheckoutState>(
-                                  builder: (context, checkoutstate) {
-                                    if (checkoutstate is CheckoutLoaded) {
-                                      return Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ListTile(
-                                            title: const SubHeadingTextWidget(
-                                                title: 'Use Wallet Amount'),
-                                            trailing: Switch(
-                                                activeColor: kAppPrimaryColor,
-                                                value:
-                                                    checkoutstate.useWallet ??
-                                                        false,
-                                                onChanged: (value) {
-                                                  final walletAmount =
-                                                      walletstate.walletAmount;
-                                                  final payableAmount =
-                                                      checkoutData.products
-                                                              .fold(
-                                                            0,
-                                                            (sum, product) =>
-                                                                sum +
-                                                                product
-                                                                    .totalPrice,
-                                                          ) -
-                                                          discountedAmount;
+                          // BlocBuilder<WalletBloc, WalletState>(
+                          //   builder: (context, walletstate) {
+                          //     if (walletstate is WalletLoaded) {
+                          //       return BlocBuilder<CheckoutBloc, CheckoutState>(
+                          //         builder: (context, checkoutstate) {
+                          //           if (checkoutstate is CheckoutLoaded) {
+                          //             return Column(
+                          //               mainAxisAlignment:
+                          //                   MainAxisAlignment.start,
+                          //               crossAxisAlignment:
+                          //                   CrossAxisAlignment.start,
+                          //               children: [
+                          //                 ListTile(
+                          //                   title: const SubHeadingTextWidget(
+                          //                       title: 'Use Wallet Amount'),
+                          //                   trailing: Switch(
+                          //                       activeColor: kAppPrimaryColor,
+                          //                       value:
+                          //                           checkoutstate.useWallet ??
+                          //                               false,
+                          //                       onChanged: (value) {
+                          //                         final walletAmount =
+                          //                             walletstate.walletAmount;
+                          //                         final payableAmount =
+                          //                             checkoutData.products
+                          //                                     .fold(
+                          //                                   0,
+                          //                                   (sum, product) =>
+                          //                                       sum +
+                          //                                       product
+                          //                                           .totalPrice,
+                          //                                 ) -
+                          //                                 discountedAmount;
 
-                                                  if (walletAmount >=
-                                                      payableAmount) {
-                                                    BlocProvider.of<
-                                                                CheckoutBloc>(
-                                                            context)
-                                                        .add(SelectWallet(
-                                                            useWallet: true));
-                                                  } else {
-                                                    showCustomSnackbar(
-                                                      context,
-                                                      'Wallet amount is insufficient for this transaction',
-                                                      kRedColour,
-                                                      kwhiteColour,
-                                                    );
-                                                    BlocProvider.of<
-                                                                CheckoutBloc>(
-                                                            context)
-                                                        .add(SelectWallet(
-                                                            useWallet: false));
-                                                  }
-                                                }),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 25),
-                                            child: Text(
-                                              '₹${walletstate.walletAmount}',
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                                color: kGreenColour,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    } else {
-                                      return Center(
-                                        child: LoadingAnimationWidget
-                                            .staggeredDotsWave(
-                                          color: kAppPrimaryColor,
-                                          size: 40,
-                                        ),
-                                      );
-                                    }
-                                  },
-                                );
-                              } else {
-                                return const Center(
-                                  child: SubHeadingTextWidget(
-                                      title: 'Wallet is empty'),
-                                );
-                              }
-                            },
-                          ),
+                          //                         if (walletAmount >=
+                          //                             payableAmount) {
+                          //                           BlocProvider.of<
+                          //                                       CheckoutBloc>(
+                          //                                   context)
+                          //                               .add(SelectWallet(
+                          //                                   useWallet: true));
+                          //                         } else {
+                          //                           showCustomSnackbar(
+                          //                             context,
+                          //                             'Wallet amount is insufficient for this transaction',
+                          //                             kRedColour,
+                          //                             kwhiteColour,
+                          //                           );
+                          //                           BlocProvider.of<
+                          //                                       CheckoutBloc>(
+                          //                                   context)
+                          //                               .add(SelectWallet(
+                          //                                   useWallet: false));
+                          //                         }
+                          //                       }),
+                          //                 ),
+                          //                 Padding(
+                          //                   padding: const EdgeInsets.symmetric(
+                          //                       horizontal: 25),
+                          //                   child: Text(
+                          //                     '₹${walletstate.walletAmount}',
+                          //                     style: const TextStyle(
+                          //                       fontSize: 24,
+                          //                       fontWeight: FontWeight.bold,
+                          //                       color: kGreenColour,
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //               ],
+                          //             );
+                          //           } else {
+                          //             return Center(
+                          //               child: LoadingAnimationWidget
+                          //                   .staggeredDotsWave(
+                          //                 color: kAppPrimaryColor,
+                          //                 size: 40,
+                          //               ),
+                          //             );
+                          //           }
+                          //         },
+                          //       );
+                          //     } else {
+                          //       return const Center(
+                          //         child: SubHeadingTextWidget(
+                          //             title: 'Wallet is empty'),
+                          //       );
+                          //     }
+                          //   },
+                          // ),
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: SubHeadingTextWidget(
@@ -306,7 +336,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: SubHeadingTextWidget(
-                              title: '₹$payableAmount',
+                              title: '₹${payableAmount.floor()}',
                               textColor: kDarkGreyColour,
                               textsize: 16,
                             ),
@@ -354,7 +384,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     "entity": "order",
                                     "status": "created",
                                     "currency": "INR",
-                                    // 'order_id': 'order_EMBFqjDHEEn80l',
+                                    //'order_id': 'order_EMBFqjDHEEn80l',
                                     "notes": [],
                                     'description': 'razorpay crocsclub',
                                     'timeout': 160,
@@ -406,107 +436,104 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
+}
 
-  Widget _buildAddressTile(BuildContext context, Address address) {
+Widget _buildAddressTile(BuildContext context, Address address) {
+  return BlocProvider.value(
+    value: BlocProvider.of<CheckoutBloc>(context),
+    child: ListTile(
+      title: SubHeadingTextWidget(
+          textColor: kDarkGreyColour,
+          textsize: 13,
+          title:
+              '${address.name}\n${address.houseName}, ${address.street}\n${address.city}, ${address.state} - ${address.pin}'),
+      trailing: Radio<int>(
+        activeColor: kAppPrimaryColor,
+        value: address.id,
+        groupValue: BlocProvider.of<CheckoutBloc>(context).state
+                is CheckoutLoaded
+            ? (BlocProvider.of<CheckoutBloc>(context).state as CheckoutLoaded)
+                .selectedAddressId
+            : null,
+        onChanged: (value) {
+          BlocProvider.of<CheckoutBloc>(context)
+              .add(SelectAddress(addressId: value!));
+        },
+      ),
+    ),
+  );
+}
+
+Widget _buildPaymentMethodTile(BuildContext context, PaymentMethod method) {
+  return BlocProvider.value(
+    value: BlocProvider.of<CheckoutBloc>(context),
+    child: ListTile(
+      title: SubHeadingTextWidget(
+          textsize: 13, textColor: kDarkGreyColour, title: method.paymentName),
+      trailing: Radio<int>(
+        activeColor: kAppPrimaryColor,
+        value: method.id, // Use the ID of the payment method as the value
+        groupValue: BlocProvider.of<CheckoutBloc>(context).state
+                is CheckoutLoaded
+            ? (BlocProvider.of<CheckoutBloc>(context).state as CheckoutLoaded)
+                .selectedPaymentMethodId
+            : null,
+        onChanged: (value) {
+          BlocProvider.of<CheckoutBloc>(context)
+              .add(SelectPaymentMethod(paymentMethodId: value!));
+        },
+      ),
+    ),
+  );
+}
+
+Widget _buildCouponTile(
+    BuildContext context, CouponModel coupon, double subtotal) {
+  double additionalAmountNeeded = 0.0;
+  if (subtotal < coupon.minimumPrice) {
+    additionalAmountNeeded = coupon.minimumPrice - subtotal;
+  }
+
+  if (subtotal >= coupon.minimumPrice) {
     return BlocProvider.value(
       value: BlocProvider.of<CheckoutBloc>(context),
       child: ListTile(
-        title: SubHeadingTextWidget(
-            textColor: kDarkGreyColour,
-            textsize: 13,
-            title:
-                '${address.name}\n${address.houseName}, ${address.street}\n${address.city}, ${address.state} - ${address.pin}'),
-        trailing: Radio<int>(
-          activeColor: kAppPrimaryColor,
-          value: address.id,
-          groupValue: BlocProvider.of<CheckoutBloc>(context).state
-                  is CheckoutLoaded
-              ? (BlocProvider.of<CheckoutBloc>(context).state as CheckoutLoaded)
-                  .selectedAddressId
-              : null,
-          onChanged: (value) {
-            BlocProvider.of<CheckoutBloc>(context)
-                .add(SelectAddress(addressId: value!));
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPaymentMethodTile(BuildContext context, PaymentMethod method) {
-    return BlocProvider.value(
-      value: BlocProvider.of<CheckoutBloc>(context),
-      child: ListTile(
-        title: SubHeadingTextWidget(
-            textsize: 13,
-            textColor: kDarkGreyColour,
-            title: method.paymentName),
-        trailing: Radio<int>(
-          activeColor: kAppPrimaryColor,
-          value: method.id, // Use the ID of the payment method as the value
-          groupValue: BlocProvider.of<CheckoutBloc>(context).state
-                  is CheckoutLoaded
-              ? (BlocProvider.of<CheckoutBloc>(context).state as CheckoutLoaded)
-                  .selectedPaymentMethodId
-              : null,
-          onChanged: (value) {
-            BlocProvider.of<CheckoutBloc>(context)
-                .add(SelectPaymentMethod(paymentMethodId: value!));
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCouponTile(
-      BuildContext context, CouponModel coupon, double subtotal) {
-    double additionalAmountNeeded = 0.0;
-    if (subtotal < coupon.minimumPrice) {
-      additionalAmountNeeded = coupon.minimumPrice - subtotal;
-    }
-
-    if (subtotal >= coupon.minimumPrice) {
-      return BlocProvider.value(
-        value: BlocProvider.of<CheckoutBloc>(context),
-        child: ListTile(
-          title: SubHeadingTextWidget(
-            textsize: 13,
-            textColor: kDarkGreyColour,
-            title:
-                '${coupon.name}  \nDiscount: ${coupon.discountPercentage}%\nmin price: ${coupon.minimumPrice}',
-          ),
-          trailing: Radio<int>(
-            activeColor: kGreenColour,
-            value: coupon.id,
-            groupValue:
-                BlocProvider.of<CheckoutBloc>(context).state is CheckoutLoaded
-                    ? (BlocProvider.of<CheckoutBloc>(context).state
-                            as CheckoutLoaded)
-                        .selectedCouponId
-                    : null,
-            onChanged: (value) {
-              BlocProvider.of<CheckoutBloc>(context)
-                  .add(SelectedCoupon(selectedCouponID: value!));
-            },
-          ),
-        ),
-      );
-    } else {
-      // Return ListTile with information about additional amount needed
-      return ListTile(
         title: SubHeadingTextWidget(
           textsize: 13,
           textColor: kDarkGreyColour,
           title:
               '${coupon.name}  \nDiscount: ${coupon.discountPercentage}%\nmin price: ₹${coupon.minimumPrice}',
         ),
-        trailing: SubHeadingTextWidget(
-          textsize: 11,
-          title:
-              'Purchase for ₹${additionalAmountNeeded.floor()}\nto avail this coupon',
-          textColor: kRedColour,
+        trailing: Radio<int>(
+          activeColor: kGreenColour,
+          value: coupon.id,
+          groupValue: BlocProvider.of<CheckoutBloc>(context).state
+                  is CheckoutLoaded
+              ? (BlocProvider.of<CheckoutBloc>(context).state as CheckoutLoaded)
+                  .selectedCouponId
+              : null,
+          onChanged: (value) {
+            BlocProvider.of<CheckoutBloc>(context)
+                .add(SelectedCoupon(selectedCouponID: value!));
+          },
         ),
-      );
-    }
+      ),
+    );
+  } else {
+    // Return ListTile with information about additional amount needed
+    return ListTile(
+      title: SubHeadingTextWidget(
+        textsize: 13,
+        textColor: kDarkGreyColour,
+        title:
+            '${coupon.name}  \nDiscount: ${coupon.discountPercentage}%\nmin price: ₹${coupon.minimumPrice}',
+      ),
+      trailing: SubHeadingTextWidget(
+        textsize: 11,
+        title:
+            'Purchase for ₹${additionalAmountNeeded.floor()}\nto avail this coupon',
+        textColor: kRedColour,
+      ),
+    );
   }
 }

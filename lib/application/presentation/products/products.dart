@@ -2,8 +2,10 @@ import 'package:crocs_club/application/business_logic/product/bloc/product_bloc.
 import 'package:crocs_club/application/presentation/products/widgets/product_card_widget.dart';
 import 'package:crocs_club/application/presentation/search_screen/search_screen.dart';
 import 'package:crocs_club/domain/models/category_model.dart';
+import 'package:crocs_club/domain/models/product.dart';
 import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
+import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -62,11 +64,17 @@ class ProductsScreen extends StatelessWidget {
             listener: (context, state) {},
             builder: (context, state) {
               if (state is ProductLoading) {
-                return const LoadingAnimationStaggeredDotsWave();
+                return SizedBox(
+                  height: screenHeight,
+                  child:
+                      const Center(child: LoadingAnimationStaggeredDotsWave()),
+                );
               } else if (state is ProductLoaded) {
+                final List<ProductFromApi> shuffledProductList =
+                    List.from(state.products)..shuffle();
                 return GridView.builder(
                   shrinkWrap: true,
-                  itemCount: state.products.length,
+                  itemCount: shuffledProductList.length,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -75,7 +83,7 @@ class ProductsScreen extends StatelessWidget {
                     crossAxisSpacing: 10,
                   ),
                   itemBuilder: (context, index) =>
-                      ProductCard(product: state.products[index]),
+                      ProductCard(product: shuffledProductList[index]),
                 );
               } else if (state is ProductError) {
                 return const Center(

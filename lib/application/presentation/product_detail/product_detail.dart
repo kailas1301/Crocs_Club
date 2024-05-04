@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:crocs_club/application/presentation/cart_screen/cartscreen.dart';
+import 'package:crocs_club/application/presentation/product_detail/widgets.dart/image_carousel.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/elevatedbutton_widget.dart';
@@ -75,41 +74,7 @@ class ProductDetail extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         kSizedBoxH20,
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height / 3,
-                          width: double.infinity,
-                          child: CarouselSlider.builder(
-                            itemCount: product.image.length,
-                            itemBuilder: (context, index, realIndex) {
-                              return ClipRRect(
-                                borderRadius: const BorderRadius.vertical(
-                                    top: Radius.circular(12)),
-                                child: CachedNetworkImage(
-                                  height:
-                                      MediaQuery.of(context).size.height / 3,
-                                  imageUrl: product.image[index],
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) =>
-                                      const ThreeDotLoadingAnimation(),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                ),
-                              );
-                            },
-                            options: CarouselOptions(
-                              aspectRatio: 16 / 9,
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                              viewportFraction: 0.9,
-                              onPageChanged: (index, reason) {
-                                // Update the current index when page changes
-                                Provider.of<CarouselIndicatorState>(context,
-                                        listen: false)
-                                    .setCurrentIndex(index);
-                              },
-                            ),
-                          ),
-                        ),
+                        ImageCarouselWidget(product: product),
                         // Step 4: Add indicator widgets
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -211,7 +176,6 @@ class ProductDetail extends StatelessWidget {
                                         ),
                                       ),
                                     );
-                                    print('Add to cart was pressed');
                                   },
                                 ),
                               ),

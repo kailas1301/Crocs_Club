@@ -43,6 +43,29 @@ class SubHeadingTextWidget extends StatelessWidget {
   }
 }
 
+class PriceTextWidget extends StatelessWidget {
+  const PriceTextWidget({
+    super.key,
+    required this.title,
+    this.textColor,
+    this.textsize,
+  });
+  final String title;
+  final Color? textColor;
+  final double? textsize;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: GoogleFonts.roboto(
+        fontSize: textsize ?? 16,
+        fontWeight: FontWeight.w600,
+        color: textColor,
+      ),
+    );
+  }
+}
+
 class AppBarTextWidget extends StatelessWidget {
   const AppBarTextWidget({
     super.key,

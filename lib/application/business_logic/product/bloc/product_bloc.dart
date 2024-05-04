@@ -23,7 +23,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           print(
               'Category ID: ${category.id}, Category Name: ${category.category}');
         }
-        productslist.shuffle();
+        // productslist.shuffle();
 
         emit(ProductLoaded(products: productslist, categories: categoryList));
       } catch (e) {
