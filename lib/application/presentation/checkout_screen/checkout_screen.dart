@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/coupon/bloc/coupon_bloc.dart';
 import 'package:crocs_club/application/business_logic/wallet/bloc/wallet_bloc.dart';
+import 'package:crocs_club/application/presentation/adress_screen/widgets.dart/add_adress.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/checkout_product.dart';
 import 'package:crocs_club/domain/models/coupon_model.dart';
@@ -45,6 +46,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     BlocProvider.of<CheckoutBloc>(context).add(PlaceOrder());
     print("success");
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) =>
+    //         const OrderScreen(), // Replace SuccessScreen with your desired screen
+    //   ),
+    // );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -131,23 +139,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ),
                           ),
                           kSizedBoxH10,
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SubHeadingTextWidget(
-                                    textColor: kRedColour,
-                                    title:
-                                        'No. of Products: ${checkoutData.products.length}'),
-                                SubHeadingTextWidget(
-                                    textColor: kGreenColour,
-                                    title:
-                                        'Subtotal: ₹${checkoutData.products.fold(0, (sum, product) => sum + product.totalPrice)}'),
-                              ],
-                            ),
-                          ),
-                          kSizedBoxH10,
+
                           ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -173,16 +165,57 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       alignment: Alignment.center,
                                       child: const CircularProgressIndicator()),
                                   errorWidget: (context, url, error) =>
-                                      const Icon(Icons
-                                          .error), // Widget to display if image fails to load
+                                      const Icon(Icons.error),
                                 ),
-                                title: Text(product.name),
-                                subtitle: Text('Quantity: ${product.quantity}'),
-                                trailing: Text('₹${product.finalPrice}'),
+                                title: PriceTextWidget(
+                                    textsize: 13, title: product.name),
+                                subtitle: PriceTextWidget(
+                                    textsize: 13,
+                                    title: 'Quantity: ${product.quantity}'),
+                                trailing: PriceTextWidget(
+                                  title: '₹${product.finalPrice}',
+                                  textColor: kGreenColour,
+                                  textsize: 13,
+                                ),
                               );
                             },
                           ),
                           kSizedBoxH10,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    SubHeadingTextWidget(
+                                        textColor: kblackColour,
+                                        title:
+                                            'No. of Products: ${checkoutData.products.length}'),
+                                    PriceTextWidget(
+                                        textColor: kGreenColour,
+                                        title:
+                                            'Subtotal: ₹${checkoutData.products.fold(0, (sum, product) => sum + product.totalPrice)}'),
+                                  ],
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddAddressScreen(),
+                                      ));
+                                    },
+                                    child: const PriceTextWidget(
+                                        textColor: kDarkGreyColour,
+                                        textsize: 12,
+                                        title: "Add new Address")),
+                              ],
+                            ),
+                          ),
+                          kSizedBoxH10,
+
                           if (checkoutData.addresses.isEmpty)
                             const SubHeadingTextWidget(
                                 title:
@@ -197,6 +230,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       _buildAddressTile(context, address))
                                   .toList(),
                             ),
+
                           ExpansionTile(
                             title: const SubHeadingTextWidget(
                               title: 'Selected Payment Method:',
@@ -206,6 +240,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     _buildPaymentMethodTile(context, method))
                                 .toList(),
                           ),
+
                           kSizedBoxH10,
                           ExpansionTile(
                             title: const SubHeadingTextWidget(
@@ -319,7 +354,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: SubHeadingTextWidget(
+                            child: PriceTextWidget(
                               title: '₹${discountedAmount.floor()}',
                               textColor: kGreenColour,
                               textsize: 16,
@@ -335,9 +370,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: SubHeadingTextWidget(
+                            child: PriceTextWidget(
                               title: '₹${payableAmount.floor()}',
-                              textColor: kDarkGreyColour,
+                              textColor: kGreenColour,
                               textsize: 16,
                             ),
                           ),
@@ -369,7 +404,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         method.id == selectedPaymentMethodId);
 
                                 if (selectedPaymentMethod.paymentName ==
-                                    "OnlinePayment") {
+                                    "Online Payment") {
                                   var options = {
                                     'method': {
                                       'netbanking': true,

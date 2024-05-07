@@ -5,7 +5,7 @@ import 'package:crocs_club/domain/models/signup_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthRepository {
-  static const String _baseUrl = 'http://10.0.2.2:8080';
+  static const String _baseUrl = 'http://crocs.crocsclub.shop';
   static const String _signupEndpoint = '/user/signup';
   static const String _loginEndpoint = '/user/login';
 

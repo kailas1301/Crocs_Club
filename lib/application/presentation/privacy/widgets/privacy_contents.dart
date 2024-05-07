@@ -90,7 +90,7 @@ class PrivacyContents extends StatelessWidget {
           textsize: 15,
           textColor: kDarkGreyColour,
           title:
-              'If you have any questions or concerns about our Privacy Policy, please contact us at crocsclub@gmail.com.',
+              'If you have any questions or concerns about our Privacy Policy, please contact us at crocsclub2024@gmail.com.',
         ),
       ],
     );

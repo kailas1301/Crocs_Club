@@ -5,7 +5,7 @@ import 'package:crocs_club/data/sharedpreference/shared_preference.dart';
 
 class CategoryServices {
   Future<List<CategoryModel>> getCategories() async {
-    String url = 'http://10.0.2.2:8080/user/category';
+    String url = 'http://crocs.crocsclub.shop/user/category';
     final token = await getToken();
     try {
       final response = await http.get(

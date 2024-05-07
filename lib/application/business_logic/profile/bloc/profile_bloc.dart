@@ -24,9 +24,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         final response =
             await userprofileservice.updateUserProfile(event.editedProfile);
         if (response == 'success') {
+          emit(ProfileUpdated());
           final data = await userprofileservice.getUserProfile();
           emit(ProfileLoaded(profileData: data));
-          emit(ProfileUpdated());
         } else {
           emit(ProfileError(error: 'Update was not successfull'));
         }

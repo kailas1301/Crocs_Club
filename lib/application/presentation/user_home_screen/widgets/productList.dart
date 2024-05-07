@@ -1,4 +1,4 @@
- import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crocs_club/application/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:crocs_club/application/presentation/product_detail/product_detail.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
@@ -10,15 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget buildProductList(List<ProductFromApi> products) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return ProductCardWidget(product: product);
-      },
-    );
-  }
+  List<ProductFromApi> productList = products.reversed.toList();
+  return ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: productList.length,
+    itemBuilder: (context, index) {
+      final product = productList[index];
+      return ProductCardWidget(product: product);
+    },
+  );
+}
 
 class ProductCardWidget extends StatelessWidget {
   const ProductCardWidget({
@@ -94,7 +95,7 @@ class ProductCardWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SubHeadingTextWidget(
+                    PriceTextWidget(
                       title: 'Price: ₹${product.price.floor()}',
                       textColor: kGreenColour,
                       textsize: 16,

@@ -18,7 +18,7 @@ class ListTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: kAppPrimaryColor,
+        color: kAppColorlight,
         borderRadius: BorderRadius.circular(25.0),
       ),
       child: Padding(

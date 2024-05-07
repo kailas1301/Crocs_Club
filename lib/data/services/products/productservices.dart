@@ -7,7 +7,8 @@ class ProductService {
   Future<List<ProductFromApi>> getProducts() async {
     try {
       final dio = Dio();
-      final response = await dio.get('http://10.0.2.2:8080/admin/inventories');
+      final response =
+          await dio.get('http://crocs.crocsclub.shop/admin/inventories');
 
       if (response.statusCode == 200) {
         final responseData = response.data as Map<String, dynamic>;

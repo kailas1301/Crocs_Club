@@ -70,7 +70,9 @@ class UserHome extends StatelessWidget {
                   if (state is ProductLoaded) {
                     return buildProductList(state.products);
                   } else if (state is ProductError) {
-                    return const Center(child: Text('Failed to load products'));
+                    return const Center(
+                        child:
+                            SubHeadingTextWidget(title: 'No Products Found'));
                   } else {
                     return const LoadingAnimationStaggeredDotsWave();
                   }

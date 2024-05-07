@@ -54,7 +54,7 @@ class AboutPage extends StatelessWidget {
                     SubHeadingTextWidget(
                       textsize: 15,
                       textColor: kDarkGreyColour,
-                      title: '- Find the perfect size with our size guide',
+                      title: '- Find the perfect size of your choice',
                     ),
                     SubHeadingTextWidget(
                       textsize: 15,
@@ -81,27 +81,24 @@ class AboutPage extends StatelessWidget {
               // Contact information
               Container(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 decoration: BoxDecoration(
-                  color: kAppColorlight,
+                  color: kGreyColour,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.email, color: Colors.blue),
-                      kSizedBoxW10,
-                      Text(
-                        'Contact us: crocsclub@gmail.com',
-                        style: GoogleFonts.openSans(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
-                            color: Colors.black87),
-                      ),
-                    ],
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.email, color: kDarkGreyColour),
+                    kSizedBoxW10,
+                    Text(
+                      'Contact us: crocsclub2024@gmail.com',
+                      style: GoogleFonts.openSans(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                          color: Colors.black87),
+                    ),
+                  ],
                 ),
               ),
             ],

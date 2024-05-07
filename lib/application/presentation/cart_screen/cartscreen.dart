@@ -71,7 +71,7 @@ class CartScreen extends StatelessWidget {
                             kSizedBoxH10,
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: SubHeadingTextWidget(
+                              child: PriceTextWidget(
                                 title:
                                     'Subtotal: ₹${cart.items.fold(0, (subtotal, item) => subtotal + item.totalPrice)}',
                                 textColor: kGreenColour,
@@ -81,9 +81,9 @@ class CartScreen extends StatelessWidget {
                             kSizedBoxH20,
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 30),
+                                  const EdgeInsets.symmetric(horizontal: 70),
                               child: ElevatedButtonWidget(
-                                width: screenWidth * .6,
+                                width: screenWidth * .4,
                                 buttonText: 'Checkout',
                                 textsize: 16,
                                 onPressed: () {
@@ -146,7 +146,7 @@ class CartScreen extends StatelessWidget {
             );
           } else if (productState is ProductError) {
             return const Center(
-              child: SubHeadingTextWidget(title: 'could not fetch product'),
+              child: SubHeadingTextWidget(title: 'Cart is Empty'),
             );
           } else {
             return Center(

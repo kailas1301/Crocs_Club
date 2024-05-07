@@ -41,7 +41,7 @@ class OrderTile extends StatelessWidget {
                   title: SubHeadingTextWidget(
                     textsize: 15,
                     textColor: kDarkGreyColour,
-                    title: 'Ordered By: ${address.name}',
+                    title: 'Name in Address: ${address.name}',
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +52,7 @@ class OrderTile extends StatelessWidget {
                               title: 'Final Price: ',
                               textsize: 13,
                               textColor: kDarkGreyColour),
-                          SubHeadingTextWidget(
+                          PriceTextWidget(
                             title: '₹${order.finalPrice.floor()}',
                             textColor: kGreenColour,
                           )
@@ -98,8 +98,41 @@ class OrderTile extends StatelessWidget {
                   child: ElevatedButtonWidget(
                     textsize: 14,
                     onPressed: () {
-                      BlocProvider.of<OrderBloc>(context)
-                          .add(CancelOrdersEvent(id: order.id));
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: AlertDialog(
+                              content: const SubHeadingTextWidget(
+                                  title:
+                                      'Are you sure you want to Cancel the order?'),
+                              actions: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButtonWidget(
+                                      buttonText: 'Yes',
+                                      onPressed: () {
+                                        BlocProvider.of<OrderBloc>(context).add(
+                                            CancelOrdersEvent(id: order.id));
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    ElevatedButtonWidget(
+                                      buttonText: 'No',
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
                     },
                     buttonText: 'Cancel',
                   ),

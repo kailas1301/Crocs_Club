@@ -47,7 +47,7 @@ class ProductCard extends StatelessWidget {
                     imageUrl: product.image[0],
                     imageBuilder: (context, imageProvider) {
                       return Container(
-                        height: screenWidth * .3,
+                        height: screenWidth * .28,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -67,6 +67,7 @@ class ProductCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
@@ -117,14 +118,9 @@ class ProductCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SubHeadingTextWidget(
-                              textColor: kGreenColour,
-                              title: '₹ ${product.price.floor().toString()}'),
-                        ],
-                      ),
+                      PriceTextWidget(
+                          textColor: kGreenColour,
+                          title: '₹ ${product.price.floor().toString()}'),
                     ],
                   ),
                 ),

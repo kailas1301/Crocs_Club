@@ -50,7 +50,7 @@ class ProductCartItem extends StatelessWidget {
                     textColor: kDarkGreyColour,
                     textsize: 18,
                   ),
-                  SubHeadingTextWidget(
+                  PriceTextWidget(
                     title: 'Price: ₹${item.price}',
                     textColor: kDarkGreyColour,
                     textsize: 15,
@@ -165,7 +165,7 @@ class ProductCartItem extends StatelessWidget {
                   ),
                 ],
               ),
-              SubHeadingTextWidget(
+              PriceTextWidget(
                 title: 'Total: ₹${item.totalPrice}',
                 textColor: kGreenColour,
                 textsize: 16,

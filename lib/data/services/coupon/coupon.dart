@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class CouponServices {
   Future<List<CouponModel>> getCoupons() async {
-    const String apiUrl = 'http://10.0.2.2:8080/user/coupon';
+    const String apiUrl = 'http://crocs.crocsclub.shop/user/coupon';
     final token = await getToken();
     final url = Uri.parse(apiUrl);
     print('Calling API with URL: $url'); // Print the API URL being called

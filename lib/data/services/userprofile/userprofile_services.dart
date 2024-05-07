@@ -4,7 +4,7 @@ import 'package:crocs_club/domain/models/profile_model.dart';
 import 'package:http/http.dart' as http;
 
 class UserProfileServices {
-  String baseUrl = 'http://10.0.2.2:8080';
+  String baseUrl = 'http://crocs.crocsclub.shop';
 // Function to fetch user profile with provided token
   Future<Map<String, dynamic>> getUserProfile() async {
     try {
@@ -34,7 +34,7 @@ class UserProfileServices {
   Future<String> updateUserProfile(UserProfile profile) async {
     try {
       final token = await getToken();
-      final url = Uri.parse('http://10.0.2.2:8080/user/profile/edit/');
+      final url = Uri.parse('http://crocs.crocsclub.shop/user/profile/edit/');
       final response = await http.patch(
         url,
         headers: <String, String>{
@@ -59,8 +59,8 @@ class UserProfileServices {
     ChangePasswordPayload payload,
   ) async {
     final token = await getToken();
-    final url =
-        Uri.parse('http://10.0.2.2:8080/user/profile/security/change-password');
+    final url = Uri.parse(
+        'http://crocs.crocsclub.shop/user/profile/security/change-password');
     final response = await http.put(
       url,
       headers: <String, String>{

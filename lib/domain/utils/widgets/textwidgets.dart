@@ -57,9 +57,9 @@ class PriceTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: GoogleFonts.roboto(
+      style: GoogleFonts.openSans(
         fontSize: textsize ?? 16,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: textColor,
       ),
     );

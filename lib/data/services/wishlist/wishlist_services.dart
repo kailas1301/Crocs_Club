@@ -5,7 +5,8 @@ import 'package:dio/dio.dart';
 class WishListServices {
   final Dio dio = Dio();
   Future<Response<dynamic>> addToWishList(int inventoryId) async {
-    final url = "http://10.0.2.2:8080/user/wishlist?inventory_id=$inventoryId";
+    final url =
+        "http://crocs.crocsclub.shop/user/wishlist?inventory_id=$inventoryId";
     final token = await getToken();
 
     try {
@@ -26,7 +27,8 @@ class WishListServices {
   }
 
   Future<Response<dynamic>> removeFromWishList(int inventoryId) async {
-    final url = "http://10.0.2.2:8080/user/wishlist?inventory_id=$inventoryId";
+    final url =
+        "http://crocs.crocsclub.shop/user/wishlist?inventory_id=$inventoryId";
     final token = await getToken();
 
     try {
@@ -46,7 +48,7 @@ class WishListServices {
   }
 
   Future<List<WishlistItem>> getWishlist() async {
-    const url = "http://10.0.2.2:8080/user/wishlist";
+    const url = "http://crocs.crocsclub.shop/user/wishlist";
     final token = await getToken();
 
     try {

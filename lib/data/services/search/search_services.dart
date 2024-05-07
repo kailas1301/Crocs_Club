@@ -11,7 +11,7 @@ class SearchService {
       print('Retrieved token: $token'); // Print retrieved token
 
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8080/user/product/search'),
+        Uri.parse('http://crocs.crocsclub.shop/user/product/search'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

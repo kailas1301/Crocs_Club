@@ -86,12 +86,18 @@ class ProductsScreen extends StatelessWidget {
                       ProductCard(product: shuffledProductList[index]),
                 );
               } else if (state is ProductError) {
-                return const Center(
-                  child: SubHeadingTextWidget(title: 'No products available'),
+                return SizedBox(
+                  height: screenHeight,
+                  child: const Center(
+                    child: SubHeadingTextWidget(title: 'No products available'),
+                  ),
                 );
               } else {
-                return const Center(
-                  child: SubHeadingTextWidget(title: 'No products available'),
+                return SizedBox(
+                  height: screenHeight,
+                  child: const Center(
+                    child: SubHeadingTextWidget(title: 'No products available'),
+                  ),
                 );
               }
             },

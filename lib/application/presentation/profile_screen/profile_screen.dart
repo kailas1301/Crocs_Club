@@ -45,10 +45,7 @@ class ProfileScreen extends StatelessWidget {
           } else if (state is ProfileError) {
             return const LoadingAnimationStaggeredDotsWave();
           } else {
-            return const SubHeadingTextWidget(
-              title: 'Try Again',
-              textColor: kDarkGreyColour,
-            );
+            return const LoadingAnimationStaggeredDotsWave();
           }
         },
       ),

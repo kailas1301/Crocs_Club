@@ -6,7 +6,7 @@ class AdressServices {
   final Dio _dio = Dio();
 
   Future<Response<dynamic>> addAddress(AddressModel address) async {
-    const url = 'http://10.0.2.2:8080/user/profile/addaddress';
+    const url = 'http://crocs.crocsclub.shop/user/profile/addaddress';
     final token = await getToken();
 
     try {
@@ -28,7 +28,7 @@ class AdressServices {
   }
 
   Future<Response<dynamic>> getUserAddresses() async {
-    const url = 'http://10.0.2.2:8080/user/profile/address';
+    const url = 'http://crocs.crocsclub.shop/user/profile/address';
     final token = await getToken();
 
     try {

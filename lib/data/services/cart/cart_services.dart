@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class CartServices {
   Future<String> addToCart(CartAddingModel cart) async {
-    const String apiUrl = 'http://10.0.2.2:8080/user/home/addcart';
+    const String apiUrl = 'http://crocs.crocsclub.shop/user/home/addcart';
     final token = await getToken();
 
     try {
@@ -40,7 +40,7 @@ class CartServices {
   }
 
   Future<CartFromApiModel> fetchCart() async {
-    const apiUrl = 'http://10.0.2.2:8080/user/cart';
+    const apiUrl = 'http://crocs.crocsclub.shop/user/cart';
     final token = await getToken();
 
     try {
@@ -66,7 +66,7 @@ class CartServices {
 
   Future<int> deleteFromCart(int id, int cartId) async {
     final url =
-        'http://10.0.2.2:8080/user/cart/remove?inventory_id=$id&cart_id=$cartId';
+        'http://crocs.crocsclub.shop/user/cart/remove?inventory_id=$id&cart_id=$cartId';
     final token = await getToken();
 
     try {
@@ -90,7 +90,7 @@ class CartServices {
   Future<int> updateCartQuantity(
       int inventoryId, int quantity, int cartId) async {
     final url =
-        'http://10.0.2.2:8080/user/cart?inventory=$inventoryId&quantity=$quantity&id=$cartId';
+        'http://crocs.crocsclub.shop/user/cart?inventory=$inventoryId&quantity=$quantity&id=$cartId';
     final token = await getToken();
 
     try {
