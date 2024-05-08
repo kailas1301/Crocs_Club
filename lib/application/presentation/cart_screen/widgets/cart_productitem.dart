@@ -48,12 +48,12 @@ class ProductCartItem extends StatelessWidget {
                   SubHeadingTextWidget(
                     title: item.productName.toUpperCase(),
                     textColor: kDarkGreyColour,
-                    textsize: 18,
+                    textsize: 16,
                   ),
                   PriceTextWidget(
                     title: 'Price: ₹${item.price}',
                     textColor: kDarkGreyColour,
-                    textsize: 15,
+                    textsize: 14,
                   ),
                   IconButton(
                     icon: const Icon(

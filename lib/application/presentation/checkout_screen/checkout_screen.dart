@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crocs_club/application/business_logic/checkout/bloc/checkout_bloc.dart';
 import 'package:crocs_club/domain/models/checkout_details.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
@@ -44,24 +45,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    Fluttertoast.showToast(
+        msg: "Payment Successful",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.green,
+        textColor: Colors.white);
     BlocProvider.of<CheckoutBloc>(context).add(PlaceOrder());
     print("success");
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) =>
-    //         const OrderScreen(), // Replace SuccessScreen with your desired screen
-    //   ),
-    // );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    print("failure");
+    Fluttertoast.showToast(
+        msg: "Payment Failed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white);
   }
 
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    print("wallet");
-  }
+  void _handleExternalWallet(ExternalWalletResponse response) {}
 
   @override
   Widget build(BuildContext context) {
@@ -413,8 +416,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       'wallet': true,
                                     },
                                     'key': 'rzp_test_jVuUGTAIUk3lSH',
-                                    'amount': 100,
-                                    // payableAmount.round() * 100,
+                                    'amount': payableAmount.round() * 100,
                                     'name': 'user',
                                     "entity": "order",
                                     "status": "created",
@@ -440,16 +442,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     ),
                   );
-                } else if (state is CheckoutOrderError) {
-                  return const Center(
-                      child: SubHeadingTextWidget(
-                    title: 'Order was not placed',
-                  ));
-                } else if (state is CheckoutSuccess) {
-                  return const Center(
-                      child: SubHeadingTextWidget(
-                          title: 'Order Placed Successfully!'));
-                } else {
+                }
+                // else if (state is CheckoutOrderError) {
+                //   return const Center(
+                //       child: SubHeadingTextWidget(
+                //     title: 'Order was not placed',
+                //   ));
+                // } else if (state is CheckoutSuccess) {
+                //   return const Center(
+                //       child: SubHeadingTextWidget(
+                //           title: 'Order Placed Successfully!'));
+                // }
+                else {
                   return Center(
                     child: LoadingAnimationWidget.staggeredDotsWave(
                       color: kAppPrimaryColor,

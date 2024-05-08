@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<ProfileBloc>(context).add(ProfileFetched());
@@ -43,9 +42,19 @@ class ProfileScreen extends StatelessWidget {
               ),
             );
           } else if (state is ProfileError) {
-            return const LoadingAnimationStaggeredDotsWave();
+            return const Center(
+              child: SubHeadingTextWidget(
+                title: 'No Data found',
+                textsize: 16,
+              ),
+            );
           } else {
-            return const LoadingAnimationStaggeredDotsWave();
+            return const Center(
+              child: SubHeadingTextWidget(
+                title: 'No Data found',
+                textsize: 16,
+              ),
+            );
           }
         },
       ),
