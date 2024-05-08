@@ -9,7 +9,9 @@ import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/functions/functions.dart';
 import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
+import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserHome extends StatelessWidget {
@@ -41,6 +43,7 @@ class UserHome extends StatelessWidget {
                 builder: (context, state) {
                   if (state is ProfileLoaded) {
                     return SubHeadingTextWidget(
+                        textsize: 18,
                         textColor: kblackColour,
                         title: '$greeting ${state.profileData['name']}');
                   } else {
@@ -51,10 +54,11 @@ class UserHome extends StatelessWidget {
                 },
               ),
             ),
-            kSizedBoxH30,
+            kSizedBoxH10,
             // widget for carousel slider
             buildCarouselSlider(),
-            kSizedBoxH20,
+
+            const Expanded(child: SizedBox()),
             const Padding(
               padding: EdgeInsets.only(left: 20),
               child: SubHeadingTextWidget(
@@ -64,7 +68,9 @@ class UserHome extends StatelessWidget {
               ),
             ),
             // horizontal listview of latest products
-            Expanded(
+            kSizedBoxH20,
+            SizedBox(
+              height: screenHeight * .4,
               child: BlocBuilder<ProductBloc, ProductState>(
                 builder: (context, state) {
                   if (state is ProductLoaded) {

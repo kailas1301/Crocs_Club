@@ -23,8 +23,8 @@ class ContainerWithImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: FadeInImage(
-          placeholder:
-              const AssetImage('assets/placeholder_image.png'), // Placeholder image
+          placeholder: const NetworkImage(
+              'https://imageplaceholder.net/600'), // Placeholder image
           image: AssetImage(imagePath), // Actual image
           fit: BoxFit.cover,
         ),

@@ -64,7 +64,7 @@ class ProductCardWidget extends StatelessWidget {
                     imageUrl: product.image[0],
                     imageBuilder: (context, imageProvider) {
                       return Container(
-                        height: screenWidth * .3,
+                        height: screenHeight * .18,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -100,7 +100,6 @@ class ProductCardWidget extends StatelessWidget {
                       textColor: kGreenColour,
                       textsize: 16,
                     ),
-                    const Expanded(child: SizedBox()),
                     BlocBuilder<WishlistBloc, WishlistState>(
                       builder: (context, state) {
                         if (state is WishlistLoading) {
