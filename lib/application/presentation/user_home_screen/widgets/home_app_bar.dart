@@ -20,7 +20,7 @@ class HomeScreenAppBar extends StatelessWidget {
         ),
       ),
       title: const AppBarTextWidget(
-        title: 'CROCS CLUB',
+        title: 'Step Smart',
       ),
       elevation: 0,
       centerTitle: true,

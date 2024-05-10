@@ -6,7 +6,7 @@ class WishListServices {
   final Dio dio = Dio();
   Future<Response<dynamic>> addToWishList(int inventoryId) async {
     final url =
-        "http://crocs.crocsclub.shop/user/wishlist?inventory_id=$inventoryId";
+        "https://crocs.crocsclub.shop/user/wishlist?inventory_id=$inventoryId";
     final token = await getToken();
 
     try {
@@ -28,7 +28,7 @@ class WishListServices {
 
   Future<Response<dynamic>> removeFromWishList(int inventoryId) async {
     final url =
-        "http://crocs.crocsclub.shop/user/wishlist?inventory_id=$inventoryId";
+        "https://crocs.crocsclub.shop/user/wishlist?inventory_id=$inventoryId";
     final token = await getToken();
 
     try {
@@ -48,7 +48,7 @@ class WishListServices {
   }
 
   Future<List<WishlistItem>> getWishlist() async {
-    const url = "http://crocs.crocsclub.shop/user/wishlist";
+    const url = "https://crocs.crocsclub.shop/user/wishlist";
     final token = await getToken();
 
     try {

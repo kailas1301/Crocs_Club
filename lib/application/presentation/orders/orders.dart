@@ -66,20 +66,12 @@ class OrderScreen extends StatelessWidget {
                     textColor: kDarkGreyColour,
                   ));
                 } else {
-                  return const Center(
-                      child: SubHeadingTextWidget(
-                    title: 'No orders found',
-                    textColor: kDarkGreyColour,
-                  ));
+                  return const LoadingAnimationStaggeredDotsWave();
                 }
               },
             );
           } else {
-            return const Center(
-                child: SubHeadingTextWidget(
-              title: 'No orders found',
-              textColor: kDarkGreyColour,
-            ));
+            return const LoadingAnimationStaggeredDotsWave();
           }
         },
       ),

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class OrderApi {
   static const String baseUrl =
-      'http://crocs.crocsclub.shop/user/profile/order/all?page=1&count=50';
+      'https://crocs.crocsclub.shop/user/profile/order/all?page=1&count=50';
   static Future<List<Order>> fetchOrders() async {
     final token = await getToken();
     final response = await http.get(Uri.parse(baseUrl), headers: {
@@ -29,7 +29,7 @@ class OrderApi {
 
   static Future<int> cancelOrder(int id) async {
     final String url =
-        'http://crocs.crocsclub.shop/user/profile/order?order_id=$id';
+        'https://crocs.crocsclub.shop/user/profile/order?order_id=$id';
     final token = await getToken();
     final response = await http.delete(Uri.parse(url), headers: {
       'accept': 'application/json',
@@ -45,7 +45,7 @@ class OrderApi {
 
   static Future<int> returnOrder(int id) async {
     final String url =
-        'http://crocs.crocsclub.shop/user/profile/order/return?order_id=$id';
+        'https://crocs.crocsclub.shop/user/profile/order/return?order_id=$id';
     final token = await getToken();
     final response = await http.patch(Uri.parse(url), headers: {
       'accept': 'application/json',

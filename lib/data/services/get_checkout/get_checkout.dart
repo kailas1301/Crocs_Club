@@ -8,7 +8,7 @@ class CheckOutServices {
   Future<CheckoutData> fetchCheckoutDetails() async {
     final authorizationToken = await getToken();
     final response = await http.get(
-      Uri.parse('http://crocs.crocsclub.shop/user/check-out'),
+      Uri.parse('https://crocs.crocsclub.shop/user/check-out'),
       headers: {
         'accept': 'application/json',
         'Authorization': authorizationToken ?? "",
@@ -27,7 +27,7 @@ class CheckOutServices {
   Future<int> placeOrder(
     OrderDetails orderDetails,
   ) async {
-    final url = Uri.parse('http://crocs.crocsclub.shop/user/check-out/order');
+    final url = Uri.parse('https://crocs.crocsclub.shop/user/check-out/order');
     final authToken = await getToken();
     final headers = {
       'accept': 'application/json',

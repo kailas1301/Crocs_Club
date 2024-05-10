@@ -12,7 +12,7 @@ class AboutPage extends StatelessWidget {
       backgroundColor: kwhiteColour,
       appBar: AppBar(
         centerTitle: true,
-        title: const AppBarTextWidget(title: 'About CrocsClub'),
+        title: const AppBarTextWidget(title: 'About StepSmart'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,7 +30,7 @@ class AboutPage extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: const SubHeadingTextWidget(
                   title:
-                      'Welcome to CrocsClub, your ultimate destination for comfortable and stylish footwear. We offer a wide range of high-quality Crocs footwear designed to keep you comfortable throughout the day, whether you’re at home, work, or on an adventure.',
+                      'Welcome to StepSmart, your ultimate destination for comfortable and stylish footwear. We offer a wide range of high-quality footwearS designed to keep you comfortable throughout the day, whether you’re at home, work, or on an adventure.',
                   textColor: kDarkGreyColour,
                   textsize: 15,
                 ),
@@ -49,7 +49,8 @@ class AboutPage extends StatelessWidget {
                     kSizedBoxH10,
                     SubHeadingTextWidget(
                       textColor: kDarkGreyColour,
-                      title: '- Shop the latest Crocs styles and collections',
+                      title:
+                          '- Shop the latest Footwear styles and collections',
                     ),
                     SubHeadingTextWidget(
                       textsize: 15,
@@ -92,7 +93,7 @@ class AboutPage extends StatelessWidget {
                     const Icon(Icons.email, color: kDarkGreyColour),
                     kSizedBoxW10,
                     Text(
-                      'Contact us: crocsclub2024@gmail.com',
+                      'Contact us: kailaskailu56@gmail.com',
                       style: GoogleFonts.openSans(
                           fontWeight: FontWeight.w700,
                           fontSize: 14,

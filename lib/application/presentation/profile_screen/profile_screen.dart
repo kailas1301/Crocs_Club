@@ -49,12 +49,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(
-              child: SubHeadingTextWidget(
-                title: 'No Data found',
-                textsize: 16,
-              ),
-            );
+            return const LoadingAnimationStaggeredDotsWave();
           }
         },
       ),

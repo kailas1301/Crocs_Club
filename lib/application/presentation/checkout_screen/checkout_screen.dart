@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/coupon/bloc/coupon_bloc.dart';
 import 'package:crocs_club/application/business_logic/wallet/bloc/wallet_bloc.dart';
+import 'package:crocs_club/application/presentation/adress_screen/adress_screen.dart';
 import 'package:crocs_club/application/presentation/adress_screen/widgets.dart/add_adress.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/checkout_product.dart';
@@ -455,11 +456,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 // }
                 else {
                   return Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(
-                      color: kAppPrimaryColor,
-                      size: 40,
+                    child: ElevatedButtonWidget(
+                      buttonText: "Add Adress",
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AdressScreen(),
+                        ));
+                      },
                     ),
                   );
+                  // Center(
+                  //   child: LoadingAnimationWidget.staggeredDotsWave(
+                  //     color: kAppPrimaryColor,
+                  //     size: 40,
+                  //   ),
+                  // );
                 }
               },
             );

@@ -8,7 +8,7 @@ class ProductService {
     try {
       final dio = Dio();
       final response =
-          await dio.get('http://crocs.crocsclub.shop/admin/inventories');
+          await dio.get('https://crocs.crocsclub.shop/admin/inventories');
 
       if (response.statusCode == 200) {
         final responseData = response.data as Map<String, dynamic>;

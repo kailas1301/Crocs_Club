@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class WalletServices {
   static Future<dynamic> getWallet() async {
-    const url = "http://crocs.crocsclub.shop/user/wallet";
+    const url = "https://crocs.crocsclub.shop/user/wallet";
     final token = await getToken();
 
     final response = await http.get(Uri.parse(url), headers: {
