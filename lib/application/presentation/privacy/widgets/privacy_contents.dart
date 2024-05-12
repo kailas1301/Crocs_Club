@@ -21,7 +21,7 @@ class PrivacyContents extends StatelessWidget {
           textsize: 15,
           textColor: kDarkGreyColour,
           title:
-              'At StepSmart, we are committed to protecting your privacy and ensuring the security of your personal information.',
+              'At Step In Style, we are committed to protecting your privacy and ensuring the security of your personal information.',
         ),
         SizedBox(height: 20),
         SubHeadingTextWidget(
@@ -91,12 +91,12 @@ class PrivacyContents extends StatelessWidget {
         GestureDetector(
           onTap: () async {
             final Uri url = Uri.parse(
-                'https://www.freeprivacypolicy.com/live/2de80a09-4255-4ef6-8cd0-ab3d22e57f4e');
+                'https://docs.google.com/document/d/e/2PACX-1vRyrwkHEclk_I5eL0lVAz9cLSM2AOv3hnxJyrgshhhSRivnqlfFfm25Xb3bsxBfzXZanP3pdey8eQcw/pub');
             launchUrl(url);
           },
           child: SubHeadingTextWidget(
             textsize: 18,
-            textColor: Colors.blue.shade700,
+            textColor: Colors.blue.shade800,
             title: ' Click here to view our Privacy Policy.',
           ),
         ),

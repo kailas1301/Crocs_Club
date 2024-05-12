@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 Widget buildCarouselSlider() {
   return CarouselSlider(
     options: CarouselOptions(
-      height: screenHeight * .26,
+      height: screenHeight * .25,
       aspectRatio: 16 / 9,
       viewportFraction: 0.9,
       initialPage: 0,

@@ -12,7 +12,7 @@ class AboutPage extends StatelessWidget {
       backgroundColor: kwhiteColour,
       appBar: AppBar(
         centerTitle: true,
-        title: const AppBarTextWidget(title: 'About StepSmart'),
+        title: const AppBarTextWidget(title: 'About Step In Style'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,7 +30,7 @@ class AboutPage extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: const SubHeadingTextWidget(
                   title:
-                      'Welcome to StepSmart, your ultimate destination for comfortable and stylish footwear. We offer a wide range of high-quality footwearS designed to keep you comfortable throughout the day, whether you’re at home, work, or on an adventure.',
+                      'Welcome to Step In Style, your ultimate destination for comfortable and stylish footwear. We offer a wide range of high-quality footwearS designed to keep you comfortable throughout the day, whether you’re at home, work, or on an adventure.',
                   textColor: kDarkGreyColour,
                   textsize: 15,
                 ),

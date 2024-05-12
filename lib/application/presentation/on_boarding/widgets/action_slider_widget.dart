@@ -1,5 +1,6 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:crocs_club/application/presentation/authentication_selecting/login/llogin_scrn.dart';
+import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,7 +12,7 @@ class ActionSliderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionSlider.standard(
-      toggleColor: const Color.fromARGB(255, 149, 147, 147),
+      toggleColor: kAppPrimaryColor,
       backgroundBorderRadius: BorderRadius.circular(35),
       child: Text(
         'Slide to confirm',

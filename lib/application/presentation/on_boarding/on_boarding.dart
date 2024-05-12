@@ -14,9 +14,9 @@ class OnBoardingScreen extends StatelessWidget {
     "assets/images/onboarding3.jpg",
   ];
   final List<String> text = [
-    'Welcome to Step Smart',
-    'Step into comfort and style with StepSmart!',
-    'Unleash your style potential with StepSmart',
+    'Welcome to Step In Style',
+    'Step into comfort and style with Step In Style!',
+    'Unleash your style potential with Step In Style',
   ];
 
   @override
@@ -28,9 +28,9 @@ class OnBoardingScreen extends StatelessWidget {
         radius: 5,
         verticalPosition: 0.85,
         colors: const [
-          Color.fromARGB(255, 227, 230, 230),
-          Color.fromARGB(255, 192, 190, 190),
-          Color.fromARGB(255, 152, 150, 150)
+          Color.fromARGB(255, 235, 239, 239),
+          Color.fromARGB(255, 219, 217, 217),
+          Color.fromARGB(255, 207, 205, 205)
         ],
         itemBuilder: (index) {
           int pageIndex = index % pages.length;
