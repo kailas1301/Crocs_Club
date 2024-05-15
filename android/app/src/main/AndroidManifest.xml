@@ -5,7 +5,7 @@
      android:maxSdkVersion="18" />
      
     <application
-        android:label="Step Smart"
+        android:label="Step In Style"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

@@ -12,14 +12,14 @@ class AddAddressScreen extends StatelessWidget {
   const AddAddressScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final TextEditingController cityController = TextEditingController();
-    final TextEditingController houseNameController = TextEditingController();
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController phoneController = TextEditingController();
-    final TextEditingController pinController = TextEditingController();
-    final TextEditingController stateController = TextEditingController();
-    final TextEditingController streetController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
+    TextEditingController cityController = TextEditingController();
+    TextEditingController houseNameController = TextEditingController();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController phoneController = TextEditingController();
+    TextEditingController pinController = TextEditingController();
+    TextEditingController stateController = TextEditingController();
+    TextEditingController streetController = TextEditingController();
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
