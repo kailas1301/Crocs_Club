@@ -26,9 +26,11 @@ class BottomNavBar extends StatelessWidget {
           } else if (state is ProfileScreenSelected) {
             currentScreen = const ProfileScreen();
           }
-          return Scaffold(
-            body: currentScreen,
-            bottomNavigationBar: const GnavWidget(),
+          return SafeArea(
+            child: Scaffold(
+              body: currentScreen,
+              bottomNavigationBar: const GnavWidget(),
+            ),
           );
         },
       ),

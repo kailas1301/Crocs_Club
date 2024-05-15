@@ -45,13 +45,15 @@ class LoginScreen extends StatelessWidget {
               context, 'Check username and password', kRedColour, kwhiteColour);
         }
       },
-      child: Scaffold(
-        backgroundColor: kwhiteColour,
-        body: Center(
-          child: UserLoginWidget(
-              formKey: formKey,
-              emailController: emailController,
-              passwordController: passwordController),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: kwhiteColour,
+          body: Center(
+            child: UserLoginWidget(
+                formKey: formKey,
+                emailController: emailController,
+                passwordController: passwordController),
+          ),
         ),
       ),
     );

@@ -150,7 +150,8 @@ class SignUpFormWidget extends StatelessWidget {
                 builder: (context) => const LoginScreen(),
               ));
             },
-            child: const SubHeadingTextWidget(
+            child: const PriceTextWidget(
+              textsize: 15,
               title: 'Already have an account? Log in',
               textColor: kDarkGreyColour,
             ),

@@ -15,63 +15,65 @@ class FavouriteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<ProductBloc>(context).add(FetchProducts());
     BlocProvider.of<WishlistBloc>(context).add(FetchWishlistEvent());
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const AppBarTextWidget(title: 'Favourites'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          child: BlocBuilder<WishlistBloc, WishlistState>(
-            builder: (context, wishlistState) {
-              if (wishlistState is WishlistLoaded) {
-                return BlocBuilder<ProductBloc, ProductState>(
-                  builder: (context, productState) {
-                    if (productState is ProductLoaded) {
-                      final favoriteProducts = productState.products
-                          .where((product) => wishlistState.wishlist
-                              .any((item) => item.inventoryId == product.id))
-                          .toList();
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const AppBarTextWidget(title: 'Favourites'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SingleChildScrollView(
+            child: BlocBuilder<WishlistBloc, WishlistState>(
+              builder: (context, wishlistState) {
+                if (wishlistState is WishlistLoaded) {
+                  return BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, productState) {
+                      if (productState is ProductLoaded) {
+                        final favoriteProducts = productState.products
+                            .where((product) => wishlistState.wishlist
+                                .any((item) => item.inventoryId == product.id))
+                            .toList();
 
-                      return favoriteProducts.isEmpty
-                          ? const Center(child: Text('No favorite products'))
-                          : GridView.builder(
-                              shrinkWrap: true,
-                              itemCount: favoriteProducts.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 1 / 1.35,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
-                              ),
-                              itemBuilder: (context, index) {
-                                return ProductCard(
-                                  product: favoriteProducts[index],
-                                );
-                              },
-                            );
-                    } else {
-                      return SizedBox(
-                        height: screenHeight,
-                        child: const Center(
-                            child: LoadingAnimationStaggeredDotsWave()),
-                      );
-                    }
-                  },
-                );
-              } else {
-                return SizedBox(
-                  height: screenHeight,
-                  child: const Center(
-                      child: SubHeadingTextWidget(
-                    title: "No product is found",
-                    textColor: kDarkGreyColour,
-                  )),
-                );
-              }
-            },
+                        return favoriteProducts.isEmpty
+                            ? const Center(child: Text('No favorite products'))
+                            : GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: favoriteProducts.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 1 / 1.35,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return ProductCard(
+                                    product: favoriteProducts[index],
+                                  );
+                                },
+                              );
+                      } else {
+                        return SizedBox(
+                          height: screenHeight,
+                          child: const Center(
+                              child: LoadingAnimationStaggeredDotsWave()),
+                        );
+                      }
+                    },
+                  );
+                } else {
+                  return SizedBox(
+                    height: screenHeight,
+                    child: const Center(
+                        child: SubHeadingTextWidget(
+                      title: "No product is found",
+                      textColor: kDarkGreyColour,
+                    )),
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),

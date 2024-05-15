@@ -31,8 +31,8 @@ class UserLoginWidget extends StatelessWidget {
             // Crocs logo
             Image.asset(
               'assets/images/CROCS (2).png',
-              height: 200,
-              width: 200,
+              height: 300,
+              width: 300,
             ),
             kSizedBoxH20, // Spacing
             // Email text field
@@ -100,9 +100,9 @@ class UserLoginWidget extends StatelessWidget {
                   builder: (context) => const SignUpScrn(),
                 ));
               },
-              child: const SubHeadingTextWidget(
+              child: const PriceTextWidget(
                 title: 'New User? Register Here',
-                textColor: kAppPrimaryColor,
+                textColor: kblackColour,
                 textsize: 15,
               ),
             ),

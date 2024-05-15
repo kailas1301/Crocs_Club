@@ -51,18 +51,20 @@ class SignUpScrn extends StatelessWidget {
               kblackColour); // Close progress dialog (if shown)
         }
       },
-      child: Scaffold(
-        backgroundColor: kwhiteColour,
-        body: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: SignUpFormWidget(
-                formKey: formKey,
-                nameController: nameController,
-                emailController: emailController,
-                phoneController: phoneController,
-                passwordController: passwordController,
-                confirmPasswordController: confirmPasswordController),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: kwhiteColour,
+          body: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: SignUpFormWidget(
+                  formKey: formKey,
+                  nameController: nameController,
+                  emailController: emailController,
+                  phoneController: phoneController,
+                  passwordController: passwordController,
+                  confirmPasswordController: confirmPasswordController),
+            ),
           ),
         ),
       ),

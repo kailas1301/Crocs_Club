@@ -21,6 +21,19 @@ Widget buildProductList(List<ProductFromApi> products) {
   );
 }
 
+Widget buildProductListLessThanThousan(List<ProductFromApi> products) {
+  List<ProductFromApi> productList =
+      products.where((product) => product.price <= 1000).toList();
+  return ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: productList.length,
+    itemBuilder: (context, index) {
+      final product = productList[index];
+      return ProductCardWidget(product: product);
+    },
+  );
+}
+
 class ProductCardWidget extends StatelessWidget {
   const ProductCardWidget({
     super.key,
@@ -56,29 +69,32 @@ class ProductCardWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(12),
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: product.image[0],
-                    imageBuilder: (context, imageProvider) {
-                      return Container(
-                        height: screenHeight * .18,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.fitWidth,
+                SizedBox(
+                  height: screenHeight * .18,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: product.image[0],
+                      imageBuilder: (context, imageProvider) {
+                        return Container(
+                          // height: screenHeight * .18,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.fitWidth,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    placeholder: (context, url) => const Center(
-                        child: LoadingAnimationStaggeredDotsWave()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                        );
+                      },
+                      placeholder: (context, url) => const Center(
+                          child: LoadingAnimationStaggeredDotsWave()),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                   ),
                 ),
                 kSizedBoxH10,

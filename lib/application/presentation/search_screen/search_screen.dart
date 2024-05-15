@@ -15,24 +15,26 @@ class SearchScreen extends StatelessWidget {
     final TextEditingController searchController = TextEditingController();
     final Debouncer debouncer =
         Debouncer(delay: const Duration(milliseconds: 300));
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const AppBarTextWidget(title: 'Search'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            // Search Bar with Debouncer
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SearchFieldWidget(
-                  searchController: searchController, debouncer: debouncer),
-            ),
-            const SizedBox(height: 20),
-            const SearchedProductGridView(),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const AppBarTextWidget(title: 'Search'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              // Search Bar with Debouncer
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SearchFieldWidget(
+                    searchController: searchController, debouncer: debouncer),
+              ),
+              const SizedBox(height: 20),
+              const SearchedProductGridView(),
+            ],
+          ),
         ),
       ),
     );

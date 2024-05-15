@@ -13,63 +13,65 @@ class AdressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<AdressblocBloc>(context).add(GetAddressEvent());
-    return Scaffold(
-      // appbar
-      appBar: AppBar(
-        title: const SubHeadingTextWidget(
-          textColor: kDarkGreyColour,
-          textsize: 18,
-          title: 'Addresses',
+    return SafeArea(
+      child: Scaffold(
+        // appbar
+        appBar: AppBar(
+          title: const SubHeadingTextWidget(
+            textColor: kDarkGreyColour,
+            textsize: 18,
+            title: 'Addresses',
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      // Body to show the adress as cards
-      body: BlocConsumer<AdressblocBloc, AdressblocState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is AdressblocLoading) {
-            return Center(
-              child: LoadingAnimationWidget.staggeredDotsWave(
-                color: kAppPrimaryColor,
-                size: 40,
-              ),
-            );
-          }
-          if (state is AdressblocLoaded) {
-            return ListView.builder(
-              itemCount: state.addressModel.length,
-              itemBuilder: (context, index) {
-                final address = state.addressModel[index];
-                return AdressCard(
-                  address: address,
-                  index: index,
-                );
-              },
-            );
-          } else if (state is AdressblocError) {
-            return const Center(
-                child: SubHeadingTextWidget(
-              title: "No adress found",
-              textColor: kDarkGreyColour,
+        // Body to show the adress as cards
+        body: BlocConsumer<AdressblocBloc, AdressblocState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            if (state is AdressblocLoading) {
+              return Center(
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: kAppPrimaryColor,
+                  size: 40,
+                ),
+              );
+            }
+            if (state is AdressblocLoaded) {
+              return ListView.builder(
+                itemCount: state.addressModel.length,
+                itemBuilder: (context, index) {
+                  final address = state.addressModel[index];
+                  return AdressCard(
+                    address: address,
+                    index: index,
+                  );
+                },
+              );
+            } else if (state is AdressblocError) {
+              return const Center(
+                  child: SubHeadingTextWidget(
+                title: "No adress found",
+                textColor: kDarkGreyColour,
+              ));
+            } else {
+              print("the state is $state");
+              return const Center(
+                  child: SubHeadingTextWidget(
+                title: "No adress found",
+                textColor: kDarkGreyColour,
+              ));
+            }
+          },
+        ),
+        // floating action bar to add new adress
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const AddAddressScreen(),
             ));
-          } else {
-            print("the state is $state");
-            return const Center(
-                child: SubHeadingTextWidget(
-              title: "No adress found",
-              textColor: kDarkGreyColour,
-            ));
-          }
-        },
-      ),
-      // floating action bar to add new adress
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const AddAddressScreen(),
-          ));
-        },
-        child: const Icon(Icons.add),
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

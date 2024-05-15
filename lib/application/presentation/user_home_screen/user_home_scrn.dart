@@ -11,11 +11,10 @@ import 'package:crocs_club/domain/utils/widgets/loading_animations.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:crocs_club/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserHome extends StatelessWidget {
-  const UserHome({Key? key}) : super(key: key);
+  const UserHome({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,71 +24,100 @@ class UserHome extends StatelessWidget {
     final currentTime = DateTime.now();
     String greeting = getGreeting(currentTime.hour);
 
-    return Scaffold(
-      backgroundColor: kwhiteColour,
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(70),
-        child: HomeScreenAppBar(),
-      ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // Greeting text with username
-            Padding(
-              padding: const EdgeInsets.only(left: 25),
-              child: BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, state) {
-                  if (state is ProfileLoaded) {
-                    return SubHeadingTextWidget(
-                        textsize: 18,
-                        textColor: kblackColour,
-                        title: '$greeting ${state.profileData['name']}');
-                  } else {
-                    return SubHeadingTextWidget(
-                      title: greeting,
-                    );
-                  }
-                },
-              ),
-            ),
-            kSizedBoxH10,
-            // widget for carousel slider
-            buildCarouselSlider(),
-
-            const Expanded(child: SizedBox()),
-            const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: SubHeadingTextWidget(
-                title: 'Latest Products',
-                textsize: 17,
-                textColor: kblackColour,
-              ),
-            ),
-            // horizontal listview of latest products
-            kSizedBoxH20,
-            SizedBox(
-              height: screenHeight * .4,
-              child: BlocBuilder<ProductBloc, ProductState>(
-                builder: (context, state) {
-                  if (state is ProductLoaded) {
-                    return buildProductList(state.products);
-                  } else if (state is ProductError) {
-                    return const Center(
-                        child:
-                            SubHeadingTextWidget(title: 'No Products Found'));
-                  } else {
-                    return const LoadingAnimationStaggeredDotsWave();
-                  }
-                },
-              ),
-            ),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: kwhiteColour,
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(70),
+          child: HomeScreenAppBar(),
         ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                // Greeting text with username
+                Padding(
+                  padding: const EdgeInsets.only(left: 25),
+                  child: BlocBuilder<ProfileBloc, ProfileState>(
+                    builder: (context, state) {
+                      if (state is ProfileLoaded) {
+                        return SubHeadingTextWidget(
+                            textsize: 18,
+                            textColor: kblackColour,
+                            title: '$greeting ${state.profileData['name']}');
+                      } else {
+                        return SubHeadingTextWidget(
+                          title: greeting,
+                        );
+                      }
+                    },
+                  ),
+                ),
+                kSizedBoxH10,
+                // widget for carousel slider
+                buildCarouselSlider(),
+                kSizedBoxH20,
+                const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: SubHeadingTextWidget(
+                    title: 'Latest Products',
+                    textsize: 17,
+                    textColor: kblackColour,
+                  ),
+                ),
+                // horizontal listview of latest products
+                SizedBox(
+                  height: screenHeight * .4,
+                  child: BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, state) {
+                      if (state is ProductLoaded) {
+                        return buildProductList(state.products);
+                      } else if (state is ProductError) {
+                        return const Center(
+                            child: SubHeadingTextWidget(
+                                title: 'No Products Found'));
+                      } else {
+                        return const LoadingAnimationStaggeredDotsWave();
+                      }
+                    },
+                  ),
+                ),
+                kSizedBoxH10,
+                const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: SubHeadingTextWidget(
+                    title: 'Under 1000',
+                    textsize: 17,
+                    textColor: kblackColour,
+                  ),
+                ),
+                kSizedBoxH20,
+                SizedBox(
+                  height: screenHeight * .4,
+                  child: BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, state) {
+                      if (state is ProductLoaded) {
+                        return buildProductListLessThanThousan(state.products);
+                      } else if (state is ProductError) {
+                        return const Center(
+                            child: SubHeadingTextWidget(
+                                title: 'No Products Found'));
+                      } else {
+                        return const LoadingAnimationStaggeredDotsWave();
+                      }
+                    },
+                  ),
+                ),
+                kSizedBoxH10
+              ],
+            ),
+          ),
+        ),
+        // drawer
+        drawer: const DrawerScreen(),
       ),
-      // drawer
-      drawer: const DrawerScreen(),
     );
   }
 }

@@ -29,75 +29,77 @@ class ProductDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<WishlistBloc>().add(FetchWishlistEvent());
-    return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CartScreen(),
-                  ));
-                },
-                icon: const Icon(Icons.shopping_cart))
-          ],
-          centerTitle: true,
-          title: AppBarTextWidget(
-            title: product.productName,
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const CartScreen(),
+                    ));
+                  },
+                  icon: const Icon(Icons.shopping_cart))
+            ],
+            centerTitle: true,
+            title: AppBarTextWidget(
+              title: product.productName,
+            ),
           ),
-        ),
-        body: BlocListener<CartBloc, CartState>(
-            listener: (context, state) {
-              if (state is CartAdded) {
-                showCustomSnackbar(context, 'Product added to cart',
-                    kGreenColour, kwhiteColour);
-              } else if (state is CartAlreadyExists) {
-                showCustomSnackbar(context, 'Product already exixts in cart',
-                    kRedColour, kwhiteColour);
-              } else if (state is CartError) {
-                showCustomSnackbar(
-                    context, state.errorMessage, kRedColour, kwhiteColour);
-              }
-            },
-            child: ChangeNotifierProvider(
-              create: (context) =>
-                  CarouselIndicatorState(), // Step 2: Provide the state
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Consumer<CarouselIndicatorState>(
-                      // Step 3: Consume the state
-                      builder: (context, indicatorState, _) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        kSizedBoxH20,
-                        ImageCarouselWidget(product: product),
-                        // Step 4: Add indicator widgets
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(
-                            product.image.length,
-                            (index) => Container(
-                              width: 8.0,
-                              height: 8.0,
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 4.0),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: indicatorState.currentIndex == index
-                                    ? Colors.blueAccent
-                                    : Colors.grey,
+          body: BlocListener<CartBloc, CartState>(
+              listener: (context, state) {
+                if (state is CartAdded) {
+                  showCustomSnackbar(context, 'Product added to cart',
+                      kGreenColour, kwhiteColour);
+                } else if (state is CartAlreadyExists) {
+                  showCustomSnackbar(context, 'Product already exixts in cart',
+                      kRedColour, kwhiteColour);
+                } else if (state is CartError) {
+                  showCustomSnackbar(
+                      context, state.errorMessage, kRedColour, kwhiteColour);
+                }
+              },
+              child: ChangeNotifierProvider(
+                create: (context) =>
+                    CarouselIndicatorState(), // Step 2: Provide the state
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Consumer<CarouselIndicatorState>(
+                        // Step 3: Consume the state
+                        builder: (context, indicatorState, _) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          kSizedBoxH20,
+                          ImageCarouselWidget(product: product),
+                          // Step 4: Add indicator widgets
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              product.image.length,
+                              (index) => Container(
+                                width: 8.0,
+                                height: 8.0,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 4.0),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: indicatorState.currentIndex == index
+                                      ? Colors.blueAccent
+                                      : Colors.grey,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        kSizedBoxH20,
-                        ProductDetails(product: product),
-                      ],
-                    );
-                  }),
+                          kSizedBoxH20,
+                          ProductDetails(product: product),
+                        ],
+                      );
+                    }),
+                  ),
                 ),
-              ),
-            )));
+              ))),
+    );
   }
 }

@@ -21,36 +21,38 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ConcentricPageView(
-        itemCount: 3,
-        reverse: false,
-        radius: 5,
-        verticalPosition: 0.85,
-        colors: const [
-          Color.fromARGB(255, 235, 239, 239),
-          Color.fromARGB(255, 219, 217, 217),
-          Color.fromARGB(255, 207, 205, 205)
-        ],
-        itemBuilder: (index) {
-          int pageIndex = index % pages.length;
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ContainerWithImage(imagePath: pages[pageIndex]),
-              kSizedBoxH10,
-              Text(text[pageIndex],
-                  style: GoogleFonts.openSans(
-                      fontWeight: FontWeight.w700, fontSize: 16)),
-              kSizedBoxH10,
-              if (index == pages.length - 1)
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 50),
-                  child: ActionSliderWidget(),
-                ),
-            ],
-          );
-        },
+    return SafeArea(
+      child: Scaffold(
+        body: ConcentricPageView(
+          itemCount: 3,
+          reverse: false,
+          radius: 5,
+          verticalPosition: 0.85,
+          colors: const [
+            Color.fromARGB(255, 235, 239, 239),
+            Color.fromARGB(255, 219, 217, 217),
+            Color.fromARGB(255, 207, 205, 205)
+          ],
+          itemBuilder: (index) {
+            int pageIndex = index % pages.length;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ContainerWithImage(imagePath: pages[pageIndex]),
+                kSizedBoxH10,
+                Text(text[pageIndex],
+                    style: GoogleFonts.openSans(
+                        fontWeight: FontWeight.w700, fontSize: 15)),
+                kSizedBoxH10,
+                if (index == pages.length - 1)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: ActionSliderWidget(),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
