@@ -1,6 +1,7 @@
 import 'package:crocs_club/application/business_logic/address/bloc/adressbloc_bloc.dart';
 import 'package:crocs_club/application/presentation/adress_screen/widgets.dart/add_adress.dart';
 import 'package:crocs_club/application/presentation/adress_screen/widgets.dart/adress_card.dart';
+import 'package:crocs_club/application/presentation/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/utils/widgets/textwidgets.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,12 @@ class AdressScreen extends StatelessWidget {
       child: Scaffold(
         // appbar
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => BottomNavBar()));
+              },
+              icon: Icon(Icons.arrow_back)),
           title: const SubHeadingTextWidget(
             textColor: kDarkGreyColour,
             textsize: 18,

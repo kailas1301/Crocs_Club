@@ -72,7 +72,15 @@ class OrderScreen extends StatelessWidget {
                   }
                 },
               );
+            } else if (State is AdressblocError) {
+              print("the state is $adressstate");
+              return const Center(
+                  child: SubHeadingTextWidget(
+                title: 'No orders found',
+                textColor: kDarkGreyColour,
+              ));
             } else {
+              print(adressstate);
               return const LoadingAnimationStaggeredDotsWave();
             }
           },

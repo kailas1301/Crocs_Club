@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crocs_club/application/business_logic/address/bloc/adressbloc_bloc.dart';
 import 'package:crocs_club/application/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:crocs_club/application/business_logic/coupon/bloc/coupon_bloc.dart';
 import 'package:crocs_club/application/business_logic/wallet/bloc/wallet_bloc.dart';
+import 'package:crocs_club/application/presentation/adress_screen/adress_screen.dart';
 import 'package:crocs_club/application/presentation/adress_screen/widgets.dart/add_adress.dart';
 import 'package:crocs_club/domain/core/constants/constants.dart';
 import 'package:crocs_club/domain/models/checkout_product.dart';
@@ -456,10 +458,39 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   //       child: SubHeadingTextWidget(
                   //           title: 'Order Placed Successfully!'));
                   // }
-                  else {
+                  else if (state is AdressblocError) {
+                    print(state);
+                    return SizedBox(
+                      height: screenHeight,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SubHeadingTextWidget(
+                                title:
+                                    "Go to Profile and\nadd a address first"),
+                            ElevatedButtonWidget(
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AdressScreen(),
+                                      ),
+                                      (route) => false);
+                                },
+                                buttonText: "ADD ADRESS")
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
                     return Center(
-                        child: SubHeadingTextWidget(
-                            title: "Go to Profile and\nadd a address first"));
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: kAppPrimaryColor,
+                        size: 40,
+                      ),
+                    );
                   }
                 },
               );

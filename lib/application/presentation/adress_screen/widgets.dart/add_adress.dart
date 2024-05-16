@@ -33,7 +33,7 @@ class AddAddressScreen extends StatelessWidget {
             Navigator.pop(context);
             BlocProvider.of<AdressblocBloc>(context).add(GetAddressEvent());
           }
-          if (state is AdressblocError) {
+          if (state is AdressblocAddedError) {
             showCustomSnackbar(context, 'Adress was not successfully added',
                 kGreenColour, kblackColour);
           }

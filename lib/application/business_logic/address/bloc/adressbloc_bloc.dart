@@ -22,12 +22,12 @@ class AdressblocBloc extends Bloc<AdressblocEvent, AdressblocState> {
           final errorMessage =
               "Failed to add address: ${response.data['message']}";
           print(errorMessage);
-          emit(AdressblocError(errorMessage));
+          emit(AdressblocAddedError(errorMessage));
         }
       } catch (e) {
         final errorMessage = "Failed to add address: $e";
         print(errorMessage);
-        emit(AdressblocError(errorMessage));
+        emit(AdressblocAddedError(errorMessage));
       }
     });
 

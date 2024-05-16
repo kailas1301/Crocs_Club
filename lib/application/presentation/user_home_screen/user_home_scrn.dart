@@ -55,10 +55,10 @@ class UserHome extends StatelessWidget {
                     },
                   ),
                 ),
-                kSizedBoxH10,
+                kSizedBoxH30,
                 // widget for carousel slider
                 buildCarouselSlider(),
-                kSizedBoxH20,
+                kSizedBoxH30,
                 const Padding(
                   padding: EdgeInsets.only(left: 20),
                   child: SubHeadingTextWidget(
@@ -69,7 +69,7 @@ class UserHome extends StatelessWidget {
                 ),
                 // horizontal listview of latest products
                 SizedBox(
-                  height: screenHeight * .4,
+                  height: screenHeight * .36,
                   child: BlocBuilder<ProductBloc, ProductState>(
                     builder: (context, state) {
                       if (state is ProductLoaded) {
@@ -84,7 +84,7 @@ class UserHome extends StatelessWidget {
                     },
                   ),
                 ),
-                kSizedBoxH10,
+                kSizedBoxH20,
                 const Padding(
                   padding: EdgeInsets.only(left: 20),
                   child: SubHeadingTextWidget(
@@ -93,9 +93,9 @@ class UserHome extends StatelessWidget {
                     textColor: kblackColour,
                   ),
                 ),
-                kSizedBoxH20,
+                kSizedBoxH10,
                 SizedBox(
-                  height: screenHeight * .4,
+                  height: screenHeight * .36,
                   child: BlocBuilder<ProductBloc, ProductState>(
                     builder: (context, state) {
                       if (state is ProductLoaded) {

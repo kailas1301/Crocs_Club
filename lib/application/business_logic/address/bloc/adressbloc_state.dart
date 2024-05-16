@@ -23,3 +23,9 @@ final class AdressblocError extends AdressblocState {
 
   AdressblocError(this.message);
 }
+
+final class AdressblocAddedError extends AdressblocState {
+  final String message;
+
+  AdressblocAddedError(this.message);
+}
