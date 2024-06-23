@@ -13,7 +13,7 @@ class AboutPage extends StatelessWidget {
         backgroundColor: kwhiteColour,
         appBar: AppBar(
           centerTitle: true,
-          title: const AppBarTextWidget(title: 'About Step In Style'),
+          title: const AppBarTextWidget(title: 'About Step Mate Shop'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -23,7 +23,7 @@ class AboutPage extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 220,
-                  child: Image.asset('assets/images/CROCS (2).png'),
+                  child: Image.asset('assets/images/CROCS.png'),
                 ),
 
                 kSizedBoxH20,
@@ -31,7 +31,7 @@ class AboutPage extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: const SubHeadingTextWidget(
                     title:
-                        'Welcome to Step In Style, your ultimate destination for comfortable and stylish footwear. We offer a wide range of high-quality footwearS designed to keep you comfortable throughout the day, whether you’re at home, work, or on an adventure.',
+                        'Welcome to Step Mate Shop, your ultimate destination for stylish footwear. We offer a wide range of high-quality footwears designed to keep you comfortable throughout the day, whether you’re at home, work, or on an adventure.',
                     textColor: kDarkGreyColour,
                     textsize: 15,
                   ),
@@ -94,7 +94,7 @@ class AboutPage extends StatelessWidget {
                       const Icon(Icons.email, color: kDarkGreyColour),
                       kSizedBoxW10,
                       Text(
-                        'Contact us: kailaskailu56@gmail.com',
+                        'Contact us: kailas1301.dev@gmail.com',
                         style: GoogleFonts.openSans(
                             fontWeight: FontWeight.w700,
                             fontSize: 14,

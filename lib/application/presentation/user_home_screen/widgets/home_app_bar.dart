@@ -20,7 +20,7 @@ class HomeScreenAppBar extends StatelessWidget {
         ),
       ),
       title: const AppBarTextWidget(
-        title: 'Step In Style',
+        title: 'Step Mate Shop',
       ),
       elevation: 0,
       centerTitle: true,

@@ -8,7 +8,6 @@ class AdressServices {
   Future<Response<dynamic>> addAddress(AddressModel address) async {
     const url = 'https://crocs.crocsclub.shop/user/profile/addaddress';
     final token = await getToken();
-
     try {
       final response = await _dio.post(
         url,

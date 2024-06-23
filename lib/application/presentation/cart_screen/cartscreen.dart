@@ -154,11 +154,8 @@ class CartScreen extends StatelessWidget {
                 child: SubHeadingTextWidget(title: 'Cart is Empty'),
               );
             } else {
-              return Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: kAppPrimaryColor,
-                  size: 40,
-                ),
+              return const Center(
+                child: SubHeadingTextWidget(title: 'Cart is Empty'),
               );
             }
           },

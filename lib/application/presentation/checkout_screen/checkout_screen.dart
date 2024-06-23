@@ -484,7 +484,35 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                     );
+                  } else if (state is CheckoutError) {
+                    print(state);
+                    print("This is working");
+                    return SizedBox(
+                      height: screenHeight,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SubHeadingTextWidget(
+                                title:
+                                    "Go to Profile and\nadd a address first"),
+                            ElevatedButtonWidget(
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AdressScreen(),
+                                      ),
+                                      (route) => false);
+                                },
+                                buttonText: "ADD ADRESS")
+                          ],
+                        ),
+                      ),
+                    );
                   } else {
+                    print("This is working");
                     return Center(
                       child: LoadingAnimationWidget.staggeredDotsWave(
                         color: kAppPrimaryColor,
@@ -495,6 +523,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 },
               );
             } else {
+              print("This is working");
               return Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
                   color: kAppPrimaryColor,

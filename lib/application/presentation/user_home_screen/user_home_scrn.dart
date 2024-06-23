@@ -69,7 +69,7 @@ class UserHome extends StatelessWidget {
                 ),
                 // horizontal listview of latest products
                 SizedBox(
-                  height: screenHeight * .36,
+                  height: screenHeight * .4,
                   child: BlocBuilder<ProductBloc, ProductState>(
                     builder: (context, state) {
                       if (state is ProductLoaded) {
@@ -95,7 +95,7 @@ class UserHome extends StatelessWidget {
                 ),
                 kSizedBoxH10,
                 SizedBox(
-                  height: screenHeight * .36,
+                  height: screenHeight * .4,
                   child: BlocBuilder<ProductBloc, ProductState>(
                     builder: (context, state) {
                       if (state is ProductLoaded) {

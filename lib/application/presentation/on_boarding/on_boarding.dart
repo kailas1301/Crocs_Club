@@ -14,9 +14,9 @@ class OnBoardingScreen extends StatelessWidget {
     "assets/images/onboarding3.jpg",
   ];
   final List<String> text = [
-    'Welcome to Step In Style',
-    'Step into comfort and style with Step In Style!',
-    'Unleash your style potential with Step In Style',
+    'Welcome to Step Mate Shop',
+    'Step into comfort!',
+    'Unleash your style potential',
   ];
 
   @override
