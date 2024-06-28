@@ -30,7 +30,7 @@ class UserLoginWidget extends StatelessWidget {
           children: [
             // Crocs logo
             Image.asset(
-              'assets/images/CROCS.png',
+              'assets/images/CROCS (2).png',
               height: 300,
               width: 300,
             ),

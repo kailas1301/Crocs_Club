@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
       backgroundColor: Colors.white,
-      splash: Image.asset('assets/images/CROCS.png'),
+      splash: Image.asset('assets/images/CROCS (2).png'),
       splashIconSize: 300,
       nextScreen: BlocProvider<SplashBloc>(
         create: (context) => SplashBloc()..add(SetSplash()),
